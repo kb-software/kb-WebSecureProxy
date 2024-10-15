@@ -1,0 +1,231 @@
+%TEXT:COMMENT;  KB 21.01.16
+%IF DEF XYZ1;
+        .equ DVOIDSI,8
+        .equ HEAD,(0*DVOIDSI)
+        .equ HEAD_CNT,(1*DVOIDSI)
+        .equ TAIL,(2*DVOIDSI)
+        .equ TAIL_CNT,(3*DVOIDSI)
+        .equ LOCK,(4*DVOIDSI)
+        .equ VALUE,(2*DVOIDSI)
+
+        .macro CMPXCHG16B_PREPARE old_ptr, old_cnt, new_ptr
+            mov rax, \old_ptr
+            mov rdx, \old_cnt
+            mov rbx, \new_ptr
+            mov rcx, \old_cnt
+            inc rcx
+        .endm
+
+        .macro CMPXCHG16B_TAIL old_ptr, old_cnt, new_ptr
+            CMPXCHG16B_PREPARE "\old_ptr", "\old_cnt", "\new_ptr"
+            lock cmpxchg16b OWORD PTR TAIL[rdi]
+        .endm
+
+        .macro CMPXCHG16B_HEAD old_ptr, old_cnt, new_ptr
+            CMPXCHG16B_PREPARE "\old_ptr", "\old_cnt", "\new_ptr"
+            lock cmpxchg16b OWORD PTR HEAD[rdi]
+        .endm
+
+        .macro SAVE_VALUE node, tmp_reg
+            mov  \tmp_reg, QWORD PTR VALUE[ \node ]
+            mov [rsp - DVOIDSI], \tmp_reg
+            mov \tmp_reg, QWORD PTR VALUE + 1*DVOIDSI[ \node ]
+            mov [rsp - 2*DVOIDSI], \tmp_reg
+            mov \tmp_reg, QWORD PTR VALUE + 2*DVOIDSI[ \node ]
+            mov [rsp - 3*DVOIDSI], \tmp_reg
+            mov \tmp_reg, QWORD PTR VALUE + 3*DVOIDSI[ \node ]
+            mov [rsp - 4*DVOIDSI], \tmp_reg
+            mov \tmp_reg, QWORD PTR VALUE + 4*DVOIDSI[ \node ]
+            mov [rsp - 5*DVOIDSI], \tmp_reg
+        .endm
+
+        .macro RESTORE_VALUE node, tmp_reg
+            mov \tmp_reg, [rsp - DVOIDSI]
+            mov QWORD PTR VALUE[ \node ], \tmp_reg
+            mov \tmp_reg, [rsp - 2*DVOIDSI]
+            mov QWORD PTR VALUE + 1*DVOIDSI[ \node ], \tmp_reg
+            mov \tmp_reg, [rsp - 3*DVOIDSI]
+            mov QWORD PTR VALUE + 2*DVOIDSI[ \node ], \tmp_reg
+            mov \tmp_reg, [rsp - 4*DVOIDSI]
+            mov QWORD PTR VALUE + 3*DVOIDSI[ \node ], \tmp_reg
+            mov \tmp_reg, [rsp - 5*DVOIDSI]
+            mov QWORD PTR VALUE + 4*DVOIDSI[ \node ], \tmp_reg
+        .endm
+%CEND;
+
+%SET$EQU(HEAD_STA,0*DVOIDSI);
+%SET$EQU(HEAD_CNT,1*DVOIDSI);
+%SET$EQU(TAIL_STA,2*DVOIDSI);
+%SET$EQU(TAIL_CNT,3*DVOIDSI);
+%SET$EQU(VALUE_XX,2*DVOIDSI);
+%TEXT:COMMENT;       extern "C" void * m_hl_get_fifo( void ** );
+%TEXT:COMMENT; parameters: pointer to queue
+m_hl_get_fifo:
+%IF DEF WIN$VC;
+%IF DEF OLD01;
+        push rdi                             %TEXT:COMMENT;save register
+%CEND;
+%CEND;
+%IF DEF OLD01;
+        push rdx                             %TEXT:COMMENT;save register
+        push rcx                             %TEXT:COMMENT;save register
+        push rbx                             %TEXT:COMMENT;save register
+        push rsi                             %TEXT:COMMENT;save register
+%CEND;
+        mov  r8,rbx                          %TEXT:COMMENT; save register
+%IF DEF WIN$VC;
+        mov  r9,rdi                          %TEXT:COMMENT; save register
+        mov  r10,rsi                         %TEXT:COMMENT; save register
+        mov  rdi,rcx                         %TEXT:COMMENT; get register parameter 1
+%CEND;
+get_loop:
+%TEXT:COMMENT;     rdi pointer to head
+        mov  rdx,QWORD PTR[ rdi + HEAD_CNT ] %TEXT:COMMENT; get head counter
+        mov  rax,QWORD PTR[ rdi + HEAD_STA ] %TEXT:COMMENT; get pointer to head element
+        mov  rsi,QWORD PTR[ rdi + TAIL_CNT ] %TEXT:COMMENT; get tail counter
+        mov  rcx,QWORD PTR[ rdi + TAIL_STA ] %TEXT:COMMENT; get pointer to tail element
+        mov  rbx,QWORD PTR[ rax ]            %TEXT:COMMENT; get head->next
+        cmp  rdx,QWORD PTR[ rdi + HEAD_CNT ] %TEXT:COMMENT; head counter still the same?
+        jne  get_loop
+        cmp  rcx,rax                         %TEXT:COMMENT; do head and tail point to the same node?
+        je   p_same_node                     %TEXT:COMMENT;   yes
+                                             %TEXT:COMMENT; always copy content from second element to first element
+        mov  r11,QWORD PTR[ rbx + VALUE_XX ] %TEXT:COMMENT; get content
+        mov  rcx,rdx                         %TEXT:COMMENT; get head counter
+        inc  rcx
+        lock cmpxchg16b OWORD PTR[ rdi +  HEAD_STA ]
+        jne  get_loop                        %TEXT:COMMENT; if it did not succeed, another thread may have taken care of it
+%TEXT:COMMENT; return value rax already in right place
+        mov  QWORD PTR[ rax +  VALUE_XX ],r11 %TEXT:COMMENT; set content
+%IF DEF OLD01;
+        pop  rsi
+        pop  rbx
+        pop  rcx
+        pop  rdx
+%IF DEF WIN$VC;
+        pop  rdi                             %TEXT:COMMENT;restore register
+%CEND;
+%CEND;
+        mov  rbx,r8                          %TEXT:COMMENT; restore register
+%IF DEF WIN$VC;
+        mov  rdi,r9                          %TEXT:COMMENT; restore register
+        mov  rsi,r10                         %TEXT:COMMENT; restore register
+%CEND;
+        ret                                  %TEXT:COMMENT; return former head element
+p_same_node:                                 %TEXT:COMMENT; head and tail point to the same node
+        test rbx,rbx                         %TEXT:COMMENT; is the next element NULL
+%TEXT:COMMENT;#       je   p_empty
+        jne  p_get_fifo_correct_tail
+%IF DEF OLD01;
+        pop  rsi
+        pop  rbx
+        pop  rcx
+        pop  rdx
+%IF DEF WIN$VC;
+        pop  rdi                             %TEXT:COMMENT;restore register
+%CEND;
+%CEND;
+        mov  rbx,r8                          %TEXT:COMMENT; restore register
+%IF DEF WIN$VC;
+        mov  rdi,r9                          %TEXT:COMMENT; restore register
+        mov  rsi,r10                         %TEXT:COMMENT; restore register
+%CEND;
+        xor  rax,rax                         %TEXT:COMMENT; return NULL, queue empty
+        ret                                  %TEXT:COMMENT; return NULL
+%TEXT:COMMENT; correct tail
+p_get_fifo_correct_tail:
+        mov  rax,rcx                         %TEXT:COMMENT; get pointer to tail element
+%TEXT:COMMENT;##     mov  rdx,QWORD PTR[ rdi + TAIL_CNT ]                 %TEXT:COMMENT; get tail count
+%TEXT:COMMENT;##        mov  rdx,QWORD PTR[ rdi +  TAIL_CNT ]                 %TEXT:COMMENT; get tail count
+        mov  rdx,rsi                         %TEXT:COMMENT; get tail count
+%TEXT:COMMENT;##     mov  rbx,QWORD PTR[ rax ]                          %TEXT:COMMENT; get head->next
+        mov  rcx,rdx                         %TEXT:COMMENT; get tail counter
+        inc  rcx
+        lock cmpxchg16b OWORD PTR[ rdi + TAIL_STA ]
+        jmp  get_loop;
+%TEXT:COMMENT;
+%TEXT:COMMENT;       extern "C" void m_hl_put_fifo( void **, void * );
+%TEXT:COMMENT; parameters: pointer to the queue
+%TEXT:COMMENT;             memory for the new node
+m_hl_put_fifo:
+%IF DEF OLD01;
+%IF DEF WIN$VC;
+        push rdi                             %TEXT:COMMENT; save register
+        push rsi                             %TEXT:COMMENT; save register
+%CEND;
+        push rdx                             %TEXT:COMMENT; save register
+        push rcx                             %TEXT:COMMENT; save register
+        push rbx                             %TEXT:COMMENT; save register
+        push r8                              %TEXT:COMMENT; save register
+        push r9                              %TEXT:COMMENT; save register
+%CEND;
+        mov  r10,rbx                         %TEXT:COMMENT; save register
+%IF DEF WIN$VC;
+        mov  r11,rdi                         %TEXT:COMMENT; save register
+        push rsi                             %TEXT:COMMENT; save register
+        mov  rdi,rcx                         %TEXT:COMMENT; get register parameter 1
+        mov  rsi,rdx                         %TEXT:COMMENT; get register parameter 2
+%CEND;
+        mov  QWORD PTR[ rsi ], 0             %TEXT:COMMENT; next and counter
+put_loop:
+        mov  r9,QWORD PTR[ rdi + TAIL_CNT ]  %TEXT:COMMENT; get tail counter
+        mov  r8,QWORD PTR[ rdi + TAIL_STA ]  %TEXT:COMMENT; get pointer to tail
+        mov  rdx,QWORD PTR[ r8 + DVOIDSI ]   %TEXT:COMMENT; get next counter
+        mov  rax,QWORD PTR[ r8 ];            %TEXT:COMMENT; next element
+        cmp  r9,QWORD PTR[ rdi + TAIL_CNT ]  %TEXT:COMMENT; tail counter still the same?
+        jne  put_loop
+        test rax,rax                         %TEXT:COMMENT; is the last element?
+        jne  put_correct_tail                %TEXT:COMMENT; no, correct tail pointer
+        mov  rbx,rsi                         %TEXT:COMMENT; get new element
+        mov  rcx,rdx                         %TEXT:COMMENT; get head counter
+        inc  rcx
+        lock cmpxchg16b OWORD PTR[ r8 ]
+        jne  put_loop                        %TEXT:COMMENT; didn't work, restart
+%TEXT:COMMENT;#       jmp  put_end;                                   %TEXT:COMMENT; done here
+        %TEXT:COMMENT; Inserted new node. Now update tail pointer
+        mov  rax,r8                          %TEXT:COMMENT; get pointer to tail
+        mov  rdx,r9                          %TEXT:COMMENT; get tail counter
+%TEXT:COMMENT;#        mov  rbx,QWORD PTR[ rsi + DVOIDSI ]               %TEXT:COMMENT; get new element
+        mov  rcx,rdx                         %TEXT:COMMENT; get head counter
+        inc  rcx
+        lock cmpxchg16b OWORD PTR[ rdi + TAIL_STA ]
+%IF DEF OLD01;
+        pop  r9
+        pop  r8
+        pop  rbx
+        pop  rcx
+        pop  rdx
+%IF DEF WIN$VC;
+        pop  rsi                             %TEXT:COMMENT; restore  register
+        pop  rdi                             %TEXT:COMMENT; restore register
+%CEND;
+%CEND;
+        mov  rbx,r10                         %TEXT:COMMENT; restore register
+%IF DEF WIN$VC;
+        mov  rdi,r11                         %TEXT:COMMENT; restore register
+        pop  rsi                             %TEXT:COMMENT; restore register
+%CEND;
+        ret
+put_correct_tail:
+%IF DEF XYZ1;
+        %TEXT:COMMENT; Set tail to next
+        CMPXCHG16B_TAIL r9, r8, r10
+%CEND;
+        mov  rbx,rax                                    %TEXT:COMMENT; next element
+        mov  rax,r8                                     %TEXT:COMMENT; get pointer to tail
+        mov  rdx,r9                                     %TEXT:COMMENT; get tail counter
+        mov  rcx,rdx                                    %TEXT:COMMENT; get head counter
+        inc  rcx
+        lock cmpxchg16b OWORD PTR[ rdi + TAIL_STA ]
+        jmp put_loop                                    %TEXT:COMMENT; and restart
+%TEXT:COMMENT;       extern "C" void m_hl_check_fifo( void ** );
+%TEXT:COMMENT; parameters: pointer to the queue
+m_hl_check_fifo:
+        mov  rax,QWORD PTR[ %TEXT:REGPAR1; + HEAD_STA ]  %TEXT:COMMENT;get pointer to head element
+        cmp  rax,QWORD PTR[ %TEXT:REGPAR1; + TAIL_STA ]  %TEXT:COMMENT;compare pointer to tail element
+        je   p_empty                        %TEXT:COMMENT;  same, queue is empty
+        mov  rax,QWORD PTR [rax]            %TEXT:COMMENT;get head->next
+        ret
+p_empty:                                    %TEXT:COMMENT;queue is empty
+        xor  rax,rax                        %TEXT:COMMENT;clear return code
+        ret

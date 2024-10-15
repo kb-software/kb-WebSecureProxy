@@ -1,0 +1,65 @@
+#page-inner {
+    font-size: 0.7em;
+    display: table;
+    padding: 0 0.3em;
+}
+#page-inner > div {
+    display: table-row;
+}
+#page-inner > div > * {
+    display: table-cell;
+}
+
+#page-inner > div > span:first-child {
+    padding: calc(0.3em + 2px) 0.5em calc(0.3em + 2px) 1.2em;
+    position: relative;
+}
+
+#page-inner > div > span:nth-child(2) {
+    padding-left: 0.5em;
+}
+
+
+#page-inner button {
+    margin: 0;
+}
+
+#page-inner > div > span:first-child::before { 
+    content: "";
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-style: solid;
+    border-width: 0.55em 0 0.55em 0.9em;
+    display: block;
+    height: 0;
+    width: 0;
+    left: 0em;
+    top: 0.45em;
+    position: absolute;
+}
+
+#page-area.no-installer .installer,
+#page-area.windows .os-dependent:not(.windows), 
+#page-area.mac .os-dependent:not(.mac),
+#page-area:not(.no-cookies) .cookie-warning {
+    display: none;
+}
+
+div.installer:not(.title) {
+    font-size: 0.7em;
+    padding: 0 0.3em;
+}
+
+div.installer > div.description {
+    margin-bottom: 0.5em;
+}
+
+div.installer > div:not(.description) {
+    margin: 0.2em 0;
+}
+
+div.title {
+    border-bottom: 1px solid black;
+    margin: 1.5em 0 0.5em;
+}
+

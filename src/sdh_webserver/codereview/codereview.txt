@@ -1,0 +1,354 @@
+Codereview Documentation
+------------------------
+
+===============================================================================
+Project:    Webserver
+Developer:  Michael Jakobs
+Substitute: Tobias Hofmann
+===============================================================================
+
+Software Modifications:
+
+-------------------------------------------------------------------------------
+Date:               06-09-2012
+Changes done by:    Alexander Kretzschmar
+Codereview done by: Tobias Hofmann
+SVN-Revision:       3181
+
+Description:
+    Did changes in ds_webserver.cpp in the function m_file_proc(..) so that the
+    WebServer is responding in case that the file ends with ".pack.gz"
+
+Affected Files:
+    sdh_webserver\src\iws\ds_webserver.cpp
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               30-07-2012
+Changes done by:    Tobias Hofmann
+Codereview done by: Alexander Kretzschmar
+SVN-Revision:       3048
+
+Description:
+    WFA Flyer shouldn´t be shown by WebServer, because WFA now has his own.
+    So when URL path starts with "/WebFileAccess" than we return directly
+    (in function "m_insert_HOB_nav_init") without displaying the flyer.
+
+Affected Files:
+    sdh_webserver\src\wsg\interpreter\ds_interpret_html.cpp
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+Date:               26-06-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2829
+
+Description:
+    * Ticket[23699]: script interpreter could loose whitespaces after replacing
+      some data
+
+Affected Files:
+    include/ws_version.h
+    src/wsg/ds_interpret_script.cpp
+    src/sdh_web_server.h
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               05-06-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2704
+
+Description:
+    * While PPPTunnel startup we are using a virtual files within the directory
+      "/public/lib/hob-virtual/". If the request to this virtual files was done
+      on a connection which was former used in WSG the request was forwarded to
+      the previous webserver by HOBnet. Therefore we've added the virtual
+      directory to the HOBnet ignore list.
+
+Affected Files:
+    include/ws_version.h
+    src/isw/ds_control.cpp
+    src/sdh_web_server.h
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               05-06-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2697
+
+Description:
+    * Extended the wsp port which is inserted into jnlp files to support client
+      side proxy. With highest priority we are now trying to take the port from
+      the HTTP (1.1) header, if this is not present we fall back to our
+      configured port.
+
+Affected Files:
+    include/ws_version.h
+    src/isw/ds_webserver.cpp
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               24-05-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2642
+
+Description:
+    * Added new function "ds_pre_cma::m_has_cookie_format(...)" which checks if
+      a given string has a valid preauth cookie format.
+    * some minor performance modifications in "ds_pre_cma::m_create()"
+    * Due to the (lightly) older extension of the length of the preauth cookie
+      the simple check
+          "in_len_cookie < dsc_post_auth.m_size_sticket()"
+      didn't work correcly anymore, cause both lengths are now 32byte.
+      Therefor replaced this check with a format check for preauth cookies.
+
+Affected Files:
+    include/ws_version.h
+    src/login/ds_auth.cpp
+    src/login/ds_pre_cma.cpp
+    src/login/ds_pre_cma.h
+    src/sdh_web_server.h
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               10-05-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2582
+
+Description:
+    * Native ICA clients where using a slitly different format in the *.ica
+      file. The ica interpreter was modified to support both formats for java
+      and native ica clients.
+
+Affected Files:
+    include/ws_version.h
+    src/wsg/dsd_interpret_ica.cpp
+    src/wsg/dsd_interpret_ica.h
+    src/sdh_web_server.h
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               10-05-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2566
+
+Description:
+    * Secured include of "hob-xslunic1.h" with a define guard. Otherwise 
+      "ds_ws_gate.cpp" does not compile under UNIX systems.
+
+    * Modifed function "ds_webserver::m_handle_ica_post(...)" to take argument
+      as integer. This avoids compiler problems under linux.
+
+Affected Files:
+    src/wsg/ds_ws_gate.cpp
+    src/iws/ds_webserver.cpp
+    src/iws/ds_webserver.h
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               10-05-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2559
+
+Description:
+    * Modified the function "ds_ws_gate::m_is_ica_srv(...)" to check the role
+      of the current user for allowed webserver server lists.
+
+    * Added to callback method "ds_auth::m_get_role()" which gives access to
+      the complete "struct dsd_role" from the current logged in user.
+
+Affected Files:
+    src/wsg/ds_ws_gate.cpp
+    src/login/ds_auth.cpp
+    src/login/ds_auth.h
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               09-05-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2558
+
+Description:
+    * Added missing reset call for zlib compression class. This could cause
+      problems when calling compression multiple times.
+
+    * Moved the insertation of the default ica page infront of calculation of
+      needed length for config memory. Otherwise the heap was corrupted if no
+      configuration was done inside the xml file.
+
+Affected Files:
+    src/iws/ds_webserver.cpp
+    src/sdh_webserver.cpp
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               09-05-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2546
+
+Description:
+    * Extented the function "ds_webserver::m_handle_ica_port_post(...)" to
+      handle POST requests for the urls
+        (1) "/protected/wsg/ica-port",
+        (2) "/protected/wsg/ica-close" and
+        (3) "/protected/wsg/ica-stillalive".
+
+    * Forwarded ica-counter functions from ds_usercma class in ds_auth class.
+
+    * Removed "CreateJICAApplet" function from Webservergate Javascript function
+      list. This function was used previously to detect the start of the java
+      Citrix receiver. THe detection of citrix is now done using the
+      configurable webserver server lists (with the function ICA).
+
+    * Added two new functions
+        (1) "ds_interpret_html::m_insert_ica_decl(...)" and
+        (2) "ds_interpret_html::m_insert_ica_call(...)".
+      This function are responsible to insert the necessary data for ica inte-
+      gration to the visited website. They are called depending on the new flag
+        "ds_interpret_html::boc_insert_ica_call"
+      which is initialized in the setup function.
+      
+    * Added a new function "ds_ws_gate::m_is_ica_srv(...)" which check if a srv
+      with the given url and path is one of the configured ica servers. If so
+      the html interpreter will be informed.
+     
+    * The function "ds_control::m_check_hob_net(...)" was extended to ignore
+      urls ending with
+        (1) "/protected/wsg/ica-port",
+        (2) "/protected/wsg/ica-close" and
+        (3) "/protected/wsg/ica-stillalive"
+      to disable "HOB_net". This urls are used by the ica integration to send
+      information to webserver.
+     
+    * Removed unused preprocessor switch "USE_OLD_XERCES"
+
+    * Added new configuration for supporting webserver serverlists in a "WSP"-
+      way. Therefore we added the structures
+        (1) "struct dsd_ws_srv_entry" and
+        (2) "struct dsd_ws_srv_lst"
+      which are holding the (1) server-entry list and  the (2) server-list list
+      itself. The read-in is done in the new function "m_read_ws_srv_lst(...)".
+      The storing is done in the new function "m_write_ws_srv_lst(...)".
+     
+      Note: The webserver can handle multiple server-lists.
+            Each server-list contains multiple server-entries.
+           
+      The supported new configuration looks like:
+         <ws-server-list>
+           <name>ServerList1</name>
+           <server-entry>
+             <name>ServerEntry1</name>
+             <function>ICA</function>
+             <url>http://w2008citrix.hob.de</url>
+           </server-entry>
+           ...
+           <server-entry>
+             ...
+           </server-entry>
+         </ws-server-list>
+         ...
+         <ws-server-list>
+           ...
+         </ws-server-list>
+
+    * Added new configuration for supporting a list of citrix login webpages
+      and session webpages. Therefore we added the structure
+        "struct dsd_named_list"
+      which holds a chained list of paths.
+      This structure also replaced the older but identical
+        (1) "struct dsd_ext" and
+        (2) "struct dsd_file".
+        
+      The read-in is done in the already existing function
+      "m_read_config_from_file_section(...)". The storing is done in the new
+      function "m_write_ica_pages(...)".
+        
+      The supported new configuration looks like:
+        <ica-login>/path/to/login-1.html</ica-login>
+        ...
+        <ica-login>/path/to/login-x.html</ica-login>
+        <ica-session>/path/to/session-1.html</ica-session>
+        ...
+        <ica-session>/path/to/session-x.html</ica-session>
+
+    * Added some new variables for jnlp files
+        <%=client-cfg%>   - a zipped and base64 version of the hclient.cfg file
+        <%=client-cdb%>   - a zipped and base64 version of the hclient.cdb file
+        <%=client-pwd%>   - a zipped and base64 version of the hclient.pwd file
+        <%=hsocks-user%>  - domain\username
+        <%=wsp-url%>      - WSP hostname
+        <%=wsp-port%>     - WSP listen port
+
+Affected Files:
+    include/ws_version.h
+    src/iws/ds_webserver.cpp
+    src/iws/ds_webserver.h
+    src/login/ds_auth.cpp
+    src/login/ds_auth.h
+    src/wsg/interpreter/ds_attributes.cpp
+    src/wsg/interpreter/ds_interpret_html.cpp
+    src/wsg/interpreter/ds_interpret_html.h
+    src/wsg/ds_ws_gate.cpp
+    src/wsg/ds_ws_gate.h
+    src/ds_control.cpp
+    src/sdh_web_server.cpp
+    src/sdh_web_server.h
+
+New Files:
+    src/dsd_srv_list.h
+   
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               26-04-2012
+Changes done by:    Michael Jakobs
+Codereview done by: Tobias Hofmann
+SVN-Revision:       2407
+
+Description:
+    While going through a list of virtual links a null pointer could cause a
+    crash in "ds_control::m_check_virtual_link_rev". To avoid this a null
+    pointer check was added.
+
+Affected Files:
+    include/ws_version.h
+    src/ds_control.cpp
+    src/sdh_web_server.h
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               25-04-2012
+Changes done by:    Michael Jakobs
+Codereview done by: Tobias Hofmann
+SVN-Revision:       2386
+
+Description:
+    Added some typecasts to avaoid compiler warnings on Unix systems.
+
+Affected Files:
+    src/ds_transaction.cpp
+    src/ds_url_parser.cpp
+    src/iws/ds_webserver.cpp
+    src/wsg/ds_ws_gate.cpp
+
+-------------------------------------------------------------------------------

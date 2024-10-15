@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    
+    <link rel="stylesheet" href="admin.css"/>
+    <link rel="stylesheet" href="/public/css/buttons.css"/>
+	<script src="/public/js/cookies.js"></script>
+    <script src="admin.js"></script>
+    <script src="/public/js/datetimepicker_css.js"></script>
+    <script>
+    /*redirect to equal index.hsl sub-page, if this is the toplevel document*/
+    if ( top == self ) {
+        top.location = "index.hsl?page="+encodeURIComponent(location.pathname+location.search);
+    }
+    </script>
+    <script>
+        /**
+         * public function m_forward
+         * this function get fired, when user clicks on forward button
+        */
+        function m_forward()
+        {
+            var strl_search = dsg_form.m_get_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-word"/>' );
+            if (    str_handle == "-1"
+                 && !strl_search        ) {
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-time"/>', dsg_table.m_last_row_attr( 'time' ) );
+
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/get-backward"/>' );
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>' );
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/count-filled"/>' );
+            } else {
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-time"/>' );
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/get-backward"/>' );
+
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>', dsg_table.m_last_row_attr( 'position' ) );
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/count-filled"/>', dsg_table.m_last_row_attr( 'filled' )   );
+            }
+
+            dsg_form.m_submit( document.forms["filterForm"] );
+            return true;
+        } // end of m_forward
+
+
+        /**
+         * public function m_backward
+         * this function get fired, when user clicks on backward button
+        */
+        function m_backward()
+        {
+            var strl_search = dsg_form.m_get_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-word"/>' );
+            if (    str_handle == "-1"
+                 && !strl_search        ) {
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/get-backward"/>', '1' );
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-time"/>', dsg_table.m_get_row_attr( 1, 'time' ) );
+                
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>' );
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/count-filled"/>' );
+            } else {
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-time"/>' );
+                                
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/get-backward"/>', '1' );
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>', dsg_table.m_get_row_attr( 1, 'position' ) );
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/count-filled"/>', dsg_table.m_get_row_attr( 1, 'filled' )   );
+            }
+
+            dsg_form.m_submit( document.forms["filterForm"] );
+            return true;
+        } // end of m_backward
+        
+
+        /**
+         * public function m_search
+         * this function get fired, when user changes content of search text box
+        */
+        function m_search()
+        {
+            var strl_search = dsg_form.m_get_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-word"/>' );
+            if ( strl_search ) {
+                // disable forward and backward button:
+                dsg_form.m_disable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-backward"/>' );
+                dsg_form.m_disable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-forward"/>' );
+
+                // clear unused hidden fields:
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-time"/>' );
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/get-backward"/>' );
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>' );
+                dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/count-filled"/>' );
+            } else {
+                dsg_form.m_enable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-backward"/>' );
+                dsg_form.m_enable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-forward"/>' );
+            }
+        } // end of m_search
+
+
+        /**
+         * public function m_clear
+         * this function get fired, when user clicks clear button
+        */
+        function m_clear()
+        {
+            dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-word"/>' );
+            dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-time"/>' );
+            dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/get-backward"/>' );
+            dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>' );
+            dsg_form.m_clear_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/count-filled"/>' );
+
+            dsg_form.m_enable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-backward"/>' );
+            dsg_form.m_enable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-forward"/>' );
+            return true;
+        } // end of m_clear
+        
+        
+        function m_epoch_change( strp_id, strp_value ) {
+            // initialize some variables:
+            var dsl_element;
+            var dsl_epoch;
+            var strl_time;
+
+            switch( strp_id ) {
+                case "epoch-time":
+                    // get the readable time field:
+                    dsl_element = document.getElementById( 'readable-time' );
+                    if ( !dsl_element ) {
+                        return false;
+                    }
+                    strl_time = dsg_date.m_to_string( parseInt(strp_value,10) );
+                    dsl_element.value = strl_time;
+                    break;
+                case "readable-time":
+                    // get epoch time field:
+                    dsl_element = document.getElementById( 'epoch-time' );
+                    if ( !dsl_element ) {
+                        return false;
+                    }
+                    if ( strp_value == "" ) {
+                        dsl_element.value = ""
+                    } else {
+                        dsl_epoch = dsg_date.m_from_string( strp_value );
+                        if ( dsl_epoch < 0 ) {
+                            alert( "Invalid Date" );
+                            return false;
+                        }
+                        dsl_element.value = "" + (dsl_epoch.getTime());
+                    }
+                    break;
+                    
+                default:
+                    return false;                
+            }
+            return true;
+        } // end of m_epoch_change
+
+
+        /**
+         * public function m_autofit
+         * this function get fired, when user clicks autofit checkbox
+        */
+        function m_autofit()
+        {
+            // initialize some variables:
+            var inl_removed;
+            var dsl_rt_code;
+
+            if ( dsg_form.m_is_selected( document.forms["filterForm"], 'auto-fit' ) ) {
+                // decide where to remove the elements:
+                if ( dsg_form.m_get_value(document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/get-backward"/>') ) {
+                    /*
+                        backward is selected
+                        -> we are going back
+                        -> remove elements from top
+                    */
+                    inl_removed = dsg_table.m_row_auto_fit( true );
+                } else if ( dsg_form.m_get_value(document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/search-time"/>') ) {
+                    /*
+                        epoch is set but not backward
+                        -> we are going forward by epoch
+                        -> remove elements from back
+                    */
+                    inl_removed = dsg_table.m_row_auto_fit( false );
+                } else if ( dsg_form.m_get_value(document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>') ) {
+                    /*
+                        start is set but not backward
+                        -> we are searching forward
+                        -> remove elements from back
+                    */
+                    inl_removed = dsg_table.m_row_auto_fit( false );
+                } else {
+                    inl_removed = dsg_table.m_row_auto_fit( true );
+                }
+
+                // check for errors or nothing done:
+                if (    inl_removed == -1
+                     || inl_removed ==  0 ) {
+                    return;
+                }
+                
+                // remove return-code message:
+                dsl_rt_code = document.getElementById( "return-code" );
+                if ( dsl_rt_code ) {
+                    dsl_rt_code.parentNode.removeChild(dsl_rt_code);
+                    dsg_form.m_enable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-backward"/>' );
+                    dsg_form.m_enable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-forward"/>' );
+                }
+
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-total"/>',  dsg_table.m_count_rows() - 1 + "" );
+            }
+        } // end of m_autofit
+    </script>
+</head>
+<body id="admin-frame">
+    <!-- parse search string and get current wsp handle -->
+    <script>
+        dsg_query.m_init();
+        str_handle = dsg_query.m_get('<xsl:value-of select="wspadmin/query/select-cluster"/>');
+        if ( str_handle == "" ) {
+            str_handle = "0";
+        }
+    </script>
+
+    <!-- parse cookies -->
+    <script>
+        dsg_cookies.m_init();
+    </script>
+    
+    <div class="buttons">
+        <!-- control form = document.forms["filterForm"] -->
+        <form method="GET" accept-charset="UTF-8" id="filterForm">
+            <input type="hidden"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/select-cluster"/></xsl:attribute></input>
+            <input type="hidden" id="epoch-time"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/search-time"/></xsl:attribute></input>
+            <input type="hidden"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/get-backward"/></xsl:attribute></input>
+            <input type="hidden"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/display-from"/></xsl:attribute></input>
+            <input type="hidden"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/count-filled"/></xsl:attribute></input>
+            <!-- control buttons -->
+            <table>
+                <tr>
+                    <td>
+                        <!-- display items -->
+                        <div class="cell-left">
+                            <span>
+                            <xsl:value-of select="lang/html/admin/display-total-before"/>
+                            <input type="text" size="3" maxlength="3"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/display-total"/></xsl:attribute></input>
+                            <xsl:value-of select="lang/html/admin/display-total-behind"/>
+                            </span><span>
+                            <!-- auto fit -->
+                            <label for="auto-fit"><xsl:value-of select="lang/html/admin/auto-fit"/></label>
+                            <input type="checkbox" name="auto-fit" value="1" onclick="m_autofit();"/>
+                            </span>
+                        </div>
+                        <!-- next page button -->
+                        <div class="cell-right">
+                            <input type="button" onclick="m_backward();" class="previous"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/btn-backward"/></xsl:attribute></input>
+                            <input type="button" onclick="m_forward();" class="next"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/btn-forward"/></xsl:attribute></input>
+                            <input type="button" class="refresh" onclick="javascript:dsg_timer.m_swap();" id="timer-btn">
+                                <xsl:attribute name="value"><xsl:value-of select="lang/html/admin/reload"/></xsl:attribute>
+                            </input>
+                        </div>
+                    </td>
+                </tr>
+            <!-- search buttons -->
+                <tr>
+                    <td>
+                        <div class="cell-left">
+                            <span>
+                            <label><xsl:attribute name="for"><xsl:value-of select="wspadmin/query/search-word"/></xsl:attribute>
+                                <xsl:value-of select="lang/html/admin/btn-search"/>
+                            </label>
+                            <input type="text"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/search-word"/></xsl:attribute></input>
+                            </span><span>
+                            <label><xsl:attribute name="for"><xsl:value-of select="wspadmin/query/search-with-regexp"/></xsl:attribute>
+                                <xsl:value-of select="lang/html/admin/log/use-regexp"/>
+                            </label>
+                            <input type="checkbox" value="1"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/search-with-regexp"/></xsl:attribute></input>
+                            </span><span>
+                            <xsl:value-of select="lang/html/admin/start-at"/>
+                            <input type="text" id="readable-time" onchange="m_epoch_change(this.id, this.value);"/>
+                            <a href="javascript: NewCssCal('epoch-time','EPOCH','arrow',true,24,false)">
+                                <img src="/public/img/cal/cal.gif"/>
+                            </a>
+                            </span>
+                        </div>
+                        <div class="cell-right">
+                            <input type="submit" class="refresh"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/btn-reload"/></xsl:attribute></input>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <!-- fill form with values from url -->
+    <script>
+        dsg_query.m_fill( document.forms["filterForm"] );
+    </script>
+
+    <!-- log content itself -->
+    <div class="admin-content">
+        <table class="border" id="log">
+            <thead>
+                <tr>
+                    <th>
+                        <xsl:value-of select="lang/html/admin/log/timestamp"/>
+                    </th>
+                    <script>
+                        if ( str_handle == "-1" ) {
+                            document.write( '<th><xsl:value-of select="lang/products/wsp-short"/></th>' );
+                        }
+                    </script>
+                    <th>
+                        <xsl:value-of select="lang/html/admin/log/message"/>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <xsl:for-each select="wspadmin/logfile">
+                    <tr><xsl:attribute name="position"><xsl:value-of select="wspadmin/logfile/position"/></xsl:attribute>
+                        <xsl:attribute name="filled"><xsl:value-of select="wspadmin/logfile/filled"/></xsl:attribute>
+                        <xsl:attribute name="time"><xsl:value-of select="wspadmin/logfile/timestamp"/></xsl:attribute>
+                        <td>
+                            <script>dsg_date.m_write(<xsl:value-of select="wspadmin/logfile/timestamp"/>);</script>
+                        </td>
+                        <script>
+                            if ( str_handle == "-1" ) {
+                                document.write( '<td><xsl:value-of select="wspadmin/logfile/current-server-name"/></td>' );
+                            }
+                        </script>
+                        <td><script>document.write('<xsl:value-of select="wspadmin/logfile/message"/>'.replace(/(\W+)/g,'$1&#8203;'));</script></td>
+                    </tr>
+                </xsl:for-each>
+            </tbody>
+        </table>
+        <xsl:if test="wspadmin/return-code">
+            <script>
+                /*
+                    all results are displayed
+                     -> if we were going backward, hide back button
+                     -> if we were going forward, hide forward button
+                */
+                if ( dsg_form.m_get_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/get-backward"/>' ) == "1" ) {
+                    dsg_form.m_disable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-backward"/>' );
+                } else {
+                    dsg_form.m_disable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-forward"/>' );
+                }
+            </script>
+            <br/><span id="return-code"><xsl:value-of select="wspadmin/return-code"/></span>
+        </xsl:if>
+    </div>
+    
+    <script>
+        dsg_timer.m_init( 30, null,
+                          '<xsl:value-of select="lang/html/admin/reload-in"/>', '<xsl:value-of select="lang/html/admin/reload-sec"/>',
+                          document.getElementById('timer-btn'), '<xsl:value-of select="lang/html/admin/reload"/>' );
+        dsg_timer.m_auto_start();
+
+        dsg_table.m_init("log");
+        m_autofit();
+
+        dsg_sort.m_init( document.getElementById("log") );
+        dsg_sort.m_sort_column( 0 ); // sort by time (just for view, table is already sorted)
+
+        var strl_time = dsg_query.m_get('<xsl:value-of select="wspadmin/query/search-time"/>')
+        if ( strl_time ) {
+            m_epoch_change( 'epoch-time', strl_time );
+        }
+    </script>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

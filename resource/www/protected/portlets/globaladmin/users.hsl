@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    
+    <link rel="stylesheet" href="admin.css"/>
+	<script src="/public/js/cookies.js"></script>
+    <script src="admin.js"></script>
+    <link rel="stylesheet" href="/public/css/buttons.css"/>
+    <script>
+    /*redirect to equal index.hsl sub-page, if this is the toplevel document*/
+    if ( top == self ) {
+        top.location = "index.hsl?page="+encodeURIComponent(location.pathname+location.search);
+    }
+    </script>
+    <script>
+        function m_select_view( ds_event, in_col )
+        {
+            var dsl_target;
+
+            // get event:
+            if ( !ds_event ) {
+                ds_event = window.event;
+            }
+            
+            // get target of click:
+            dsl_target = document.all ? ds_event.srcElement : ds_event.target;
+            if (    !dsl_target
+                 || dsl_target.nodeName.toLowerCase() == "input" ) {
+                return false;
+            }
+
+            document.getElementById( 'view-' + in_col ).click();
+            return false;
+        }
+
+
+        /**
+         * public function m_forward
+         * this function get fired, when user clicks forward button
+        */
+        function m_forward()
+        {
+            var strl_last;
+            var dsl_row = dsg_table.m_last_row();
+            if ( dsl_row ) {
+                strl_last = dsl_row.getAttribute('number');
+            } else {
+                strl_last = "0";
+            }
+            
+            dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>', strl_last );
+            dsg_form.m_submit( document.forms["filterForm"] );
+        } // end of m_forward
+
+
+        /**
+         * public function m_backward
+         * this function get fired, when user clicks backward button
+        */
+        function m_backward()
+        {
+            var inl_first;
+            var strl_first;
+            var inl_display;
+            var strl_display;
+            var dsl_row = dsg_table.m_get_row( 1 );
+
+            if ( dsl_row ) {
+                strl_first = dsl_row.getAttribute('number');
+                if ( strl_first ) {
+                    inl_first = parseInt( strl_first, 10 );
+                }
+            } else {
+                strl_first = dsg_query.m_get( '<xsl:value-of select="wspadmin/query/display-from"/>' );
+                if ( strl_first ) {
+                    inl_first = parseInt( strl_first, 10 );
+                }
+            }
+
+            strl_display = dsg_form.m_get_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-total"/>' );
+            if ( strl_display ) {
+                inl_display = parseInt( strl_display, 10 );
+            }
+
+            if (    !strl_first
+                 || !inl_first
+                 || !strl_display
+                 || !inl_display
+                 || !(inl_first - inl_display > -1) ) {
+                return false;
+            }
+
+            strl_first = (inl_first - 1 - inl_display) + "";
+            dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>', strl_first );
+            dsg_form.m_submit( document.forms["filterForm"] );
+        } // end of m_backward
+
+        /**
+         * public function m_autofit
+         * this function get fired, when user clicks autofit checkbox
+        */
+        function m_autofit()
+        {
+            // initialize some variables:
+            var inl_removed;
+            var dsl_rt_code;
+
+            if ( dsg_form.m_is_selected( document.forms["filterForm"], 'auto-fit' ) ) {
+                // decide where to remove the elements:
+                if ( dsg_form.m_get_value(document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-from"/>') ) {
+                    inl_removed = dsg_table.m_row_auto_fit( false );
+                } else {
+                    inl_removed = dsg_table.m_row_auto_fit( true );
+                }
+
+                // check for errors or nothing done:
+                if (    inl_removed == -1
+                     || inl_removed ==  0 ) {
+                    return;
+                }
+                dsg_form.m_set_value( document.forms["filterForm"], '<xsl:value-of select="wspadmin/query/display-total"/>', dsg_table.m_count_rows() - 1 + "" );
+            }
+        } // end of m_autofit
+    </script>
+</head>
+<body id="admin-frame" onmousedown="dsg_context.m_hide();">
+    <!-- parse cookies and search string -->
+    <script>
+        dsg_cookies.m_init();
+        dsg_query.m_init();
+    </script>
+
+    <div class="buttons">
+        <!-- control form = document.forms["filterForm"] -->
+        <form method="GET" accept-charset="UTF-8" id="filterForm">
+            <input type="hidden"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/display-from"/></xsl:attribute></input>
+
+            <!-- control buttons -->
+            <table>
+                <tr>
+                    <td>
+                        <!-- display items -->
+                        <div class="cell-left">
+                            <span>
+                            <xsl:value-of select="lang/html/admin/display-total-before"/>
+                            <input type="text" size="3" maxlength="3"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/display-total"/></xsl:attribute></input>
+                            <xsl:value-of select="lang/html/admin/display-total-behind"/>
+                            </span><span>
+                            <!-- auto fit -->
+                            <label for="auto-fit"><xsl:value-of select="lang/html/admin/auto-fit"/></label>
+                            <input type="checkbox" name="auto-fit" value="1" onclick="m_autofit();"/>
+                            </span>
+                        </div>
+                        <!-- next page button -->
+                        <div class="cell-right">
+                            <input type="button" onclick="m_backward();" class="previous"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/btn-backward"/></xsl:attribute></input>
+                            <input type="button" onclick="m_forward();" class="next"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/btn-forward"/></xsl:attribute></input>
+                            <input type="button" class="refresh" onclick="javascript:dsg_timer.m_swap();" id="timer-btn">
+                                <xsl:attribute name="value"><xsl:value-of select="lang/html/admin/reload"/></xsl:attribute>
+                            </input>
+                        </div>
+                    </td>
+                </tr>
+            <!-- search buttons -->
+                <tr>
+                    <td>
+                        <div class="cell-left">
+                            <label><xsl:attribute name="for"><xsl:value-of select="wspadmin/query/search-user"/></xsl:attribute>
+                                <xsl:value-of select="lang/html/admin/search-txt-user"/>
+                            </label>
+                            <input type="text"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/search-user"/></xsl:attribute></input>
+                            <label><xsl:attribute name="for"><xsl:value-of select="wspadmin/query/search-usergroup"/></xsl:attribute>
+                                <xsl:value-of select="lang/html/admin/search-txt-domain"/>
+                            </label>
+                            <input type="text"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/search-usergroup"/></xsl:attribute></input>
+                        </div>
+                        <div class="cell-right">
+                            <input type="submit" class="refresh"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/btn-reload"/></xsl:attribute></input>
+                            <input type="hidden" value="1"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/search-with-wildcard"/></xsl:attribute></input>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <form method="POST" accept-charset="UTF-8">
+        <div class="admin-content">
+            <div class="admin-content-btn">
+                <input type="submit" class="userDisabled"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/users/btn-logout-user"/></xsl:attribute></input>
+            </div>
+            <table class="border" id="sort">
+                <thead>
+                    <tr oncontextmenu="return dsg_context.m_show(event,'context-view');">
+                        <th onclick="dsg_form.m_swap_select( document.forms[3] );"></th>
+                        <th><xsl:value-of select="lang/html/admin/sessions/session-number"/></th>
+                        <th><xsl:value-of select="lang/html/login/user"/></th>
+                        <th><xsl:value-of select="lang/html/login/domain"/></th>
+                        <th><xsl:value-of select="lang/html/admin/users/user-role"/></th>
+                        <th><xsl:value-of select="lang/html/admin/users/login-time"/></th>
+                        <th><xsl:value-of select="lang/html/admin/users/address"/></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <xsl:for-each select="wspadmin/users">
+                        <tr class="context-menu"><xsl:attribute name="number"><xsl:value-of select="wspadmin/users/number"/></xsl:attribute><xsl:attribute name="oncontextmenu">return dsg_context.m_show(event,'context-<xsl:value-of select="wspadmin/users/domain"/>/<xsl:value-of select="wspadmin/users/name"/>/<xsl:value-of select="wspadmin/users/session"/>')</xsl:attribute>
+                            <td>
+                                <input type="checkbox"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/logout-user"/></xsl:attribute><xsl:attribute name="value"><xsl:value-of select="wspadmin/users/domain"/>/<xsl:value-of select="wspadmin/users/name"/>/<xsl:value-of select="wspadmin/users/session"/></xsl:attribute></input>
+                            </td>
+                            <td><xsl:value-of select="wspadmin/users/number"/></td>
+                            <td><xsl:value-of select="wspadmin/users/name"/></td>
+                            <td>
+                                <xsl:value-of select="wspadmin/users/wspgroup"/>
+                                <xsl:if test="not(wspadmin/users/wspgroup)">
+                                    <xsl:value-of select="wspadmin/users/domain"/>
+                                </xsl:if>
+                            </td>
+                            <td><xsl:value-of select="wspadmin/users/role"/></td>
+                            <td>
+                                <script type="text/javascript">
+                                    dsg_date.m_write(<xsl:value-of select="wspadmin/users/logged-in"/>*1000);
+                                </script>
+                            </td>
+                            <td>
+                                <xsl:value-of select="wspadmin/users/ineta"/>
+                            </td>
+                        </tr>
+                    </xsl:for-each>
+                </tbody>
+            </table>
+            <xsl:if test="wspadmin/return-code">
+                <script>
+                    dsg_form.m_disable( document.forms["filterForm"], '<xsl:value-of select="lang/html/admin/btn-forward"/>' );                        
+                </script>
+                <br/><xsl:value-of select="wspadmin/return-code"/>
+            </xsl:if>
+        </div>
+        
+        <!-- user context menu -->
+        <xsl:for-each select="wspadmin/users">
+            <div class="context-menu"><xsl:attribute name="id">context-<xsl:value-of select="wspadmin/users/domain"/>/<xsl:value-of select="wspadmin/users/name"/>/<xsl:value-of select="wspadmin/users/session"/></xsl:attribute>
+                <div class="context-header">
+                    <xsl:value-of select="wspadmin/users/wspgroup"/><xsl:if test="not(wspadmin/users/wspgroup)"><xsl:value-of select="wspadmin/users/domain"/></xsl:if>\<xsl:value-of select="wspadmin/users/name"/>
+                </div>
+                <div class="context-line" onmousedown="dsg_context.m_link();">
+                    <xsl:attribute name="onclick">document.location.href='sessions.hsl?<xsl:if test="wspadmin/cluster &gt; 1"><xsl:value-of select="wspadmin/query/select-cluster"/>=-1&</xsl:if><xsl:value-of select="wspadmin/query/display-total"/>=50&<xsl:value-of select="wspadmin/query/search-user"/>=<xsl:value-of select="wspadmin/users/name"/>&<xsl:value-of select="wspadmin/query/search-usergroup"/>=<xsl:value-of select="wspadmin/users/wspgroup"/><xsl:if test="not(wspadmin/users/wspgroup)"><xsl:value-of select="wspadmin/users/domain"/></xsl:if>'</xsl:attribute>
+                    <div class="context-icon"></div>
+                    <div class="context-content"><xsl:value-of select="lang/html/admin/users/get-sessions"/></div>
+                </div>
+                <div class="context-line" onmousedown="dsg_context.m_link();">
+                    <xsl:attribute name="onclick">dsg_form.m_select_value(document.forms[3],'<xsl:value-of select="wspadmin/users/domain"/>/<xsl:value-of select="wspadmin/users/name"/>/<xsl:value-of select="wspadmin/users/session"/>', true);dsg_form.m_submit(document.forms[3])</xsl:attribute>
+                    <div class="context-icon"></div>
+                    <div class="context-content"><xsl:value-of select="lang/html/admin/users/logout"/></div>
+                </div>
+            </div>
+        </xsl:for-each>
+    </form>
+    <!-- fill form with values from url -->
+    <script>
+        dsg_query.m_fill( document.forms["filterForm"] );
+    </script>
+
+    <script>
+        dsg_timer.m_init( 30, null,
+                          '<xsl:value-of select="lang/html/admin/reload-in"/>', '<xsl:value-of select="lang/html/admin/reload-sec"/>',
+                          document.getElementById('timer-btn'), '<xsl:value-of select="lang/html/admin/reload"/>' );
+        dsg_timer.m_auto_start();
+        
+        dsg_table.m_init("sort");
+        dsg_table.m_col_auto_hide();
+        m_autofit();
+
+        dsg_sort.m_init( document.getElementById("sort") );
+        dsg_sort.m_sort_column( 4 ); // sort by time first
+        dsg_sort.m_sort_column( 1 ); // sort by name
+    </script>
+    
+    
+    <!-- columns context menu -->
+    <div class="context-menu" id="context-view">
+        <div class="context-header">
+            <xsl:value-of select="lang/html/admin/select-column"/>
+        </div>
+        <script>
+            var inl_col;
+            var dsl_names = dsg_table.m_get_col_names();
+            for ( inl_col = 1; inl_col < dsl_names.length; inl_col++ ) {
+                document.write( '<div class="context-line" onmousedown="dsg_context.m_link();" onclick="m_select_view(event,'+ inl_col +');">' );
+                document.write( '<div class="context-icon">' );
+                document.write( '<input id="view-' + inl_col + '" type="checkbox" onclick="dsg_table.m_swap_col(' + inl_col + ');"' );
+                if ( dsg_table.m_col_visible(inl_col) ) {
+                    document.write( ' checked="checked"' );
+                }
+                document.write( '/>' );
+                document.write( '</div>' );
+                document.write( '<div class="context-content">' );
+                document.write( dsl_names[inl_col] );
+                document.write( '</div>' );
+                document.write( '</div>' );
+            }
+        </script>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

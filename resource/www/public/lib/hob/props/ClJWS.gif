@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File HOBLink J-Term Software-->
+<jnlp
+  spec="1.0+"
+  codebase="<%=P_URLWEBSTART%>">
+  <information>
+    <title>HOBLink J-Term</title>
+    <vendor>HOB</vendor>
+    <homepage href="http://www.hobsoft.com/"/>
+    <description>HOBLink J-Term Session Manager</description>
+    <description kind="short">HOBLink J-Term</description>
+    <description kind="tooltip">HOBLink J-Term</description>
+    <description kind="on-line">HOBLink J-Term</description>
+    <icon href="images/Logo.png"/>
+    <icon kind="splash" href="images/jterm_splash.png"/>
+    <update check="always"/>
+    <offline-allowed/>
+  </information>
+  <information locale="de">
+    <homepage href="http://www.hob.de/"/>
+    <description>HOBLink J-Term Session Manager</description>
+    <description kind="short">HOBLink J-Term</description>
+    <description kind="tooltip">HOBLink J-Term</description>
+    <description kind="on-line">HOBLink J-Term</description>
+    <update check="always"/>
+  </information>
+  <security>
+      <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.4+"/>
+    <jar href="JLaunch-J2.jar"   main="true"/>
+	  <jar href="LocalVarsEdit-J2.jar" download="eager"/>
+	  <jar href="CreateUser-J2.jar"    download="eager"/>
+    <jar href="tool-J2.jar"          download="eager"/>
+    <jar href="hlset-J2.jar"         download="eager"/>
+    <jar href="HOBssl-J2.jar"    download="lazy"/>
+    <jar href="JWT-J2.jar"       download="lazy"/>
+    <jar href="JTerm-J2.jar"     download="lazy"/>
+    <jar href="FTPB-J2.jar"      download="lazy"/>
+    <jar href="JTermjws-J2.jar"  download="lazy"/>
+    <jar href="comma-J2.jar"     download="lazy"/>
+    <jar href="commb-J2.jar"     download="lazy"/>
+    <jar href="JTermconf-J2.jar" download="lazy"/>
+    <jar href="JWTconf-J2.jar"   download="lazy"/>
+    <jar href="FTPBconf-J2.jar"  download="lazy"/>
+    <jar href="symantec-J2.jar"  download="lazy"/>
+    <jar href="HOBssh-J2.jar"    download="lazy"/>
+    <jar href="trc-J2.jar"       download="lazy"/>
+    <jar href="prodkey-J2.jar"   download="lazy"/>
+  </resources>
+  <application-desc
+      main-class="hob.lau.JLaunch">
+      <argument>-s<%=P_STARTUP%></argument>
+      <argument>-l<%=P_URLWEBSTART%></argument>
+  </application-desc>
+</jnlp>

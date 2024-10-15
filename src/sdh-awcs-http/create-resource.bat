@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\sdh-awcs-http.rc-pre .\res\sdh-awcs-http.rc

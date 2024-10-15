@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{f71e64c9-d6e3-4d41-a184-48dd599b0cdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{1e3c859c-8489-422d-8b11-3c41e4a105fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{5082d4bf-d204-47c5-8a33-e0ef5461fc01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="codereview">
+      <UniqueIdentifier>{61180782-c1fa-4760-8799-5940051790e0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\hobeax.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mppccmpr.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mppccodr.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mppcdcmp.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xl-rdps-rfbc-3.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xlrdpeclip.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-bitmap-compr-1-q.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-bitmap-compr-6.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-cdr-zlib-1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-encry-1.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-hob-tab-ascii-ansi-1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-rdps-rfbc-splash-screen.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xsavl03.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xsl-stor-sdh-big.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xsrdpse1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\basemacs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\basetype.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hmd5.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hmd5subs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hmemmgr.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-bitmap-compr-1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-bitmap-compr-6.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-bitswaptab.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-cd-record-1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-cdrdef1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-encry-1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-gather_reader.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-get_rdvpn_credentials.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-pixel-converter-2.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdp_keymapping.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdpacc_clipboard.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdpacc_orderqueue.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdpacc_tahoma.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdpacc_vector.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdpserver1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-stor-sdh.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob\util\hob-tk-arch.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob\util\hob-tk-queue.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob\util\hob-tk-types.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hobeax.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hrc4cons.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hsha.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mcdrdef.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\memfunc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mppccmp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mppcdef.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mppchtab.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sdh-version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\sdh-vnc-bridge.rc-pre">
+      <Filter>res</Filter>
+    </None>
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt">
+      <Filter>codereview</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

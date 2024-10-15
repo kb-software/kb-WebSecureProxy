@@ -1,0 +1,6 @@
+<xsl:include href="/public/template_header.hsl" />
+<xsl:include href="/protected/portlets/webterm/terminal_template.hsl" />
+
+<xsl:template match="protocol">TN5250</xsl:template>
+<xsl:call-template name="webterm-page"/>
+

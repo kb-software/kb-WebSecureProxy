@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{6112bbe6-e1f0-4149-9003-6508a85ffd7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{cf0b8b15-7f97-465f-a042-79dd821e0704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="codereview">
+      <UniqueIdentifier>{d3ac643b-b2f4-4e1d-9131-9e6de2b253c9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ds_parse_der.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_spnego.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ds_parse_der.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ds_spnego.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\spnego_defines.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt">
+      <Filter>codereview</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>

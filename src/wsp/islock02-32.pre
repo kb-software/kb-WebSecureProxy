@@ -1,0 +1,131 @@
+%IF DEF UNIX$GCC;
+%DISP:precompiling islock02-32.pre for Unix GCC
+        .intel_syntax noprefix
+
+.text
+%DEFT COMMENT:#
+%DEFT METH$NAME1:.globl
+%DEFT METH$NAME2::
+%DEFT METH$NAME3:
+%CEND;
+%IF DEF WIN$VC;
+%DISP:precompiling islock02-32.pre for Windows Visual Studio
+%DEFT COMMENT:;
+%DEFT METH$NAME1:public
+%DEFT METH$NAME2: proc near
+%DEFT METH$NAME3:_
+        .386p
+%CEND;
+%TEXT:COMMENT;        islock02-32.asm
+%TEXT:COMMENT;        copyright (c) HOB electronic D-90556 Cadolzburg, Germany
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2012
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2013
+%TEXT:COMMENT;        derived from ISLOCK01.asm written 27.11.01 KB
+%TEXT:COMMENT;        27.08.12 KB
+%TEXT:COMMENT;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_inc_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_dec_1
+%IF DEF XYZ1;
+        %TEXT:METH$NAME1; _m_hl_lock_inc_2
+        %TEXT:METH$NAME1; _m_hl_lock_dec_2
+%CEND;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_dec_b
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_set_true_1
+
+%IF DEF WIN$VC;
+_TEXT   segment dword public use32 'CODE'
+_TEXT   ends
+_DATA   segment dword public use32 'DATA'
+_DATA   ends
+_BSS    segment dword public use32 'BSS'
+_BSS    ends
+_TEXT   segment dword public use32 'CODE'
+        assume cs:_TEXT
+%CEND;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_inc_1( int * )%TEXT:COMMENT;
+%TEXT:METH$NAME3;m_hl_lock_inc_1%TEXT:METH$NAME2;
+        mov  eax,DWORD PTR[ esp + 4 ]       %TEXT:COMMENT;get argument
+        lock inc DWORD PTR[ eax ]%TEXT:COMMENT;
+        ret                                 %TEXT:COMMENT;return to calling program
+%IF DEF WIN$VC;
+_m_hl_lock_inc_1 endp
+%CEND;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_dec_1( int * );
+%TEXT:METH$NAME3;m_hl_lock_dec_1%TEXT:METH$NAME2;
+        mov  eax,DWORD PTR[ esp + 4 ]       %TEXT:COMMENT;get argument
+        lock dec DWORD PTR[ eax ]
+        ret                                 %TEXT:COMMENT;return to calling program
+%IF DEF WIN$VC;
+_m_hl_lock_dec_1 endp
+%CEND;
+%IF DEF XYZ1;
+%TEXT:COMMENT;       extern "C" int m_hl_lock_inc_2( int * );
+%TEXT:COMMENT;       is routine correct? 28.11.01 KB
+_m_hl_lock_inc_2 proc near
+        push esi
+        push edx
+        push ecx
+        push ebx
+        mov  esi,DWORD PTR[ esp + 20 ]      %TEXT:COMMENT;get argument
+        mov  edx,1                          %TEXT:COMMENT;value to adjust
+        mov  ebx,DWORD PTR[ esi ]           %TEXT:COMMENT;get old number
+pinc2_20:                                   %TEXT:COMMENT;loop to adjust value
+        mov  ecx,ebx                        %TEXT:COMMENT;save value
+        add  ecx,edx                        %TEXT:COMMENT;add value to adjust
+        mov  eax,ecx                        %TEXT:COMMENT;set return value
+        xchg ecx,DWORD PTR[ esi ]           %TEXT:COMMENT;exchange operands
+        cmp  ecx,ebx                        %TEXT:COMMENT;is as expected?
+        jne  pinc2_40
+        pop  ebx
+        pop  ecx
+        pop  edx
+        pop  esi
+        ret                                 %TEXT:COMMENT;return to calling program
+pinc2_40:
+        mov  ebx,eax                        %TEXT:COMMENT;save value in storage
+        add  edx,ecx                        %TEXT:COMMENT;get value in storage
+        sub  edx,eax                        %TEXT:COMMENT;so much is different
+        jmp  pinc2_20                       %TEXT:COMMENT;try again
+_m_hl_lock_inc_2 endp
+%TEXT:COMMENT;       extern "C" int m_hl_lock_dec_2( int * );
+%TEXT:COMMENT;       routine is not yet implemented 28.11.01 KB
+_m_hl_lock_dec_2 proc near
+        mov  eax,DWORD PTR[ esp + 4 ]       %TEXT:COMMENT;get argument
+        lock inc DWORD PTR[ eax ]
+        ret                                 %TEXT:COMMENT;return to calling program
+_m_hl_lock_dec_2 endp
+%CEND;
+%TEXT:COMMENT;       extern "C" BOOL m_hl_lock_dec_b( int * )%TEXT:COMMENT;
+%TEXT:COMMENT;       return TRUE if value less than zero
+%TEXT:METH$NAME3;m_hl_lock_dec_b%TEXT:METH$NAME2;
+        push edx
+        mov  edx,DWORD PTR[ esp + 8 ]       %TEXT:COMMENT;get argument
+        xor  eax,eax                        %TEXT:COMMENT;clear return code
+        lock dec DWORD PTR[ edx ]%TEXT:COMMENT;
+        jns  pdecb_40
+        inc  eax
+pdecb_40:
+        pop  edx
+        ret                                 %TEXT:COMMENT;return to calling program
+%IF DEF WIN$VC;
+_m_hl_lock_dec_b endp
+%CEND;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_set_true_1( int * );
+%TEXT:METH$NAME3;m_hl_lock_set_true_1%TEXT:METH$NAME2;
+        push edx
+        mov  eax,DWORD PTR[ esp + 8 ]       %TEXT:COMMENT;get argument
+        xor  edx,edx                        %TEXT:COMMENT;clear register
+        inc  edx                            %TEXT:COMMENT;set to one / TRUE
+        xchg edx,DWORD PTR[ eax ]           %TEXT:COMMENT;exchange operands
+        pop  edx
+        ret                                 %TEXT:COMMENT;return to calling program
+%IF DEF WIN$VC;
+_m_hl_lock_set_true_1 endp
+%CEND;
+%IF DEF WIN$VC;
+_TEXT   ends
+        end
+%CEND;
+%IF DEF UNIX$GCC;
+        .end
+%CEND;

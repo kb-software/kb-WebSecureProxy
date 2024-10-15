@@ -1,0 +1,261 @@
+#footer button {
+    float: right;
+    margin: 5px 10px;
+    font-size: 0.8em;
+}
+
+#settings > div {
+    padding-left: 1em;
+    padding-bottom: 0.5em;
+}
+
+div.separator {
+    margin-bottom:    10px;
+    font-weight:      bold;
+    padding:          5px 2px;
+}
+
+a.selected {
+    font-weight:      bold;
+}
+
+li.indented {
+    margin: 0.3em 0 0.3em 0.8em;
+}
+
+li.title {
+    border-bottom: 1px solid;
+    margin-bottom: 1em; 
+}
+
+a.delete span, a.add span, a.up span, a.down span{
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+a.up span, a.down span{
+    width: 0.8em;
+}
+
+a.delete, a.add {
+    margin-right: 0.2em;
+}
+
+a.add {
+    margin-left: 10px;
+/*for column titles to be correctly aligned this must be absolute :(*/
+    position: absolute;
+    left: 0;
+    bottom: 0.3em;
+}
+
+/*for absolute add button to be in correct place, this must be relative*/
+thead td:first-child {
+    position: relative;
+}
+
+
+a.up, a.down {
+    font-size: 1.2em;
+    padding: 0 0.2em;
+}
+
+input.marked {
+    border:           solid red 2px;
+}
+
+.dummy, .closed, .hiddenPin{
+    display:          none;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.6em;
+}
+thead td {
+    text-align: center;
+    padding-bottom: 0.3em;
+}
+tbody td {
+    border: 1px solid black;
+    padding: 2px 10px;
+}
+tbody td > input.text, tbody td div.bm-config input.text {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+table span.default {
+    text-decoration: underline;
+    font-weight: bold;
+}
+table span.selectable, table span.default {
+    cursor: default;
+}
+table span.selectable:hover {
+    text-decoration: underline;
+}
+
+table span.favorite-icon {
+    display: inline-block;
+    height: 1.5em;
+    width: 1.5em;
+    background-size: 100% 100%;
+    margin-left: 1em;
+}
+
+
+table span.selectable:hover + span.favorite-icon,
+table span.selectable + span.favorite-icon:hover,
+table span.default + span.favorite-icon {
+    background-image: url("/public/img/favorit.png"); 
+}
+table span.default:hover + span.favorite-icon,
+table span.default + span.favorite-icon:hover {
+    background-image: url("/public/img/favorit_deselected.png"); 
+}
+
+
+.col-start {
+    width: 30%;
+}
+.col-content {
+    width: 70%;
+}
+.col-order {
+    width: 5.28em;
+}
+
+input[readonly] {
+    color: gray;
+    background-color: transparent;
+}
+
+tbody:first-of-type tr:first-child .up , 
+tbody:first-of-type tr.inherited + tr .up, /*first row after inherited row(s)*/
+tbody:first-of-type tr:last-child .down, /*last in single tbody table*/
+.reorder-groups tbody:last-of-type .down /*last handle in the first/any row of multi tbody table*/ 
+{
+   visibility: hidden; /*still requires space, but invisible*/
+}
+
+div.fill-container {
+    display: flex;
+    width:100%;
+}
+
+div.fill-container a {
+    flex: 0 0 auto;
+}
+div.fill-container input {
+    flex: 1 1 auto;
+}
+
+table select {
+    background-color: transparent;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+select.bm-portlet-switch {
+    margin-bottom: 0.3em;
+}
+
+tbody:not(:first-of-type)::before {
+    content: ' ';
+    display: block;
+    height: 10px;
+}
+
+.moved {
+    box-shadow: 0 0 3em grey;
+    transition: box-shadow 1s;
+}
+tr, tbody{
+    transition: box-shadow ease-out 5s;
+}
+
+/*
+.bookmark {
+    padding-top:     4px;
+}
+.workstation {
+    margin-bottom:  10px;
+}
+input.text {
+    width:            99%;
+}
+*/
+
+div.bm-portlet-config > div:not(.selected){
+    display: none;
+}
+
+.bm-config-wsg {
+    position: relative;
+    width: 100%;
+}
+
+.bm-config-wsg > select {
+    position: relative;
+    top: 0;
+    width: 100%;
+}
+
+.bm-config-wsg > input {
+    box-sizing: border-box;
+    width: calc(100% - 26px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*bg must be non transparent -> else text from underlaying select visible*/
+    /*background-color: white !important; -> use default gray*/
+}
+
+/*toggle switch*/
+.toggleSwitch input[type="radio"] {
+  display:none;
+}
+
+.toggleSwitch label.text {
+    white-space: nowrap;
+}
+
+input[id^="open"]:checked ~ label[for^="open"].text,
+input[id^="close"]:checked ~ label[for^="close"].text {
+  display: none;
+}
+
+label.box {
+  display: inline-block;
+  border: 1px solid;
+  width: 20px;
+  height: 1em;
+  vertical-align: bottom;
+}
+
+label.box[for^="open"] {
+  border-radius: 0.4em 0 0 0.4em;
+}
+label.box[for^="close"] {
+  border-radius: 0 0.4em 0.4em 0;
+}
+
+input[id^="open"]:not(:checked) ~ label[for^="open"].box,
+input[id^="close"]:not(:checked) ~ label[for^="close"].box {
+  background: #A5A5A5;
+}
+
+select.bm-portlet-switch option[disabled] {
+    display: none;
+}
+
+.bm-config-unknown {
+    font-size: 0.8em;
+}

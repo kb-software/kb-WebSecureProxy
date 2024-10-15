@@ -1,0 +1,137 @@
+<?xml version="1.0" ?> 
+<!--
+Example Configuration HOBPhone
+Version 1.0
+2011-08-15 Dipl. Ing. Heino Stömmer
+
+This is a skeleton configuration as required to user the HOBPhone server data hook. The
+configuration is completet, but the resulting file is not directly usable as configuration as vital
+parts are missing which are not part of the HOBPhone. Excluded parts are implied by '...'.
+-->
+<sslgate-configuration> 
+    <general> 
+        <!-- server initialization -->
+        ... 
+        <!-- Define IP to use for SIP 
+		While this can be skipped in a single-home environment, it is absolutely needed in a 
+		multi-home setup. This defines the IP address (interface) to be used for SIP messages.
+		As these contain the real address of the system it has to be specified.
+		While the WSP currently supports multiple UDP interfaces for media streams, only one 
+		interface can be user for SIP. In a switched environment this might lead to problems and
+		has to be addressed in a later release.
+		As a system might contain virtual interfaces (e. g. for virtual machines) it is generally
+		recommended to always specify the right interface.
+		-->
+        <SIP-local-ineta>192.168.0.17</SIP-local-ineta> 
+        <!-- Use port 5060 for SIP? YES|NO
+		This forces the UDP port 5060 to be used for SIP (if available). If this is set to NO, 
+		a random port is used for SIP. Be aware that some (quite rare) PBX's are not able to use
+		other ports than 5060 on the client (the WSP acts as aclient to the PBX). State of the art
+		PBXs will work with any client port.
+		-->
+        <SIP-use-UDP-port-5060>YES</SIP-use-UDP-port-5060> 
+        <!-- Define an interface usable for UDP data(internal)
+		UDP gateway (not to be mixed with UDP gate) describes bindings between a name and an
+		interface to be used for UDP media streams. This indirection makes it possible to link a 
+		specific interface with a PBX configuration as it is needed in switched network.
+		The configuration will contain the name of the gateway, while the server configuration
+		contains the ip used locally. In a cluster this makes it possibly to have different IPs all 
+		linked to the same PBX-configuration.
+		Multiple Entries are possible. The default UDP gateway can be specified in the server data
+		hook configuration.
+        -->
+		<UDP-gw-ineta>
+            <!-- The name used as reference -->
+            <name>RTP-UDP</name>
+            <!-- The ip to use -->
+            <gate-ineta>192.168.0.18</gate-ineta>
+        </UDP-gw-ineta> 
+        <!-- Define IP and port to be used for UDP data(external)
+		The UDP gate is a single port which is opened to the internet and receives encrypted and
+		indexed media data using UDP. This reduces latency compared to using the TCP/SSL connection.
+		Only one UDP gate can be defined. All data is multiplexed using a virtual channel.
+		If the SIP connection itself is not encrypted, the WSP will handle encryption so that the 
+		internet traffic is always SRTP conform encypted.
+		Of course, the port has to be opened on the outer firewall. The inner firewall has to be
+		opened for UDP traffic completely to ensure operation.
+		-->
+        <UDP-gate>
+            <!-- The IP to use; the outmost boundary of the network
+			As the system might have multiple interfaces this defines the one to use.
+			-->
+            <gate-ineta>172.22.0.140</gate-ineta>
+            <UDP-port>7000</UDP-port>
+        </UDP-gate>
+        <!-- server initialization -->
+        ... 
+    </general> 
+    <!-- server initialization -->
+    ... 
+    <!-- server list -->
+    <server-list> 
+        <name>SERVERLIST1</name> 
+        <!-- some other entries-->
+        ...
+        <!-- HOBPhone -->
+        <server-entry> 
+            <!-- a name for the entry, can be freely chosen-->
+            <name>HOBVOIP1</name> 
+            <!-- the protocol to use; defined by the WSP -->
+            <protocol>HOB-VOIP-1</protocol> 
+            <!-- the server data hook -->
+            <server-data-hook> 
+                <!-- path to the dll -->
+                <library-file-name>plugins/hobphone/sdh_hobphone2.dll</library-file-name>
+                <!-- the server data hook configuration -->
+                <configuration-section> 
+                    <!-- the default UDP gateway to use -->
+                    <use-UDP-gw-name>RTP-UDP</use-UDP-gw-name> 
+                    <!-- timeout for UDP (roundtrip time in ms; defaults to 3000) -->
+                    <UDP-gate-timeout-ms>3000</UDP-gate-timeout-ms> 
+                    <!-- intervall for keepalive packets (defaults to 10)-->
+                    <UDP-gate-keepalive-sec>10</UDP-gate-keepalive-sec> 
+                    <!-- optional: addressbook configuration
+					This place is suboptimal for the addressbook as all accounts will receive the
+					data from the same source. At a later time this should be changed to a more
+					specific location.
+					-->
+                    <addressbook> 
+                        <!-- for now only msexchange -->
+                        <type>msexchange</type>
+                        <url>https://owa.hob.de/ews/exchange.asmx</url> 
+                        <!-- only WSG|DIRECT -->
+                        <connection-mode>WSG</connection-mode> 
+                        <!-- URL of the wsg to use - defaults to the applet URL -->
+                        <gate-url>https://192.168.0.17:443</gate-url>
+                    </addressbook> 
+                </configuration-section> 
+            </server-data-hook> 
+        </server-entry> 
+    </server-list> 
+    <!-- server initialization -->
+    ... 
+    <!-- Local authentication -->
+    <user-group>
+    <!-- basic stuff -->   
+        <name>local</name> 
+        <select-server> 
+            <server-list-name>SERVERLIST1</server-list-name> 
+        </select-server> 
+        <!-- some users -->
+        <user> 
+            <!-- general user fields -->
+            <name>tesuser</name> 
+            <password>secret password</password> 
+            <desktop-port>3975</desktop-port> 
+            <wait-connect>180</wait-connect> 
+            <!-- Account configuration 
+			This was intended as fallback configuration mode. It is disabled at the moment.
+			-->
+            <SIP-fullname>Testuser</SIP-fullname> 
+            <SIP-ident>90210</SIP-ident> 
+            <SIP-shared-secret>secret for 90210</SIP-shared-secret> 
+            <SIP-display-number>Opensips 90210</SIP-display-number> 
+            <ineta-SIP-gateway>192.168.0.19</ineta-SIP-gateway> 
+        </user>
+    </user-group> 
+</sslgate-configuration> 

@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+</head>
+<body>
+    <div id="page-outer" class="wide-page logo-right">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <a id="logo"> 
+                <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+            </a>
+            <div id="page-inner">
+                <applet code="hob.ssh.kg.SSH_KeyGen.class" codebase="/public/lib" archive="HOBSSHKG-J2.jar"
+                    width="1" height="1">
+                    <param name="InstProdID"     value="hobjte">
+
+                    <param name="xxuserhome" value="C:\Program Files\myHomeDir">
+                    <param name="xxmultihome" value="Y">
+                    <param name="xxhidebtn" value="Y">
+                    <param name="image" value="images/splashHOB.gif">
+                    <param name="progressbar" value="true">
+                    <param name="boxmessage" value="Loading...">
+                    <param name="draggable" value="true">
+                    <param name="java_arguments" value="-Dsun.java2d.noddraw=true -Djnlp.packEnabled=true">
+                    <param name="username">
+                        <xsl:attribute name="value"><xsl:value-of select="user/hsocks-id"/></xsl:attribute>
+                    </param>
+                    <param name="hpw">
+                        <xsl:attribute name="value"><xsl:value-of select="user/hsocks-sticket"/></xsl:attribute>
+                    </param>
+                    <param name="rd_vpn" value="Y">
+                    <param name="language">
+                        <xsl:attribute name="value"><xsl:value-of select="user/language"/></xsl:attribute>
+                    </param>
+                    <br>
+                    <xsl:value-of select="lang/html/all/java-missing1"/>
+                    <a target="_blank">
+                        <xsl:attribute name="href"><xsl:value-of select="lang/html/all/java-missing-link"/></xsl:attribute>
+                        <xsl:value-of select="lang/html/all/java-missing2"/>
+                    </a>
+                    <xsl:value-of select="lang/html/all/java-missing3"/>
+                    <br>
+                </applet>
+            </div>
+		</div>
+        <div id="footer">
+        </div>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

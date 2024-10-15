@@ -1,0 +1,16 @@
+<xsl:include href="/public/template_header.hsl" />
+<xsl:include href="/protected/portlets/webterm/rdp_template.hsl" />
+
+<xsl:template match="rdp-init">
+<script type="text/javascript">
+	window.HOB = {};
+	HOB.webterm_mode = "DIRECT";
+	HOB.webterm_name = "<xsl:value-of select="query/webterm_name enc:js" />";
+	HOB.webterm = {};
+	HOB.webterm.is_native_pointer_enabled = true;
+	HOB.webterm.is_experimental_webgl_enabled = false;
+</script>
+</xsl:template>
+
+<xsl:call-template name="rdp-page"/>
+

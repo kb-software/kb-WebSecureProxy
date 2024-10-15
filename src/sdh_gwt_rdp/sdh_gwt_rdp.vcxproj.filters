@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{5326c02e-6f34-4cc6-826f-3f222f687482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{53c0f7b7-a343-46b9-b4dc-102d0f1af54b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{45dd81fb-11db-45b9-8007-4e0da7d13d63}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\hob-cd-record-1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdptracer1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sdh-version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-browser-data.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-datarw.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-dynvc-input.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-keyboard-handle.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-proc-mouse-keyboard.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-webterm-rdp-svc-dynvc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-ntlm-01.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdpclient2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-webterm-rdp-01.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-webterm-rdp-svc-rdpdr.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-dynvc-graphics.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-dynvc-common.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-webterm-rdp-svc-rail.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-sdh-gwt-rdp-1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-webterm-rdp-svc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdpserver1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\xs-gather-tracer.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-dynvc-disp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\sdh-webterm-rdp.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\m_proc_mouse_keyboard.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xl-webterm-rdp-01.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-cdr-mppc-4.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-cdr-mppc-5.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-cdr-zlib-1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-rdpacc-webterm-01.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xsrdptracer1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xs-ssl-1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xs-cert-1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xs-encry-1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xsrdpcl2.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xsl-ntlm-01.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\m_proc_mouse_keyboard.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-dynvc-input.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-webterm-rdp-svc-dynvc.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xsavl03.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xs-encry-2.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-webterm-rdp-svc-rdpdr.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-dynvc-graphics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-webterm-rdp-svc-rail.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-dynvc-disp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>

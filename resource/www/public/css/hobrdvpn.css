@@ -1,0 +1,471 @@
+/* basic style */
+* {
+  margin:  0;
+	padding: 0;
+}
+
+body {
+	font-family: Arial, Helvetica, Verdana, sans-serif;
+	/*! overflow-y: scroll; */
+}
+
+.clear {
+	clear: both;
+}
+
+a, .link {
+  cursor: pointer;
+  color: inherit;
+}
+
+a, .link, .clickable {
+  text-decoration: none;
+  border: 1px solid;
+  border-radius: 0.5em;
+  padding: 2px;
+}
+
+a.nolink, a:not(:hover), .link:not(:hover), .clickable:not(:hover) {
+  border-color: transparent;
+}
+
+/*custom element defs*/
+
+a[target="_blank"]::after, a.blank::after {
+  /*Unicode: TWO OVERLAPPING SQUARES */
+  content: '\29C9';
+  font-size: 14px;
+  font-weight: normal;
+  display: inline-block;
+  transform: rotate(90deg);
+  margin-left: 5px;
+}
+a[target="_blank"], a.blank {
+  /*workaround for chrome bug:
+    because the ::after element is rotated AND in a multi-column div it gets invisible
+    fix: force using hardware acceleration/other renderer for parent element
+    Deactivated as currently behaviour is reversed (nonworking with workaround)
+  */
+  /*transform: translateZ(0px);*/
+}
+
+.hobtext {
+  color: #27509B;
+}
+
+.hobtext-inverted {
+  color: white;
+  background-color: #27509B;
+}
+
+.hobtext-bordered {
+  color: #27509B;
+  border: #27509B;
+}
+
+span.msg-error {
+  color: red;
+  font-weight: bold;
+}
+
+.small {
+  font-size: 0.5em;
+}
+
+/* general layout*/
+
+html, body {
+	height: 100%;
+}
+
+body {
+	background-image: url("/public/img/hintergrund.jpg");
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+	overflow-y: auto;
+}
+
+div#page-outer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  font-size: 22px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  flex: 0 0 auto;
+  justify-content: center;
+  margin: auto;
+}
+
+div#page-outer::after {
+  content: "";
+  display: block;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 42px;
+  width: 100%;
+  background-color: #27509B;
+  border: 1px solid #A5A5A5;
+  z-index: -1;
+  flex: 0 0 auto;
+}
+
+div#page-area {
+	border: 1px #A5A5A5 solid;
+	background-color: white;
+	padding: 50px;
+	flex: 0 0 auto;
+  /*workaround for ie not respecting flex-grow without an explicit set height (introduces slight missalignment as 10em is not exact size of header+footer)*/
+  min-height: calc(75vh - 42px - 10em);
+}
+
+div#page-area:not(:last-of-type) {
+  border-bottom: none;
+  padding-bottom: 20px;
+}
+
+div#footer {
+	border: 1px #A5A5A5 solid;
+	background-color: white;
+  
+    padding: 0 50px 5px;
+    border-top: none !important;
+}
+
+
+#logo {
+	height: 2.3em;
+  min-width: 5em;
+	background-image: url("/public/img/hob-logo.svg");
+  background-repeat: no-repeat;
+	background-size: contain;
+  display: block;
+}
+
+div.logo-right #logo {
+  z-index: 5;
+  float: right;
+  margin-left: 1em;
+}
+
+a#logo {
+  border:none;
+  border-radius: 0;
+}
+
+/*drop down menu*/
+.ddmenu {
+  position: relative;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+
+.ddmenu > .openMenu {
+  cursor: default;
+}
+
+.ddmenu > .openMenu::after {
+  content: ' ';
+  display: inline-block;
+  background-image: url("/public/img/select-arrow.png");
+  background-position: right center;
+  background-size: 0.6em;
+  background-repeat: no-repeat;
+  
+  padding-left: 0.5em;
+  width: 0.6em;
+  height: 0.6em;
+}
+
+.ddmenu > ul {
+  position: absolute;
+  display: none;
+  background:  #ececec;
+  border: 1px solid #A5A5A5;
+  border-top: none;
+  padding: 0 0.5em;
+  /*align text with Heading: 
+      10px (padding header) - 3px(padding item) - 0.5em (padding list) - 1px (border list)*/
+  left: calc(6px - 0.5em); 
+  
+  list-style: none;
+}
+
+.ddmenu > ul > li:first-child {
+  margin-top: 1em;
+}
+
+
+.ddmenu.open > ul {
+  display: block;
+  z-index: 10;
+}
+
+.ddmenu * {
+  white-space: nowrap;
+}
+.ddmenu li {
+  white-space: nowrap;
+  margin: 0.5em 0;
+}
+
+
+/*page-layout 1: fixed size (login)*/
+
+div#page-outer.fixed-page {
+  width: 500px;
+  min-height: 600px;
+}
+
+div#page-outer.fixed-page.simple #page-inner{
+  padding-top: 2em;
+  font-size: 0.8em;
+}
+
+div#page-outer.fixed-page #page-area {
+  /*workaround for ie not respecting flex-grow without an explicit set height:*/
+  min-height: calc(600px - 42px - 10em);
+}
+
+/*page-layout 2: wide, fixed border (main page)*/
+
+div#page-outer.wide-page, div#page-outer.menu-page {
+  min-width: 800px;
+  width: calc(100% - 400px);
+  /*! min-height: 75%; */
+}
+
+/*page-layout 3: like wide, but with menu on the left (settings page)*/
+div#page-outer.menu-page #page-area{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  position: relative;
+}
+div#page-outer.menu-page ul#menu {
+  font-size: 0.7em;
+  flex: 0 0 auto;
+  border-right: 1px solid #A5A5A5;
+  padding-right: 1.5em;
+  white-space: nowrap;
+  list-style: none;
+  color: #27509B;
+  /* position: absolute; */
+}
+div#page-outer.menu-page #page-area > :not(#menu) {
+    flex: 1 1 auto;
+}
+
+div#page-outer.menu-page ul#menu li {
+  padding: 0.2em 0;
+}
+div#page-outer.menu-page #menu #logo {
+  margin-bottom: 1em;
+}
+/*if has footer make bottom padding smaller*/
+div#page-outer.menu-page div#page-area:not(:last-of-type) {
+  padding-bottom: 10px;
+}
+/*page-layout 4: fullscreen (webterm)*/
+/*page-layout 5: empty (no header/footer) -> webterm rdp switching from wide to fullscreen*/
+div#page-outer.fullscreen-page, div#page-outer.empty-page {
+  width: 100% !important;
+  height: 100%;
+}
+div#page-outer.fullscreen-page div#page-area, 
+div#page-outer.fullscreen-page div#page-area::after {
+  border-left: none;
+  border-right: none;
+}
+div#page-outer.fullscreen-page div#page-area,
+div#page-outer.empty-page div#page-area {
+  padding: 0 10px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative; /*required for webterm height calculation*/
+}
+div#page-outer.fullscreen-page div#content {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+div#page-outer.empty-page > :not(#page-area) {
+    display: none;
+}
+
+div#page-outer.empty-page div#page-area {
+    border: none;
+}
+
+div#page-outer.empty-page::after {
+    display: none;
+}
+
+/*layouts for smaller displays*/
+
+/*if to small -> fill full width 
+  (different limits for layouts, same effect)*/
+@media (max-width: 850px) {
+  div#page-outer.wide-page, div#page-outer.menu-page {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  div#page-area.wide-page, div#page-outer.wide-page::after,
+  div#page-area.menu-page, div#page-outer.menu-page::after {
+    border-left: none;
+    border-right: none;
+  }
+}
+@media (max-width: 650px) {
+  div#page-outer.fixed-page {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  div#page-area.fixed-page, div#page-outer.fixed-page::after {
+    border-left: none;
+    border-right: none;
+  }
+}
+
+@media (max-width: 400px) {
+  div#page-outer {
+    font-size: 16px;
+  }
+  div#page-area, div#footer {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+@media (max-height: 700px) {
+  /*if to small -> fill full height*/
+  div#page-outer.fixed-page {
+    /*scroll only page area*/
+    min-height: 0 !important;
+    height: 100%;
+  }
+  div#page-outer.wide-page, div#page-outer.menu-page {
+    /*scroll whole page*/
+    min-height: 100%;
+  }
+  div#page-outer::after {
+    bottom: 0;
+    border-bottom: none;
+  }
+  .fixed-page div#page-area {
+    overflow-y: auto;
+  }
+}
+
+@media (max-height: 550px) {
+  div#page-area {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+@media (max-height: 440px) {
+  div#page-outer {
+    font-size: 16px;
+  }
+}
+
+/*navbar layout and style*/
+
+div#navigation {
+  padding-top: 0.5em;
+  margin-bottom: 5px;
+  float: right;
+  font-size: 0.7em;
+}
+
+div#navigation > div {
+  display: inline-block;
+  padding: 2px 10px;
+}
+
+div#navigation select {
+  background-color: transparent;
+}
+
+div#navigation * {
+  font-size: inherit;
+}
+
+/*custom form styling*/
+
+a:focus, input:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 4px 2px #27509B;
+}
+
+input, select, button {
+  border: none;
+  background-color: #efefef;
+  padding: 3px;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button, input[type=submit], input[type=button] {
+  color: white;
+  background-color: #27509B;
+  border: 2px solid #27509B;
+  padding: 0.3em 1.2em;
+  margin: 2px 5px;
+  -webkit-transition: background-color 0.25s;
+  -o-transition: background-color 0.25s;
+  transition: background-color 0.25s;
+}
+button:hover, input[type=submit]:hover, input[type=button]:hover {
+  color: #27509B;
+  background-color: rgba(39, 80, 155, 0.2);
+}
+
+
+select {
+  padding-right: 1.6em !important;
+  background-image: url("/public/img/select-arrow.png");
+  background-position: calc(100% - 0.5em) center;
+  background-size: 0.6em;
+  background-repeat: no-repeat;
+
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+}
+
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+select::-ms-expand {
+  display:none;
+}
+
+::-moz-focus-inner {
+	border: none;
+}

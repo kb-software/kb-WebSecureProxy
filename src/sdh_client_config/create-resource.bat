@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\sdh-client-config.rc-pre .\res\sdh-client-config.rc

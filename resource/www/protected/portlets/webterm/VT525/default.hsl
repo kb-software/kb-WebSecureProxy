@@ -1,0 +1,5 @@
+<xsl:include href="/public/template_header.hsl" />
+<xsl:include href="/protected/portlets/webterm/terminal_template.hsl" />
+
+<xsl:template match="protocol">VT525</xsl:template>
+<xsl:call-template name="webterm-page"/>

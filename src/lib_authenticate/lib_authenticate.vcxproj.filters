@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{a45f55dd-4697-4b63-a0cb-088d8badb84e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{3430edfd-efc9-4e15-9efd-79e817e0639c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="codereview">
+      <UniqueIdentifier>{b2cb3434-6b42-4b26-a670-b29f9d308db8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ds_authenticate.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ds_bookmark.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ds_ck_mgmt.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ds_cookie.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ds_jwtsa_conf.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ds_portlet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ds_usercma.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ds_workstation.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dsd_wfa_bmark.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ds_authenticate.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_bookmark.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_ck_mgmt.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_cookie.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_jwtsa_conf.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_portlet.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_usercma.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_workstation.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dsd_wfa_bmark.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xsavl03.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt">
+      <Filter>codereview</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>

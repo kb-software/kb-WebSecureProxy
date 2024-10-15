@@ -1,0 +1,48 @@
+Codereview Documentation
+------------------------
+
+===============================================================================
+Project:    WebSecureProxy Helper Library
+Developer:  Michael Jakobs
+Substitute: Alexander Kretzschmar, Tobias Hofmann
+===============================================================================
+
+Software Modifications:
+
+-------------------------------------------------------------------------------
+Date:               27-11-2014
+Changes done by:    David Davila
+Codereview done by: 
+SVN-Revision:       6077
+
+Description:
+    time_t ds_wsp_helper::m_cb_get_time()
+    Ticket 34385: Although t_ret is (currently) a 64bit variable, it is being truncated
+    to 32bit inside the DEF_AUX_GET_TIME in WSP, and then implicitly casted to 64bit in RDVPN.
+    This leads to an unsafe behaviour of the higher 4 bytes of t_ret, and therefore,
+    this can lead to an incorrect evaluation of its value by the callers of this function.
+    Casting it to an unsigned integer corrects the value of the higher 4 bytes by
+    putting all of them to 0.
+
+Affected Files:
+   src/ds_wsp_helper.cpp
+
+-------------------------------------------------------------------------------
+Date:               04-05-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2485
+
+Description:
+   Added some easy to use
+        "ds_wsp_helper::m_open_file",
+        "ds_wsp_helper::m_read_file" and
+        "ds_wsp_helper::m_close_file"
+   functions. They aren't the fastest way to open and read a file using WSP
+   (because there allocation a filehandle object), but they make if easier.
+
+Affected Files:
+   include/ds_wsp_helper.h
+   src/ds_wsp_helper.cpp
+
+-------------------------------------------------------------------------------

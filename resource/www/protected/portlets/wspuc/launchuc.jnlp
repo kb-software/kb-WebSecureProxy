@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File HOB WSP Universal Client -->
+<jnlp spec="1.0+" codebase="https://<%=url_jnlp%>/public/lib">
+    <information>
+        <title>HOB WSP Universal Client</title>
+        <vendor>HOB</vendor>
+        <homepage href="http://www.hobsoft.com/"/>
+        <description>HOB WSP Universal Client</description>
+        <description kind="short">Universal Client</description>
+        <description kind="tooltip">HOB WSP Universal Client</description>
+        <description kind="on-line">HOB WSP Universal Client</description>
+        <icon href="/public/img/icon_wspuc.png"/>
+        <offline-allowed/>
+        <update check="always"/> 
+        <shortcut>
+            <desktop/>
+            <menu/>
+        </shortcut>
+    </information>
+    <information locale="de">
+        <homepage href="http://www.hob.de/"/>
+        <description>HOB WSP Universal Client</description>
+        <description kind="short">Universal Client</description>
+        <description kind="tooltip">HOB WSP Universal Client</description>
+        <description kind="on-line">HOB WSP Universal Client</description>
+        <update check="always"/>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <resources>
+        <j2se version="1.6+"/>
+        <property name="jnlp.packEnabled" value="true"/>
+        <jar href="wspuc-J2.jar" />
+        <jar href="HOBssl-J2.jar" download="lazy" />
+    </resources>
+    <applet-desc main-class="hob.proxy.wspuc.ProxyServer" height="600" width="800" name="WSP_Universal_Client" 
+        documentbase="https://<%=url_jnlp%>/public/lib">
+        <param name="startup" value="startup.xml" />
+        <param name="xxwebprofile" value="Y" />
+        <param name="xxuserhome" value="C:\Program Files\myHomeDir" />
+        <param name="xxmultihome" value="Y" />
+        <param name="ProxyType" value="2" />
+        <param name="image" value="images/splashHOB.gif" />
+        <param name="progressbar" value="true" />
+        <param name="boxmessage"    value="Please wait for the HOB WSP UC to load before launching your client application..." />
+        <param name="draggable" value="true" />
+        <param name="username"       value="<%=hsocks-user%>" />
+        <param name="hpw"      value="<%=hsocks-sticket%>" />
+        <param name="rd_vpn" value="Y" />
+        <param name="language" value="<%=language%>" />
+    </applet-desc>
+</jnlp>

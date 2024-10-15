@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{9f7109e3-c30a-4151-a4ec-4bcf24f8f7ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{968698b4-50ed-4adb-a0c6-c8780aac85b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\config">
+      <UniqueIdentifier>{308d6399-d168-441b-b5f4-47b2552491c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="codereview">
+      <UniqueIdentifier>{96db39e1-361c-4013-b0e2-97da5ed40e58}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\hob-libwspat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\at_resources.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_wspat.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hobwspat.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config\ds_at_config.h">
+      <Filter>src\config</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ds_wspat.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hobwspat.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config\ds_at_config.cpp">
+      <Filter>src\config</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt">
+      <Filter>codereview</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>

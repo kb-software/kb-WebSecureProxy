@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File JWT SA-->
+<jnlp 
+	spec="1.0+"
+	codebase="https://<%=url_jnlp%>/public/lib/"> 
+  
+  <information>
+    <title>HOBLink JWT</title>
+    <vendor>HOB</vendor>
+    <homepage href="http://www.hobsoft.com/"/>
+    <description>HOBLink JWT</description>
+    <description kind="short">HOBLink JWT</description>
+    <description kind="tooltip">HOBLink JWT</description>
+    <description kind="on-line">HOBLink JWT</description>
+   	<icon href="images/Logo.png"/>
+   	<icon kind="splash" href="images/Desktop.png"/>
+    <update check="always"/>
+  </information> 
+ 
+  <security>
+      <all-permissions/>
+  </security>
+  
+  <resources>
+    <j2se version="1.6+"/>
+	 <jar href="lib/jwtjws.jar"/>
+  </resources>
+  <application-desc main-class="hob.hltc.awt.JWTSingleSession">
+	  <argument>--singleprocess=off</argument>
+	  <argument>--webstart-base-url=https://<%=url_jnlp%>/public/lib</argument>
+      <argument>--wspsocks-config-url=https://<%=url_jnlp%>/client-config/v1/<%=jwtsa_config_url%></argument>
+      <argument>--wspsocks-config-name=<%=jwtsa_config%></argument>
+      <argument>--help-base=https://<%=url_jnlp%>/public/lib</argument>
+	  <argument>--https-protocols=auto</argument>
+	  <argument>--license-path=.</argument>
+	  <argument>--product-id=102</argument>
+      <argument>--webstart-cache-files=false</argument>
+      <argument>WSP_USERID=<%=hsocks-user%></argument>
+      <argument>WSP_PASSWORD=<%=password%></argument>
+      <argument>HLSECCDB=<%=client-cdb%></argument>
+      <argument>HLSECCFG=<%=client-cfg%></argument>
+      <argument>HLSECPWD=<%=client-pwd%></argument>
+	  <argument>HLSECENTROPY=<%=high-entropy%></argument>
+  </application-desc>
+</jnlp>

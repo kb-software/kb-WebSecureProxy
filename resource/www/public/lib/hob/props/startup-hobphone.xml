@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<ctype>1</ctype>
+<sm_views_mode>1</sm_views_mode>
+<sm_viewbtn_visible>N</sm_viewbtn_visible>
+<conf_wsp>3</conf_wsp>
+<autologon>Y</autologon>
+<http_proxy_state>1</http_proxy_state>
+<filetype>1</filetype>
+<sysuser>N</sysuser>
+<use_javaSSL>Y</use_javaSSL>
+<SrvListWSP></SrvListWSP></root>

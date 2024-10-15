@@ -1,0 +1,115 @@
+.has-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+option[class^="icon-"], option[class*=" icon-"] {
+    background-position: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding-left: 2.2em;
+    height: 2em;
+    padding-top: 0.7em;
+}
+
+span[class^="icon-"], span[class*=" icon-"] {
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.has-icon span[class^="icon-"], .has-icon span[class*=" icon-"] {
+    flex: 0 0 auto;
+    display: block; /*Fix IE 10 bug: inline elements not treated as flex items*/
+}
+
+span.small[class^="icon-"], span.small[class*=" icon-"],
+span.small-icon[class^="icon-"], span.small-icon[class*=" icon-"] {
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    background-size: contain;
+}
+
+.leading-icon[class^="icon-"], .leading-icon[class*=" icon-"] {
+    padding-left: 1em;
+    background-position: 0.2em center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+.icon-bookmark {
+    background-image: url("/public/img/icon_bookmark.png");
+}
+
+.icon-globaladmin {
+    background-image: url("/public/img/icon_settings.png");
+}
+.icon-admin {
+    background-image: url("/public/img/icon_eaadmin.png");
+}
+.icon-webterm {
+    background-image: url("/public/img/icon_webterm.png");
+}
+.icon-jwtsa {
+    background-image: url("/public/img/icon_jwtsa.png");
+}
+.icon-jterm {
+    background-image: url("/public/img/icon_jterm.png");
+}
+.icon-wsg {
+    background-image: url("/public/img/icon_wsg.png");
+}
+.icon-wfa {
+    background-image: url("/public/img/icon_wfa.png");
+}
+.icon-wspuc {
+    background-image: url("/public/img/icon_wspuc.png");
+}
+.icon-hobphone {
+    background-image: url("/public/img/icon_hobphone.png");
+}
+.icon-ppptunnel {
+    background-image: url("/public/img/icon_ppptunnel.png");
+}
+.icon-settings {
+    background-image: url("/public/img/icon_settings.png");
+}
+.icon-mobile {
+    background-image: url("/public/img/icon_mobile.png");
+}
+
+.icon-installer {
+    background-image: url("/public/img/arrow_down.png");
+}
+.icon-uninstaller {
+    background-image: url("/public/img/arrow_down_grey.png");
+}
+
+.icon-up {
+    background-image: url("/public/img/arrow_up.png");
+}
+.icon-down {
+    background-image: url("/public/img/arrow_down.png");
+}
+.icon-add {
+    background-image: url("/public/img/add.png");
+}
+.icon-delete {
+    background-image: url("/public/img/delete.png");
+}
+
+.icon-close {
+    background-image: url("/public/img/close.png");
+}
+.icon-configure {
+    background-image: url("/public/img/zahnrad.png");
+}
+.icon-goto {
+    background-image: url("/public/img/dreieck_inverted.png");
+}
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    <script src="js/versionRDVPN.js"></script>
+</head>
+<body>
+    <div id="page-outer" class="fixed-page simple">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <a id="logo"> 
+                <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+            </a>
+            <div id="page-inner" style="font-size: 0.6em;">
+                <script>document.write("HOB RD VPN "+versionMaj+"."+versionMin+" "+versionEdition+" - Build "+versionRel+"."+versionBld);</script><br/>
+                <br/>
+                <xsl:value-of select="rdvpn/wsp/name"/><br/>
+                <br/>
+                <xsl:value-of select="rdvpn/iws/name"/> - <xsl:value-of select="rdvpn/iws/version"/> - <xsl:value-of select="rdvpn/iws/architecture"/> - <xsl:value-of select="rdvpn/iws/date"/><br/>
+                <br/>
+                <xsl:value-of select="rdvpn/iws/host"/>
+            </div>
+		</div>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

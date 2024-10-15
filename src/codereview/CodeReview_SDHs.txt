@@ -1,0 +1,912 @@
+/************************************************************************/
+/* This file is for documenting every CodeReview in the ServerDataHooks */
+/************************************************************************/
+
+
+Code Review report:
+-------------------
+Date: 20.06.2013
+File commit date: 20.06.2013
+Revision: 4860
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket: 28664
+Comment:
+2.3.0.58 webserver
+removed the "you are already logged in" page
+if user can login multiple times: create a new session
+if user can login once: kick out the previous session
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 18.06.2013
+File commit date: 18.06.2013
+Revision: 4836
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket: -
+Comment:
+2.3.0.57 webserver
+removed sdh_precomp and all dependencies
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 13.06.2013
+File commit date: 13.06.2013
+Revision: 4809 
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket: -
+Comment:
+from now on, one can set <login-cookie> in a role section of the wsp.xml.
+the valid values are YES and NO.
+if it is yes, we are setting two cookies with username and domain after successful authentication.
+these contain the keywords:
+HOBWSP_USER
+HOBWSP_DOMAIN
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 13.06.2013
+File1: ds_wspat.cpp
+Path1: /trunk/wsp-sdhs/src/lib_hobwspat2/src/
+File commit date: 13.06.2013
+Revision: 4806
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket: -
+Comment:
+wspat now checks for special protocols after the configuration is passed to WSP
+before it couldnt find the correct configuration to validate
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 10.06.2013
+File1: ds_xsl.cpp
+Path1: /trunk/wsp-sdhs/src/sdh_webserver/src/portal/
+File commit date: 10.06.2013
+Revision: 4784
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket: 23623
+Comment:
+fixed that homebutton works when cookies are disabled
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 10.06.2013
+File1: ds_at_config.h
+Path1: /trunk/wsp-sdhs/src/lib_hobwspat2/src/config/
+File commit date: 10.06.2013
+Revision: 4781
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket:
+Comment:
+2096 KB = 2 MB didnt work for 32 bit version. caused stack trouble.
+decreased to 768 KB...
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 07.06.2013
+File1: ds_at_config.h
+Path1: /trunk/wsp-sdhs/src/lib_hobwspat2/src/config/
+File commit date: 07.06.2013
+Revision: 4780
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket: 28479
+Comment:
+Increased the buffer for role configurations from 16 KB to 2096 KB = 2 MB
+Mr. Grimm wrote that KIRU will have 1500 roles, with an average of 1400 Bytes per role.
+There is written that Mr. Brandstätter doesnt want dynamic memory allocation, so this
+is the only way i can fix it right now. If a customer has only 5 roles, then a lot
+of memory is unused...
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 06.06.2013
+File1: sdh-client-config.cpp
+Path1: /trunk/wsp-sdhs/src/sdh_client_config/src/
+File commit date: 06.06.2013
+Revision: 4777
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Ticket: -
+Comment:
+worked out every authentication method and get the correct credentials for every case now
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 28.05.2013
+File1: ds_authenticate.cpp
+Path1: /trunk/wsp-sdhs/lib_authenticate/src/ds_authenticate.cpp
+File commit date: 29.05.2013
+Revision: 4758
+Modified by: Mr. A. Kretzschmar
+Reviewed by: Mr. T. Hofmann
+Ticket: 26182
+Comment:
+Users were created twice after a kickout. The second time the DN of the logged user
+was not found with the help of the ldap call, because the select server callback
+function was not called.
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 28.05.2013
+File1: sdh-client-config.cpp
+Path1: /trunk/wsp-sdhs/src/sdh_client_config/src/
+File commit date: 28.05.2013
+Revision: 4750
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket: 28279
+Comment:
+Fixed that a configuration couldnt be fetched from an external LDAP
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 27.05.2013
+File1: ds_webserver.cpp
+Path1: /trunk/wsp-sdhs/src/sdh_webserver/src/iws/
+File2: ds_auth.cpp
+Path2: /trunk/wsp-sdhs/src/sdh_webserver/src/login/
+File commit date: 27.05.2013
+Revision: 4741
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Ticket: 27478
+Comment:
+JWT SA didnt work when cookies were disabled. The problem was, that the role
+couldnt be found and therefore the processing was cancelled and no answer was
+sent back.
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 24.05.2013
+File1: ds_ck_mgmt.cpp
+Path1: /trunk/wsp-sdhs/src/lib_authenticate/src/
+File commit date: 24.05.2013
+Revision: 4723
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket: 27979
+Comment:	there is a loop in the webserver dll, in function get_mgmt_parents.
+			i couldnt reproduce the loop, but it seems that the outer loop function
+			was causing the problems. the only thing which could lead to a loop was,
+			that some entries in the mgmt table are referring to themselves
+			( for example: a -> b -> c -> a ... )
+			i now implemented a check that counts the amount of entries available and
+			break the loop if this is reached. it does NOT solve the problem that
+			the chain is referring wrong, but this can only be solved if the problem
+			can be reproduced in a debug version.
+
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 17.05.2013
+File1: sdh-client-config.cpp
+Path1: /trunk/wsp-sdhs/src/sdh_client_config/src/
+File commit date: 17.05.2013
+Revision: 4674
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Ticket: 28105
+Comment:	client configuration now provides group configurations correctly
+			removed second call of KB HTTP parser
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 16.05.2013
+File1: ds_authenticate.h
+File2: ds_authenticate.cpp
+Path1: /trunk/wsp-sdhs/src/lib_authenticate/src/
+File commit date: 16.05.2013
+Revision: 4662
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Ticket: 28105
+Comment: jwtsa is now properly searching in groups
+         
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 14.05.2013
+File1: ds_usercma.cpp
+Path1: /trunk/wsp-sdhs/src/lib_authenticate/src/
+File commit date: 14.05.2013
+Revision: 4651
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Ticket: 27981 ( Identical session tickets are generated during authentication )
+Comment: the function DEF_AUX_RANDOM_BASE64 is generating duplicate entries when called
+very often in a short time. Fixed by using DEF_AUX_SECURE_RANDOM.
+         
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 14.05.2013
+File1: ds_authenticate.cpp
+Path1: /trunk/wsp-sdhs/src/lib_authenticate/src/
+File commit date: 14.05.2013
+Revision: 4650
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Ticket: -
+Comment: Changed a memory freeing function because WSP wasnt able to free the memory
+         
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 03.05.2013
+File1: ds_wspat.cpp
+Path1: /trunk/wsp-sdhs/src/lib_hobwspat2/src/
+File commit date: 03.05.2013
+Revision: 4616
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Ticket: 23596 ( WSP socks mode issues )
+Comment: Fixed that WSP starts to loop when malformed pakets arrive
+         Fixed that login was possible even with unknown protocol
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 17.04.2013
+File1: ds_control.cpp
+Path1: /trunk/wsp-sdhs/src/sdh_webserver/src/
+File2: sdh_web_server.cpp
+Path2: /trunk/wsp-sdhs/src/sdh_webserver/src/
+File commit date: 17.04.2013
+Revision: 4551
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Ticket: 27144; gleichzeitiger Zugriff von extern und intern nicht mögich [AVANCE ICT GROEP NEDERLAND]
+Comment: Removed http-hostname completly, its unnecessary in the webserver
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 17.04.2013
+File1: /trunk/wsp-sdhs/src/lib_authenticate/src/
+Path1: ds_authenticate.cpp
+File2: /trunk/wsp-sdhs/src/sdh_webserver/src/login/
+Path2: ds_auth.cpp
+File commit date: 17.04.2013
+Revision: 4547
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Ticket 27145
+Fixed: loged in users are not shown when user is not allowed to login multiple times
+Fixed: loged in users are not shown when a user can login multiple times, and he logs in a second time with Radius Challenge
+Fixed: buttons at kickout screen are not working when user logs in a second time with radius challenge
+Note: i didnt have a test environment, couldnt check all conditions
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 17.04.2013
+File1: /trunk/wsp-sdhs/src/lib_authenticate/src/
+Path1: ds_authenticate.cpp
+File2: /trunk/wsp-sdhs/src/sdh_webserver/src/login/
+Path2: ds_auth.cpp
+File commit date: 17.04.2013
+Revision: 4547
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Ticket 27145
+Fixed: loged in users are not shown when user is not allowed to login multiple times
+Fixed: loged in users are not shown when a user can login multiple times, and he logs in a second time with Radius Challenge
+Fixed: buttons at kickout screen are not working when user logs in a second time with radius challenge
+Note: i didnt have a test environment, couldnt check all conditions
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 17.04.2013
+File1: /trunk/wsp-sdhs/src/lib_authenticate/src/
+Path1: ds_authenticate.cpp
+File2: /trunk/wsp-sdhs/src/sdh_webserver/src/login/
+Path2: ds_auth.cpp
+File commit date: 17.04.2013
+Revision: 4547
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Ticket 27145
+Fixed: loged in users are not shown when user is not allowed to login multiple times
+Fixed: loged in users are not shown when a user can login multiple times, and he logs in a second time with Radius Challenge
+Fixed: buttons at kickout screen are not working when user logs in a second time with radius challenge
+Note: i didnt have a test environment, couldnt check all conditions
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 17.04.2013
+File1: ds_usercma.h
+Path1: /trunk/wsp-sdhs/src/lib_authenticate/include/
+File2: ds_usercma.cpp
+Path2: /trunk/wsp-sdhs/src/lib_authenticate/src/
+File commit date: 17.04.2013
+Revision: 4544
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Changed the function which stores the password in the CMA like KB wanted.
+Used unicode library to convert to UTF8
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 17.04.2013
+File: sdh-client-config.cpp
+Path: /trunk/wsp-sdhs/src/sdh_client_config/
+File commit date: 17.04.2013
+Revision: 4543
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Added the entry point for the configuration function, so that the WSP doesnt complain
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 10.04.2013
+File: ds_usercma.h, ds_usercma.cpp
+Path: /trunk/wsp-sdhs/src/lib_authenticate/include/
+Path: /trunk/wsp-sdhs/src/lib_authenticate/src/
+File commit date: 10.04.2013
+Revision: 4484
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Added new CMA "pwcma". It stores the encrypted password of the user.
+Added also helper functions ( open, close, resize )
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 10.04.2013
+File: ds_wsp_helper.h, ds_wsp_helper.cpp
+Path: /trunk/wsp-sdhs/src/lib_wsphelper/src
+Path: /trunk/wsp-sdhs/src/lib_wsphelper/include
+File commit date: 10.04.2013
+Revision: 4484
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Added new function to call DEF_AUX_SECURE_RANDOM in the WSP
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 03.04.2013
+File: socks5.h, socks5.cpp, socks5_entry.h, socks5_entry.cpp, tab850_819.cpp, xlt-sdh-socks5-1.cpp
+Path: /trunk/wsp-sdhs/src/sdh_socks/src
+File commit date: 03.04.2013
+Revision: 4434
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Removed old socks5 sources: socks5.h, socks5.cpp, socks5_entry.h, socks5_entry.cpp, tab850_819.cpp
+Added new file: xlt-sdh-socks5-1.cpp
+Changed some project settings to make the new socks module work
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 03.04.2013
+File: hob-stor-sdh.h
+Path: /trunk/wsp-sdhs/src/lib_sdhstorage/include/hob-stor-sdh.h
+File commit date: 03.04.2013
+Revision: 4429
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Changed header file to the official one, previously there was
+a modified one commited by mistake. Under special circumstances, this could
+lead to a crash.
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 19.03.2013
+File: sdh-client-config.cpp
+Path: /trunk/wsp-sdhs/src/sdh_client_config/src/sdh-client-config.cpp
+File commit date: 19.03.2013
+Revision: 4382
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Removed a invalid strlen method on a non-zero-terminated string,
+which could overwrite foreign memory and lead to a crash in rare
+cases.
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 28.02.2013
+File: sdh-client-config.cpp
+Path: /trunk/wsp-sdhs/src/sdh_client_config/src/sdh-client-config.cpp
+File commit date: 28.02.2013
+Revision: 4182
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: Moved "*inp_len = adsl_value->imc_len_val;" so that this call is not done 
+when Ldap server is not reachable.
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 15.02.2013
+File: ds_authenticate.cpp
+Path: /trunk/wsp-sdhs/src/lib_authenticate/src/
+File commit date: 15.02.2013
+Revision: 4174
+Modified by: Mr. T. Hofmann
+Reviewed by: A. Kretzschmar
+Comment: fixed a crash whith empty authentication data. Replaced dsc_auth with dsc_conf, 
+so there is no null pointer anymore when doing a different authentication then internal ldap.
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_ws_gate.cpp
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/wsg/
+File commit date: 10.01.2013
+Revision: 3910, 3866
+Modified by: Mr. A. Kretzschmar
+Reviewed by: R. Camilleri
+Comment: Added a new function to improve server entry matching against a server list
+Review status: pass
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_pre_cma.cpp
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/login/
+File commit date: 10.01.2013
+Revision: 3910
+Modified by: Mr. A. Kretzschmar
+Reviewed by: R. Camilleri
+Comment: Changed cookie generation function call m_cb_get_random to m_cb_get_random_cookie
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: sdh-client-config.cpp
+Path: /trunk/wsp-sdhs/src/sdh_client_config/src/
+File commit date: 10.01.2013
+Revision: 3909, 3690, 3682, 3581, 3579, 3514, 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Added functions to search for the requested configuration in the LDAP,
+changed memory management to work with linux,
+removed printf functions and also old functions which are not used anymore,
+fixed bugs and added error codes
+Review status: pass
+
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: xsl-http-header-1.cpp
+Path: /trunk/wsp-sdhs/src/sdh_client_config/src/
+File commit date: 07.01.2013
+Revision: 3890
+Modified by: Mr. A. Kretzschmar
+Reviewed by: R. Camilleri
+Comment: Defined BOOL for UNIX
+Review status: pass
+
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_authenticate.cpp
+Path: /trunk/wsp-sdhs/src/lib_authenticate/src/
+File commit date: 22.11.2012
+Revision: 3682, 3643, 3504, 3499, 3439
+Modified by: Mr. A. Kretzschmar, Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Fixed Customer Ticket 25055 by A. Kretzschmar,
+T. Hofmann added functions to get inherited configurations from Group and Tree Memberships out of the LDAP
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_authenticate.h
+Path: /trunk/wsp-sdhs/src/lib_authenticate/include/
+File commit date: 22.11.2012
+Revision: 3682, 3647, 3504
+Modified by: Mr. A. Kretzschmar, Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Added function to delete attributes and added functions to find and read JWT SA configurations
+Review status: pass
+
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_webserver.cpp
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/iws/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Changed webserver to handle JWT SA requests and build the welcome page with the according configuration names
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_transaction.cpp
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Passed the new parameter to function m_do_work calls
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: hob-xslvalues.h
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/portal/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Added JWT SA Subgroups for configuration parsing
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_xsl.cpp
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/portal/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Modified parsing of XSL to recognize JWT SA parameters
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_usercma.cpp
+Path: /trunk/wsp-sdhs/src/lib_authenticate/src/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Implemented functions and changed the way the length of the common memory area is calculated
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_usercma.h
+Path: /trunk/wsp-sdhs/src/lib_authenticate/include/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Added three new function declarations to set/get information about the JWT SA configuration in the common memory area
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: xszlib01.cpp
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Enhanced Adler algorithm
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_zlib.h
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Added a new function parameter to the m_do_work function definition
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_auth.cpp
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/login/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Implemented two new functions to deal with the JWT Standalone configurations
+Review status: pass
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: sdh_web_server.h
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Added JWT Standalone configuration parameter and path to JNLP file
+Review status: pass
+
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_auth.h
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/login/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Added two new function declarations to deal with the JWT Standalone configurations
+Review status: pass
+
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_zlib.cpp
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Added EndOfFile Parameter to function m_do_work()
+Review status: pass
+
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: ds_webserver.h
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/iws/
+File commit date: 09.11.2012
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: sdh_web_server.h
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/
+File commit date: 25.01.2013
+Revision: 4024
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: Added recognition for high-entropy flag in the user role
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: ds_webserver.cpp
+Path: /trunk/wsp-sdhs/src/sdh_webserver/src/iws/
+File commit date: 25.01.2013
+Revision: 4023
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: Implemented exchange of the high-entropy placeholder to the actual value from the xml
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: hob-http-header-1.h
+Path: /trunk/wsp-sdhs/src/sdh_client_config/include/
+File commit date: 25.01.2013
+Revision: 4022
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: got new version of the HOB internal HTTP parser, to parse HOB-Cookie value in HTTP Header
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: sdh-client-config.cpp
+Path: /trunk/wsp-sdhs/src/sdh_client_config/src/
+File commit date: 25.01.2013
+Revision: 4022
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: Added check for high-entropy
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: xsl-http-header-1.cpp
+Path: /trunk/wsp-sdhs/src/sdh_client_config/src/
+File commit date: 25.01.2013
+Revision: 4022
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: got new version of the HOB internal HTTP parser, to parse HOB-Cookie value in HTTP Header
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: xsl-http-header-1.cpp
+Path: /trunk/wsp-sdhs/src/lib_hobwspat2/src/
+File commit date: 25.01.2013
+Revision: 4021
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: got new version of the HOB internal HTTP parser, to parse HOB-Cookie value in HTTP Header
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: ds_at_config.h
+Path: /trunk/wsp-sdhs/src/lib_hobwspat2/src/config/
+File commit date: 25.01.2013
+Revision: 4021
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: Extended user role with the high entropy flag
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: ds_at_config.cpp
+Path: /trunk/wsp-sdhs/src/lib_hobwspat2/src/config/
+File commit date: 25.01.2013
+Revision: 4021
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: Extended user role with the high entropy flag
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: hob-http-header-1.h
+Path: /trunk/wsp-sdhs/src/lib_hobwspat2/src/
+File commit date: 25.01.2013
+Revision: 4021
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: got new version of the HOB internal HTTP parser, to parse HOB-Cookie value in HTTP Header
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: hobwspat.cpp
+Path: /trunk/wsp-sdhs/src/lib_hobwspat2/src/
+File commit date: 25.01.2013
+Revision: 4021
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: Extended role with the high entropy flag
+Review status: pass
+
+Code Review report:
+-------------------
+Date: 25.01.2013
+File: hob-libwspat.h
+Path: /trunk/wsp-sdhs/src/lib_hobwspat2/include/
+File commit date: 25.01.2013
+Revision: 4021
+Modified by: hofmants
+Reviewed by: R. Camilleri
+Comment: Extended role with the high entropy flag
+Review status: pass
+
+
+
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Added a new function declaration to handle the JWT Standalone request
+Review status: pass
+
+
+
+
+Code Review report:
+-------------------
+Date: 21.01.2013
+File: hob-get_rdvpn_credentials.hpp
+Path: /trunk/wsp-sdhs/src/sdh_client_config/include/
+File commit date: 09.11.2012
+Revision: 3499
+Modified by: Mr. T. Hofmann
+Reviewed by: R. Camilleri
+Comment: Deleted this source because the functions were not needed any longer
+Review status: pass
+
+
+
+Please note:
+============
+This file includes changes made from the last release of HOB RD VPN 2.1-9.3436, November 12, 2012
+This version was tested in our test department and there was also no complaints from our customers
+about critical security issues, so we assume this version is stable and safe.

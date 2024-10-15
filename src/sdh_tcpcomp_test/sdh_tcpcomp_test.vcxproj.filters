@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{977bd250-59d3-4cc5-8893-421a7dea7a4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{c1cd46d6-f124-40ad-9377-0ceb6bc5c15e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{5ab8b736-9e7b-4756-a493-4108146d651d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\config">
+      <UniqueIdentifier>{bdb3f9b0-444d-40d2-a935-ce6d4aa508b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ds_tcpcomp_test.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sdh_tcpcomp_test.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config\ds_config.cpp">
+      <Filter>src\config</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ds_tcpcomp_test.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdh_tcpcomp_test.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config\ds_config.h">
+      <Filter>src\config</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    <script>
+        function confirmExit(){
+            return '<xsl:value-of select="lang/html/welcome/wspuc/leavepage"/>';
+        }
+        window.onbeforeunload = confirmExit;
+    </script>
+</head>
+<body>
+    <div id="page-outer" class="wide-page logo-right">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <a id="logo"> 
+                <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+            </a>
+            <div id="page-inner">
+                <object type="application/x-java-applet" width="100%" height="300">
+                    <param name="codebase" value="/public/lib" />
+                    <param name="code" value="hob.proxy.wspuc.ProxyServer.class" />
+                    <param name="archive" value="wspuc-J2.jar" />
+                    <param name="java_arguments" value="-Djnlp.packEnabled=true">
+                    <param name="startup" value="startup.xml">
+                    <param name="xxwebprofile" value="Y">
+                    <param name="xxuserhome" value="C:\Program Files\myHomeDir">
+                    <param name="xxmultihome" value="Y">
+                    <param name="ProxyType" value="2">
+                    <param name="image" value="images/splashHOB.gif">
+                    <param name="progressbar" value="true">
+                    <param name="boxmessage">
+                        <xsl:attribute name="value"><xsl:value-of select="lang/html/welcome/wspuc/waitmsg"/></xsl:attribute>
+                    </param>
+                    <param name="draggable" value="true">
+                    <param name="username">
+                        <xsl:attribute name="value"><xsl:value-of select="user/hsocks-id"/></xsl:attribute>
+                    </param>
+                    <param name="hpw">
+                        <xsl:attribute name="value"><xsl:value-of select="user/hsocks-sticket"/></xsl:attribute>
+                    </param>
+                    <param name="rd_vpn" value="Y">
+                    <param name="language">
+                        <xsl:attribute name="value"><xsl:value-of select="user/language"/></xsl:attribute>
+                    </param>
+                    <br>
+                    <a target="_blank" href="/protected/portlets/wspuc/launchuc.jnlp">
+                        Start WSP Universal Client (Java Web Start)
+                    </a>
+                    <!-- <xsl:value-of select="lang/html/all/need-java"/> -->
+                    <br>
+                </object>
+            </div>
+		</div>
+        <div id="footer">
+        </div>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

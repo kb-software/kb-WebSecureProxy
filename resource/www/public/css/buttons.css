@@ -1,0 +1,35 @@
+input.next {
+	background-image: url(../img/actions/right_weiss.png);
+}
+
+input.previous {
+	background-image: url(../img/actions/left_weiss.png);
+}
+
+input.userDisabled {
+	background-image: url(../img/actions/disconnect-user_weiss.png);
+}
+
+input.refresh {
+	background-image: url(../img/actions/refresh_weiss.png);
+}
+
+input.userTrace {
+	background-image: url(../img/actions/refresh_weiss.png);
+}
+
+
+input.next, input.previous, input.userDisabled, input.refresh,input.wsptrace-updateconf  {
+
+  font-size: 11px;
+	padding-left: 1.7em;
+	background-repeat: no-repeat;
+	background-position: 0.2em center;
+	text-align: center;
+	background-size: 1.5em 1.5em;
+}
+
+input.wsptrace-updateconf
+{
+	padding:               2px 4px 2px 4px;	
+}

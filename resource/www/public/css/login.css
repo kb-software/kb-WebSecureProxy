@@ -1,0 +1,92 @@
+div.logincontent {
+  padding-top: 50px;
+}
+
+div.logincontent div.welcome {
+  font-weight: bold;
+}
+
+div.logincontent div.messages {
+  font-size: 0.7em;  
+}
+
+form#access {
+  padding-top: 50px;
+}
+
+.table {
+  display: table;
+  width: 100%;
+  position: relative;
+  font-size: 0.9em;
+}
+.buttons {
+  width: 100%;
+  font-size: 0.9em;
+}
+
+.table > div {
+  display: table-row;
+}
+
+.table > div > * {
+  display: table-cell;
+  margin: 10px 0;
+}
+
+form#access.login label,
+form#access.password label {
+  padding-right: 1.5em;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+
+form#access input:not([type="submit"]),
+form#access button:not([type="submit"]),
+form#access select {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 0.8em;
+}
+
+form#access input[type="submit"],
+form#access button[type="submit"] {
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+form#access.kickout label {
+  font-size: 0.8em;
+}
+.sessions {
+  padding-bottom: 1em;
+}
+.sessions label:first-of-type {
+  white-space: nowrap;
+}
+.sessions > div > * {
+  padding: 0 0.4em;
+  vertical-align: middle;
+}
+
+@media (max-height: 550px) {
+  div.logincontent, div.logincontent .login {
+    padding-top: 20px;
+  }
+}
+@media (max-height: 440px) {
+  div.logincontent, div.logincontent .login {
+    padding-top: 5px;
+  }
+  form#access input[type="submit"],
+  form#access button[type="submit"] {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  form#access > div > * {
+    margin: 2px 0;
+  }
+}

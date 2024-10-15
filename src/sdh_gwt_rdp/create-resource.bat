@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\sdh-webterm-rdp.rc-pre .\res\sdh-webterm-rdp.rc

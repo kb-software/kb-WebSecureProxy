@@ -1,0 +1,70 @@
+;/*++
+;
+;   Copyright (c) 2011 HOB GmbH & Co. KG
+;
+;	Module Name: HOBTUN.INF
+;
+;	Description: INF file to install the HOB TUN Virtual device driver
+;
+;--*/
+[Version]
+Signature   = "$Windows NT$"
+Class       = Net
+ClassGUID   = {4D36E972-E325-11CE-BFC1-08002BE10318}
+Provider    = %Hob%
+DriverVer   = 29/11/2011, 6.0.6.0
+CatalogFile.ntx86   = hobtun.cat
+CatalogFile.ntamd64 = hobtun.cat
+CatalogFile.ntia64  = hobtun.cat
+
+[SourceDisksNames]
+1 = "HOBTUN"
+
+[SourceDisksFiles]
+hobtun.sys = 1
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[Manufacturer]
+%Hob% = HOB,ntx86,ntamd64
+
+[ControlFlags]
+;ExcludeFromSelect = *
+
+[HOB]
+%Description% = hobtun.ndi, hobtun
+
+[HOB.ntx86]
+%Description% = hobtun.ndi, hobtun
+
+[HOB.ntamd64]
+%Description% = hobtun.ndi, hobtun
+
+[hobtun.ndi]
+Characteristics    = 0x01
+CopyFiles          = @hobtun.sys
+AddReg             = hobtun.ndi.reg
+*IfType 	   = 6			; IF_TYPE_ETHERNET_CSMACD
+*MediaType 	   = 0 			; NdisMedium802_3
+*PhysicalMediaType = 14			; NdisPhysicalMediumUnspecified
+
+[hobtun.ndi.Services]
+AddService = hobtun, 0x02, hobtun.Service
+
+[hobtun.ndi.reg]
+HKR, Ndi,               Service,    0, "hobtun"
+HKR, Ndi\Interfaces,    UpperRange, 0, "ndis5"
+HKR, Ndi\Interfaces,    LowerRange, 0, "ethernet"
+
+[hobtun.Service]
+DisplayName     =   %Description%
+ServiceType     =   0x01 ; SERVICE_KERNEL_DRIVER
+StartType       =   0x03 ; SERVICE_DEMAND_START
+ErrorControl    =   0x01 ; SERVICE_ERROR_NORMAL
+ServiceBinary   =   %12%\hobtun.sys
+LoadOrderGroup  =   NDIS
+
+[Strings]
+Hob = "HOB GmbH & Co. KG"
+Description = "HOB NDIS5 TUN Adapter"

@@ -1,0 +1,49 @@
+@CHARSET "ISO-8859-1";
+
+body {
+    background-color: #63c4f8;
+    margin:             0;
+    padding:            0;
+	overflow:hidden;
+}
+
+h1 {
+    margin: 0px;
+    font-family: Arial,Helvetica,Helv,sans-serif;
+    text-shadow:
+      0 1px 0 #000,
+      0 -1px 0 #000,
+      1px 0 0 #000,
+      -1px 0 0 #000;
+}
+
+h2 {
+	margin: 0px;
+}
+
+canvas {
+	background-color: #ffffff
+}
+
+.gwt-Button{
+    /* border: none; */
+}
+
+@media print {
+	body * {
+		visibility: hidden;
+	}
+	
+	#section-to-print, #section-to-print * {
+		visibility: visible;
+		width:100%;
+		margin: 0; 
+		padding: 0;
+	}
+	
+	#section-to-print {
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+}

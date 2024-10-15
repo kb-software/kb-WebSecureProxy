@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\sdh_ea_ldap.rc-pre .\res\sdh_ea_ldap.rc

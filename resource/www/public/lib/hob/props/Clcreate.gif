@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="description" content="HOBLink J-Term, Windows Terminal Server, Terminal Emulation, 3270, 5250, Unix" />
+<meta name="keywords" content="software, Windows, Terminal Server, /390, /370, host, 3270, 5250, VT525, Siemens, 97801, 9750, BS2000, HP700, Java, GDDM, emulation" />
+<title>HOBLink J-Term</title>
+<link rel="stylesheet" href="i/css/hobrdvpn.css" />
+<link rel="SHORTCUT ICON" href="favicon.ico" />
+
+<script src="i/js/write.js"></script>
+<script>
+var msgHead="Session Manager";
+var msgEx="If you leave or close this page, the Session Manager will be closed. "+
+          "If you want to keep browsing the web without closing the session, open another browser window.";
+var msgCx="Right click is disabled. If you refresh or change the content of this window,"+
+          " the Session Manager will be closed.";
+
+function loadres_title()
+{
+   loadres();
+   if(lang.indexOf("de") != -1)
+   {
+   msgHead="Session Manager";
+   msgEx="Wenn Sie diese Seite schließen oder verlassen, wird Ihr Session Manager beendet. "+
+         "Um weiter im Web zu surfen, ohne den Session Manager zu beenden, "+
+         "öffnen Sie ein neues Browser-Fenster.";
+   msgCx="Der rechte Maus-Klick ist nicht verfügbar. Wenn Sie die Seite neu laden"+
+         " wird Ihr Session Manager beendet.";
+   }
+   else
+   if(lang.indexOf("fr") != -1)
+   {
+   msgHead="Gestionnaire de sessions";
+   msgEx="Si vous quittez ou fermez cette page, votre Gestionnaire de sessions vont être interrompues."+
+         " Si vous voulez naviguer dans le web, ouvrez une autre fenêtre de navigateur.";
+   msgCx="La touche droite de la souris est désactivée. Si vous quittez ou fermez cette page,"+
+         " votre Gestionnaire de sessions vont être interrompues.";
+   }
+   else
+   if(lang.indexOf("es") != -1)
+   {
+   msgHead="Administrador de Sesión";
+   msgEx="Si usted cierra o deja esta página, el Administrador de Sesión será cerrada."+
+         " Si usted desea navegar en la Web, abra otra ventana del navegador.";
+   msgCx="El clic derecho está deshabilitado. Si usted actualiza o cambia el contenido de esta"+
+         " ventana, el Administrador de Sesión será cerrada.";
+   }
+   else
+   if(lang.indexOf("zh") != -1)
+   {
+   msgHead="会话管理";
+   msgEx="如果您关闭此网页, 会话管理将随之关闭。"+
+         "如果您想继续浏览网站而不关闭会话, 请选 '取消' 然后打开另一个浏览器窗口。";
+   msgCx="右键不可鄙用。如果您重新载入或改变窗口内容,"+
+         "会话管理将自行关闭。";
+   }
+}
+window.onbeforeunload=confirmExit;
+function confirmExit(){
+return msgEx;
+}
+</script>
+</head>
+
+<body>
+<script>
+loadres_title();
+write_header();
+write_corner();
+write_title(msgHead);
+if(navigator.javaEnabled() == false){
+   document.write(applet_alt);
+}
+</script>
+      <applet
+         code="hob.lau.JLaunch.class"
+         codebase="lib"
+         archive="JLaunch-J2.jar, LocalVarsEdit-J2.jar"
+         width="1" height="1">
+         <param name="startup" value="startup.xml">
+         <param name="xxwebprofile" value="Y">
+         <param name="xxuserhome" value="C:\Program Files\myHomeDir">
+         <param name="xxmultihome" value="Y">
+         <param name="xxhidebtn" value="Y">
+
+         <param name="image"         value="images/splashHOB.gif">
+         <param name="progressbar"   value="true">
+         <param name="boxmessage"    value="Loading...">
+         <param name="draggable"     value="true">
+         <param name="java_arguments" value="-Dsun.java2d.noddraw=true">
+		 <param name="java_arguments" value="-Xmx128M">
+         <param name="<%=STARTSESSIONPARAM%>" value="<%=STARTSESSIONVALUE%>">
+
+<br>Your browser is not capable of running HOB Software. Please <a href="install/java/java_download.html" target="_blank">install</a> the Java Runtime Environment before refreshing this page.<br>
+      </applet>
+<script>
+write_footer();
+</script>
+</body>
+</html>

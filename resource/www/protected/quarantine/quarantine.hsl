@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    <link rel="stylesheet" href="/public/css/slide.css"/>
+    
+    <script src="/public/js/slide.js"></script>
+    <script src="js/quarantine.js"></script>
+    <xsl:call-template name="redirect-embedded"/>
+
+    <script>
+        /**
+        * function m_callback
+        * java applet will call this function when done
+        */
+        function m_callback()
+        {
+            //-------------------------------------
+            // stop progress bar:
+            //-------------------------------------
+            m_progress_stop();
+
+            //-------------------------------------
+            // start ajax polling:
+            //-------------------------------------
+            m_init();
+            m_request();
+
+            //-------------------------------------
+            // set absolute poll end:
+            //-------------------------------------
+            window.setTimeout("m_end_requests()", in_req_tmmax);
+
+            //-------------------------------------
+            // show polling progress bar:
+            //-------------------------------------
+            m_show_poll('<xsl:value-of select="lang/html/quarantine/waiting"/>');
+        }
+    </script>
+</head>
+<body>
+    <div id="page-outer" class="wide-page logo-right">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <a id="logo"> 
+                <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+            </a>
+            <div id="page-inner">
+                <applet code="hob.tools.ca.CtrlApplet.class" codebase="/public/lib" archive="ca-J2.jar"
+                    width="1px" height="1px">
+                    <param name="java_arguments" value="-Djnlp.packEnabled=true">
+                    <param name="xxuserhome" value="C:\Program Files\myHomeDir">
+                    <param name="xxmultihome" value="Y">
+                    <param name="version" value="1.5">
+                    <param name="jnlp_to_start" value="compliance_check.jnlp">
+                    <param name="wait_for_jnlp" value="120">
+                    <param name="props_file" value="compliance-check-tmp.props">
+                    <param name="DEBUG" value="NO">
+                    <param name="CLOSE_BROWSER_WINDOW" value="NO">
+                    <param name="image" value="images/splashHOB.gif">
+                    <param name="progressbar" value="true">
+                    <param name="boxmessage" value="Loading...">
+                    <param name="version_webserver">
+                        <xsl:attribute name="value"><xsl:value-of select="rdvpn/iws/version"/></xsl:attribute>
+                    </param>
+                    <param name="jnlp_name">
+                        <xsl:attribute name="value"><xsl:value-of select="lang/html/quarantine/compliance-check"/></xsl:attribute>
+                    </param>
+                <param name="language">
+                    <xsl:attribute name="value"><xsl:value-of select="user/language"/></xsl:attribute>
+                </param>
+                    <br>
+                    <xsl:value-of select="lang/html/all/java-missing1"/>
+                    <a target="_blank">
+                        <xsl:attribute name="href"><xsl:value-of select="lang/html/all/java-missing-link"/></xsl:attribute>
+                        <xsl:value-of select="lang/html/all/java-missing2"/>
+                    </a>
+                    <xsl:value-of select="lang/html/all/java-missing3"/>
+                    <br>
+                </applet>
+            </div>
+		</div>
+    </div>
+    <script>
+        if( navigator.javaEnabled() == true ) {
+           m_progress_start('<xsl:value-of select="lang/html/quarantine/loading"/>');
+        }
+    </script>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

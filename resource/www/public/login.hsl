@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="/public/css/login.css"/>
+    <xsl:call-template name="redirect-embedded"/>
+</head>
+<body>
+    <div id="page-outer" class="fixed-page">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <div id="logo"></div>
+            <div id="page-inner" class="logincontent">
+                <!-- content -->
+                <!-- message welcome -->
+                <div class="welcome"><xsl:value-of select="lang/html/all/welcome"/>.</div>
+                <div class="messages">
+                <xsl:if test="not(login/kick-out)">
+                    <xsl:if test="login/change-password">
+                        <xsl:value-of select="lang/html/login/change-password"/><br/><br/>
+                    </xsl:if>
+                    <xsl:if test="user/message">
+                        <span class="msg-error"><xsl:value-of select="user/message"/></span><br/>
+                    </xsl:if>
+                    <!-- message kicked-out -->
+                    <xsl:if test="login/kicked-out and login/kicked-out/login-time">
+                        <b><xsl:value-of select="lang/html/login/kicked-out"/></b>
+                        <xsl:value-of select="lang/html/login/address"/>: <xsl:value-of select="login/kicked-out/ineta"/><br/>
+                        <xsl:value-of select="lang/html/login/login-time"/>:
+                        <script>
+                            m_write_date(<xsl:value-of select="login/kicked-out/login-time"/>*1000);
+                        </script>                        
+                        <br/>
+                    </xsl:if>
+                </xsl:if>
+				
+                <xsl:if test="not(login/change-password) and not(login/kick-out)">
+                    <!-- message login -->
+                    <xsl:value-of select="lang/html/login/sign-in"/><br/>
+                </xsl:if>
+				
+				<xsl:if test="login/kick-out">
+					<!-- message kick-out -->
+					<b><xsl:value-of select="lang/html/login/kick-out"/></b>
+				</xsl:if>
+
+                </div>
+                
+                <!-- login form -->
+                <form method="post" accept-charset="UTF-8" name="access" id="access" autocomplete="off">	
+					
+					<xsl:if test="not(login/kick-out) and not(login/change-password)">
+                        <xsl:attribute name="class">login table</xsl:attribute>
+                        <xsl:if test="not(login/challenge)">
+                            <xsl:if test="login/domain &gt; 1">
+                                <!-- domains -->
+                                <div>
+                                    <label><xsl:attribute name="for"><xsl:value-of select="login/query/userdomain"/></xsl:attribute><xsl:value-of select="lang/html/login/domain"/></label>
+                                    <xsl:if test="login/domain/display-list">
+                                        <select size="1"><xsl:attribute name="name"><xsl:value-of select="login/query/userdomain"/></xsl:attribute>
+                                            <xsl:for-each select="login/domain">
+                                                <xsl:if test="not(login/domain/is-selected)">
+                                                    <option><xsl:attribute name="value"><xsl:value-of select="login/domain/name"/></xsl:attribute><xsl:value-of select="login/domain/name"/></option>
+                                                </xsl:if>
+                                                <xsl:if test="login/domain/is-selected">
+                                                    <option selected="selected"><xsl:attribute name="value"><xsl:value-of select="login/domain/name"/></xsl:attribute><xsl:value-of select="login/domain/name"/></option>
+                                                </xsl:if>
+                                            </xsl:for-each>
+                                        </select>
+                                    </xsl:if>
+                                    <xsl:if test="not(login/domain/display-list)">
+                                        <input type="text" size="30" maxlength="80"><xsl:attribute name="name"><xsl:value-of select="login/query/userdomain"/></xsl:attribute></input>
+                                    </xsl:if>
+                                </div>
+                            </xsl:if>
+                            <xsl:if test="login/show-homepage-checkbox">
+                                <!-- force site-after-auth checkbox -->
+                                <div>
+                                    <label>
+                                        <input type="checkbox"><xsl:attribute name="name"><xsl:value-of select="login/query/show-homepage"/></xsl:attribute></input>
+                                    </label>
+                                    <xsl:value-of select="lang/html/login/force-homepage"/>
+                                </div>
+                            </xsl:if>
+                            <!-- username -->
+                            <div>
+                                <label><xsl:attribute name="for"><xsl:value-of select="login/query/username"/></xsl:attribute><xsl:value-of select="lang/html/login/user"/></label>
+                                <input type="text" size="30" maxlength="80"><xsl:attribute name="name"><xsl:value-of select="login/query/username"/></xsl:attribute><xsl:attribute name="value"><xsl:value-of select="login/cookie-user"/></xsl:attribute></input>
+                            </div>
+                        </xsl:if>
+                        <!-- password / challenge -->
+                        <div>
+                            <label><xsl:attribute name="for"><xsl:value-of select="login/query/password"/></xsl:attribute><xsl:value-of select="lang/html/login/password"/></label>
+                            <input type="password" size="30" maxlength="80"><xsl:attribute name="name"><xsl:value-of select="login/query/password"/></xsl:attribute></input>
+                        </div>
+                        <!-- login button -->
+                        <div>
+                            <label><xsl:attribute name="for"><xsl:value-of select="lang/html/login/btn-login"/></xsl:attribute>&nbsp;</label>
+                            <button type="submit" name="action" value="login"><xsl:value-of select="lang/html/login/btn-login"/></button>
+                        </div>
+                    </xsl:if>
+					
+					<xsl:if test="login/kick-out">
+                        <xsl:attribute name="class">kickout</xsl:attribute>
+						<!-- kick-out table to select -->
+                        <div class="table sessions">
+                            <div class="head">
+                                <span>&nbsp;</span>
+                                <span><xsl:value-of select="lang/html/login/login-time"/></span>
+                                <span><xsl:value-of select="lang/html/login/address"/></span>
+                            </div>
+                            <xsl:for-each select="login/kick-out">
+                                <div>
+                                    <input type="radio" name="session"><xsl:attribute name="value"><xsl:value-of select="login/kick-out/session"/></xsl:attribute></input>
+                                    <label for="session"><xsl:value-of select="login/kick-out/login-time"/></label>
+                                    <label for="session"><xsl:value-of select="login/kick-out/ineta"/></label>
+                                </div>
+                            </xsl:for-each>
+                        </div>
+                        <script>
+                            var dsl_form = document.forms.access;
+                            if ( dsl_form[0] ) {
+                                dsl_form[0].checked = true;
+                            }
+                            var dsl_sessions = document.querySelectorAll('.sessions div:not(.head)');
+                            for(var inl1=0; inl1 < dsl_sessions.length; inl1++) {
+                                dsl_sessions[inl1].children[1].textContent = m_format_date(parseInt(dsl_sessions[inl1].children[1].textContent)*1000);
+                                dsl_sessions[inl1].children[2].textContent = m_insert_wordbreak_spaces(dsl_sessions[inl1].children[2].textContent, /[:.]/g);
+                            }
+                        </script>
+						<!-- kickout buttons -->
+                        <div class="buttons">
+                            <button type="submit" name="action" value="kick-out"><xsl:value-of select="lang/html/login/btn-kick-out"/></button>
+                            <xsl:if test="login/kick-out/multiple-allowed">
+                                <button type="submit" name="action" value="create-new"><xsl:value-of select="lang/html/login/btn-create-new"/></button>
+                            </xsl:if>
+                            <button type="submit" name="action" value="cancel"><xsl:value-of select="lang/html/login/btn-cancel"/></button>
+                        </div>
+					</xsl:if>
+                    
+                    <xsl:if test="login/change-password">
+                        <xsl:attribute name="class">password table</xsl:attribute>
+                        <!-- change password input fields -->
+                        <div>
+                            <label><xsl:attribute name="for"><xsl:value-of select="login/query/old-password"/></xsl:attribute><xsl:value-of select="lang/html/login/old-password"/></label>
+                            <input type="password" size="30" maxlength="80"><xsl:attribute name="name"><xsl:value-of select="login/query/old-password"/></xsl:attribute></input>
+                        </div>
+                        <div>
+                            <label><xsl:attribute name="for"><xsl:value-of select="login/query/new-password"/></xsl:attribute><xsl:value-of select="lang/html/login/new-password"/></label>
+                            <input type="password" size="30" maxlength="80"><xsl:attribute name="name"><xsl:value-of select="login/query/new-password"/></xsl:attribute></input>
+                        </div>
+                        <div>
+                            <label><xsl:attribute name="for"><xsl:value-of select="login/query/confirm-password"/></xsl:attribute><xsl:value-of select="lang/html/login/confirm-password"/></label>
+                            <input type="password" size="30" maxlength="80"><xsl:attribute name="name"><xsl:value-of select="login/query/confirm-password"/></xsl:attribute></input>
+                        </div>
+                        <!-- send button -->
+                        <div>
+                            <label><xsl:attribute name="for"><xsl:value-of select="lang/html/login/btn-login"/></xsl:attribute>&nbsp;</label>
+							<button type="submit" name="action" value="change-password"><xsl:value-of select="lang/html/login/btn-login"/></button>
+                        </div>
+                    </xsl:if>
+                </form>
+                <!-- login form end -->
+
+                <script>
+                    window.addEventListener("load", function load(event){
+                        //window.removeEventListener("load", load, false); //remove listener, no longer needed
+                        if (document.forms["access"] != null) {
+                            var dsl_form = document.forms["access"];
+                            for(var iml_i=0; iml_i < dsl_form.length; iml_i++) {
+                                var dsl_element = dsl_form[iml_i];
+                                if(dsl_element.type != "text" && dsl_element.type != "password")
+                                   continue;
+                                if(dsl_element.value != "")
+                                    continue;
+                                dsl_element.focus();
+                                break;
+                            }
+                        } 
+                    }, false);
+                </script>
+                <!-- content end -->
+            </div>
+		</div>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

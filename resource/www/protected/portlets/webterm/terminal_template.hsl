@@ -1,0 +1,38 @@
+<xsl:template match="webterm-page">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Stylesheets are optional, but useful -->
+    <link rel="stylesheet" href="../terminal.css">
+
+    <xsl:call-template name="html-header"/>
+	<!-- Properties can be specified to influence deferred binding -->
+	<meta name='gwt:property' content='locale=de_GER'>
+    
+   <script type="text/javascript">
+	   window.HOB = {};
+	   HOB.webterm_prot = "<xsl:call-template name="protocol" />";
+       HOB.webterm_name = "<xsl:value-of select="query/webterm_name enc:js" />";
+       HOB.webterm_session = "<xsl:value-of select="query/webterm_session enc:js" />";
+   </script>
+
+   <!-- The fully-qualified module name, followed by 'nocache.js' -->
+   <script language="javascript" src="com.hob.hwt.HobWebTerm/com.hob.hwt.HobWebTerm.nocache.js"></script>
+</head>
+<body>
+    <div id="page-outer" class="fullscreen-page">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+            <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+            <noscript>
+                <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+                    Your web browser must have JavaScript enabled
+                    in order for this application to display correctly.
+                </div>
+            </noscript>
+            <div id="content"></div>
+		</div>
+    </div>
+</body>
+</html>
+</xsl:template>

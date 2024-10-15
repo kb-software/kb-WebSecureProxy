@@ -1,0 +1,218 @@
+Coverage of this document
+-------------------------
+
+The code changing reviews for "WebSecure Proxy"
+include the following source paths:
+-  https://linux02.hob.de/repos/nbipgw20-v23/S/	
+
+Code Review Report:
+
+ode Review Report:
+-------------------
+Date: 09.04.2013
+File: hob-tcpco1.hpp
+Path: .
+Revision: 12
+File commit date: 09.04.2013
+Modified by: Mr. K. Brandstätter
+Reviewed by: Mr. A. Kretzschmar
+Comment:
+     o when a second instance of nbipgw20 was started, the TCPComp started to loop.
+        Now the event POLLHUP is handled in m_tpcthread.
+Review status: pass
+
+Code Review Report:
+-------------------
+Date: 05.04.2013
+File: xiipgw08-aux.cpp
+Path: .
+Revision: 11
+File commit date: 05.04.2013
+Modified by: Mr. K. Brandstätter
+Reviewed by: Mr. A. Kretzschmar
+Comment:
+     o correct return code check for DEF_AUX_SECURE_RANDOM,
+        beacuse the SSL-function int m_secdrbg_randbytes returns 0
+        in case of success
+Review status: pass
+
+Code Review Report:
+-------------------
+Date: 05.04.2013
+File: nbipgw20.cpp
+Path: .
+Revision: 10
+File commit date: 04.04.2013
+Modified by: Mr. K. Brandstätter
+Reviewed by: Mr. T. Hofmann
+Comment:
+     o fixed a crash with opera 12.14 when cache is empty
+Review status: pass
+
+
+Code Review Report:
+-------------------
+Date: 11.03.2013
+File: hob-ldap01.hpp
+Path: .
+Revision: 9
+File commit date: 07.03.2013
+Modified by: Mr. J. Lauenstein
+Reviewed by: Mr. A. Kretzschmar
+Comment:
+     o brackets in macros
+     o integrity check for avl tree
+Review status: pass
+
+
+Code Review Report:
+-------------------
+Date: 11.03.2013
+File: xiipgw08-aux.cpp
+Path: .
+Revision: 9
+File commit date: 07.03.2013
+Modified by: Mr. K. Brandstätter
+Reviewed by: Mr. T. Hofmann
+Comment:
+     o added tcp close function if DEF_AUX_TCP_CLOSE is requested
+Review status: pass
+
+Code Review Report:
+-------------------
+Date: 11.03.2013
+File: nbipgw20.cpp
+Path: .
+Revision: 9
+File commit date: 07.03.2013
+Modified by: Mr. T. Hofmann
+Reviewed by: Mr. A. Kretzschmar
+Comment:
+     o included signal handler for SIGPIPE
+Review status: pass
+
+
+Code Review Report:
+-------------------
+Date: 30.01.2013
+File: hob-tcpco1.hpp
+Path: .
+Revision: 3
+File commit date: 25.01.2013
+Modified by: Mr. K. Brandstätter
+Check requested: Mr. C. Wittinger
+Reviewed by: Mr. A. Kretzschmar
+Comment:
+     o Mr. Wittinger queried the correctness of the '<=' sign in the
+       loop over dsr_tcpconn (line 5730).
+       Statement Mr. A. Kretzschmar:
+       In order to read() and write() events under Linux we have to
+       create a so called pipe event. Therefore we start the loops
+       over dsr_tcpconn in Linux with im_conn = 1. The variable 
+       im_concount contains the number of active connections. Because
+       of this 'special' [0] element counting starts with im_conn = 1, 
+       and thus the loop runs up tp "im_conn <= im_concount". Otherwise 
+       the last connection would not be considered. Therefore the variable 
+       dsr_tcpconn contains [TCPCOMP_MAXCONN + 1] elements, see line 3420.
+Review status: pass
+
+-------------------
+Date: 29.01.2013
+File: xsipgw08-conf.cpp
+Path: .
+Revision: 4
+File commit date: 25.01.2013
+Modified by: Mr. K. Brandstätter
+Reviewed by: Mr. C. Wittinger
+Comment:
+	 o The function m_build_conf_01() seems unecessarily
+	   complex and large for the task at hand: parse a
+	   configuration file and apply its contents.
+	   ~6000 lines for a function that not performance critical
+	   is masive!
+	 o Coding standards, 3.2. Numbered variables in large
+	   functions are not short lived.
+	 o The amount of duplicated/redundant XML processing in code
+	   is large. Lines 2749-3086
+	 o Coding standards, section 4.6. The use of goto is not fully
+	   rationalized (m_conf_conn()!).
+	 o Lots of duplicate code from line 8216-8427
+	 o Coding standards, 4.19
+Review status: pass (legacy code)
+
+Code Review Report:
+-------------------
+Date: 29.01.2013
+File: xiipgw08-pd-auth.cpp
+Path: .
+Revision: 2
+File commit date: 22.11.2012
+Modified by: Mr. K. Brandstätter
+Reviewed by: Mr. C. Wittinger
+Comment:
+	 o Coding standards, section 4.6. The use of goto is not fully
+	   rationalized. Especially the intended program flow is not
+	   really obvious.
+	 o Coding standards, 3.2. Numbered variables in large
+	   functions are not short lived.
+	 o Coding standards, 4.4. "...must be in the next line..."
+	 o Coding standards, 4.19
+Review status: pass (legacy code)
+
+Code Review Report:
+-------------------
+Date: 29.01.2013
+File: xiipgw08-pd-main.cpp
+Path: .
+Revision: 4
+File commit date: 25.01.2013
+Modified by: Mr. K. Brandstätter
+Reviewed by: Mr. C. Wittinger
+Comment:
+	 o Coding standards, section 4.6. The use of goto is not fully
+	   rationalized. Especially the intended program flow is not
+	   really obvious.
+	 o Coding standards, 3.2. Numbered variables in large
+	   functions are not short lived.
+	 o Coding standards, 4.4. "...must be in the next line..."
+	 o Coding standards, 4.19
+Review status: pass (legacy code)
+
+Code Review Report:
+-------------------
+Date: 29.01.2013
+File: hob-tcpco1.hpp
+Path: .
+Revision: 3
+File commit date: 25.01.2013
+Modified by: Mr. K. Brandstätter
+Reviewed by: Mr. C. Wittinger
+Comment:
+	 o Coding standards 1.11, header contains more than just
+	   definitions (~6000 lines!). It contains member functions that
+	   should go into a .cpp file.
+	 o Unusual construct on line 5730, loop over dsr_tcpconn with
+	   im_conn <=(!) im_concount. Which value does im_concount
+	   have when the array is full? I think, len + 1.
+	   Possible reference of an uninitialized object?
+	   And why does the loop start with 1?
+Review status: check
+
+Code Review Report:
+-------------------
+Date: 29.01.2013
+File: nbipgw20.cpp
+Path: .
+Revision: 6
+File commit date: 25.01.2013
+Modified by: Mr. K. Brandstätter
+Reviewed by: Mr. C. Wittinger
+Comment:
+	 o Coding standards, section 4.6. The use of goto is not fully
+	   rationalized. Especially the intended program flow is not
+	   really obvious.
+	 o Coding standards, 3.2. Numbered static variables.
+	 o Coding standards, 4.4. "...must be in the next line..."
+	 o Coding standards, 4.19
+Review status: pass
+

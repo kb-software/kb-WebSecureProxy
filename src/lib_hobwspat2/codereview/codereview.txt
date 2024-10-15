@@ -1,0 +1,50 @@
+Codereview Documentation
+------------------------
+
+===============================================================================
+Project:    WSP authentication
+Developer:  Michael Jakobs
+Substitute: Alexander Kretzschmar, Tobias Hofmann
+===============================================================================
+
+Software Modifications:
+
+-------------------------------------------------------------------------------
+Date:               01-06-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2665
+
+Description:
+   Renamed all defines starting with AT2_ to AT_.
+   Changed version number.
+
+Affected Files:
+   include/hob-libwspat.h
+   src/config/ds_at_config.cpp
+   src/config/ds_at_config.h
+   src/at_resources.h
+   src/ds_wspat.cpp
+   src/hobwspat.cpp
+   src/hobwspat.h
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               04-05-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2484
+
+Description:
+   Added a webserver server-list to the role configuration. Therefore the
+   method "ds_at_config::m_read_role_srv_lists" was modified to support reading
+   the wsp server-list-entry and the one from webserver.
+   Additionally some old code was removed
+
+Affected Files:
+   src/config/ds_at_config.cpp
+   src/config/ds_at_config.h
+   include/hob-libwspat.h
+
+-------------------------------------------------------------------------------

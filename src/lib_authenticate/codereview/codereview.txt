@@ -1,0 +1,168 @@
+Codereview Documentation
+------------------------
+
+===============================================================================
+Project:    Authentication Library
+Developer:  Michael Jakobs
+Substitute: Alexander Kretzschmar, Tobias Hofmann
+===============================================================================
+
+Software Modifications:
+
+-------------------------------------------------------------------------------
+Date:               20-11-2012
+Changes done by:    Alexander Kretzschmar
+Codereview done by: Tobias Hofmann
+SVN-Revision:       3643
+
+Description:
+    In Function m_switch_ldap(): 
+    
+    In case auth ldap is not equal config ldap we have to use the
+    membership configurations of every user of the auth ldap.
+    That means we have to delete all the memberships of the logged user and
+    add later only the memberships from auth ldap.
+    But that means also that the changes which an administrator will do in the
+    config ldap are obsolet.
+    This change was made due a customer problem, ticket 25055.
+
+Affected Files:
+    src\ds_authenticate.cpp
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               15-10-2012
+Changes done by:    Alexander Kretzschmar
+Codereview done by: Tobias Hofmann
+SVN-Revision:       2824
+
+Description:
+    In Function m_switch_ldap(): In case that the authentication of LDAP is not 
+                                 OpenDJ and auto-user-create is on, then we always
+    have to store the users DN with the prefix 'cn' (instead of e.g. 'uid') in 
+    our OpenDJ.
+    Furthermore we have to create some special ACIs in our OpenDJ when an
+    authenticated domain is cloned in our configuration.
+    And we have to create the new DomainAdministrator group in our OpenDJ in that 
+    case specified above.
+
+Affected Files:
+    src\ds_authenticate.cpp
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+Date:               25-06-2012
+Changes done by:    Alexander Kretzschmar
+Codereview done by: Michael Jakobs
+SVN-Revision:       2824
+
+Description:
+    Fixed a bug which was leading to the fact that there was no matching role
+    found in case of login a single user multiple times.
+    This change was done in the function m_create_user() by shifting the
+    call of m_switch_ldap().
+
+Affected Files:
+    src/ds_authenticate.cpp
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               14-06-2012
+Changes done by:    Michael Jakobs
+Codereview done by:
+SVN-Revision:       2754
+
+Description:
+    Fixed a bug which was leading to problems if we are using multiple LDAP
+    servers and login a single user multiple times.
+
+Affected Files:
+    src/ds_authenticate.cpp
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               06-06-2012
+Changes done by:    Michael Jakobs
+Codereview done by: Alexander Kretzschmar
+SVN-Revision:       2720
+
+Description:
+    Modified "ds_authenticate::m_create_user(...)" to bind to configuration
+    LDAP server if this is equal to authentication LDAP, because in this case
+    we had no LDAP call yet.
+
+Affected Files:
+    src/ds_authenticate.cpp
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               01-06-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2673
+
+Description:
+    Removed reset of LDAP server when finding no roles, this reset is done
+    in the function 'ds_authenticate::m_close_ldap()'. It is quite important
+    to reset LDAP after closing of the connection, otherwise the close will
+    fail and the following LDAP connection might communicate with the old LDAP
+    server.
+
+Affected Files:
+    src/ds_authenticate.cpp
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               01-06-2012
+Changes done by:    Michael Jakobs
+Codereview done by: 
+SVN-Revision:       2668
+
+Description:
+   Renamed all defines starting with AT2_ to AT_.
+
+Affected Files:
+   src/ds_authenticate.cpp
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Date:               04-05-2012
+Changes done by:    Michael Jakobs
+Codereview done by: Alexander Kretzschmar
+SVN-Revision:       2481
+
+Description:
+   For ICA integration we added an additional field "inc_ica_visits" to the
+   wsg cma memory. Additionally we added some functions to increase, decrease,
+   reset and read the visit counter "inc_ica_visits".
+
+Affected Files:
+   src/ds_usercma.cpp
+   include/ds_usercma.h
+
+-------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------
+Date:               13-05-2014
+Changes done by:    Klaus Brandstaetter
+Codereview done by: Jesus Fraile
+SVN-Revision:       5687
+
+Description:
+   There were some problems when within a webserver there was a resource allocated
+   in a path with two slashes.
+   For getting the parent paths, within m_get_parent_paths() now the last slash
+   is searched  by in_pos = dsl_path.m_search_last( "/", false, in_pos );,
+   instead of in_pos = dsl_path.m_search_last( "/", false, in_pos - 1 );
+
+Affected Files:
+   src/ds_ck_mgmt.cpp
+
+-------------------------------------------------------------------------------

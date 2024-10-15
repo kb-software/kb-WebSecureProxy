@@ -1,0 +1,81 @@
+Codereview Documentation
+------------------------
+
+===============================================================================
+Project:    sdh-ea-ldap
+Developer:  Alexander Kretzschmar
+Substitute: Tobias Hofmann
+===============================================================================
+
+Software Modifications:
+
+-------------------------------------------------------------------------------
+Date:               19.06.2013
+Changes done by:    Alexander Kretzschmar
+Codereview done by: Alexander Rettner
+SVN-Revision:       4853
+
+Description:        Since the Management Service is updating hisself when
+                    attribute "hobgwwsp" (important for clusters) is updated, the 
+                    EA LDAP does not have to communicate with Man. Service anymore.
+                    
+
+Affected Files:     ds_ea_ldap.cpp
+                    
+
+-------------------------------------------------------------------------------
+Date:               20.06.2012
+Changes done by:    Alexander Kretzschmar
+Codereview done by: Michael Jakobs
+SVN-Revision:       2799
+
+Description:        1) if we are creating a new domain we check with the new function 
+                    "bool m_is_new_subdomain( ds_hstring* ahstr_dn, ds_hstring* ahstr_name )"
+                    if our LDAP is OpenDS and if we are under "dc=root".
+                    If true, then we write some special ACIs in this created domain with
+                    the function "int m_write_domain_aci( ds_hstring* hstr_dn )".
+                    If the autocreation tag in the wsp.xml is ON/YES, then we
+                    create afterwards a new domainAdmin group with the function
+                    "bool m_create_dadmin_group( ds_hstring* hstr_dn )".
+                    2) If our LDAP is OpenDS and if we are in the domainAdmin group,
+                    then we set some additional rights for an user, who is added 
+                    to this group (bool m_set_add_rights( ds_hstring* dsl_user_dn )).
+                    Analogical we delete the rights, if an user is removed from
+                    this group bool (m_del_add_rights( ds_hstring* dsl_user_dn )).
+                    
+
+Affected Files:     ds_config.cpp
+                    ds_ea_ldap.cpp
+                    ds_ea_ldap.h
+                    sdh_ea_ldap.h
+   
+
+-------------------------------------------------------------------------------
+Date:               18.06.2012
+Changes done by:    Alexander Kretzschmar
+Codereview done by: 
+SVN-Revision:       2760
+
+Description:        1) added the reading of the domain-admin tag from the wsp.xml
+                    Set appropriate access control instructions (aci) for the
+                    domains under dc=root; if a new domain is created in our
+                    integrated LDAP server under dc=root, particular aci statements
+                    are added to this domain
+                    2) Depending on the value of the autocreation tag in the wsp.xml
+                    we have to create the organizational unit and a new group
+                    3) We have to give every user who is in the domainAdmin group
+                    some special additional rights. So he gets the rights if he 
+                    is created directly in this group or moved up to this group.
+                    On the other side we have to delete this rights, if an user
+                    is removed from this group.
+                    4) modified the config-section in order to read the new entries
+                    of the tag <domainadministrator-group>
+
+Affected Files:     ds_config.cpp
+                    ds_config.h
+                    ds_ea_ldap.cpp
+                    ds_ea_ldap.h
+                    sdh_ea_ldap.h
+   
+
+-------------------------------------------------------------------------------

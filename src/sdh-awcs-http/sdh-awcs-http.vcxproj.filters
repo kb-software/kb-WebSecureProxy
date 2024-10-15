@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{24d004d4-3bdf-46f1-af67-d89756249c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{dc0a8782-a6bc-44b2-ba5b-2bc8c6cb5ce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{c89da7e9-9a58-4b0a-927a-6f936e96510f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="codereview">
+      <UniqueIdentifier>{dcc37e7f-eefe-4e6b-bfc2-789def604d21}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\hob-cd-record-1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdpclient1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-xs-draw.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-xs-html5.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-xs-rdpacc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-xs-translator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sdh-version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hob-http-processor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hob-xs-html5-priv.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\sdh-awcs-http.rc-pre">
+      <Filter>res</Filter>
+    </None>
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\sdh-awcs-http.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xlrdpcl1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-cdr-mppc-4.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-draw.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-html5.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-http-processor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-json-parser.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-rdpacc.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-translator.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xsavl03.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt">
+      <Filter>codereview</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

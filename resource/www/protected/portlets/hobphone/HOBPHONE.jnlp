@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File HOBPhone -->
+<jnlp spec="1.0+" codebase="https://<%=url_jnlp%>/public/lib">
+    <information>
+        <title>HOBPhone</title>
+        <vendor>HOB</vendor>
+        <homepage href="http://www.hobsoft.com/"/>
+        <description>HOBPhone</description>
+        <description kind="short">HOBPhone</description>
+        <description kind="tooltip">HOBPhone</description>
+        <description kind="on-line">HOBPhone</description>
+        <icon href="images/Logo.png"/>
+        <icon kind="splash" href="images/Desktop.png"/>
+        <update check="always"/>
+        <offline-allowed/>
+    </information>
+    <security>
+        <all-permissions />
+    </security>
+    <resources>
+        <!-- Application Resources -->
+		<j2se version="1.6+" href=
+           "http://java.sun.com/products/autodl/j2se" java-vm-args="--add-modules=java.xml.ws"/>
+        <property name="jnlp.packEnabled" value="true"/>
+        <jar href="hobphone-J2.jar" main="true" />
+        <jar href="tool-J2.jar" download="lazy"/>
+        <jar href="HOBssl-J2.jar" download="lazy"/>
+        <jar href="hlset-J2.jar" download="lazy"/>
+        <jar href="JWT-J2.jar" download="lazy"/>
+        <jar href="JWTcommons-J2.jar" download="lazy"/>
+    </resources>
+    <applet-desc
+      documentBase="http://www.hobsoft.com/"
+      name="HOBPhone"
+      main-class="hob.phone.core.c_applet"
+      width="300" 
+      height="30">
+    <param name="locale" value="<%=language%>"/>
+    <param name="startup" value="startup-hobphone.xml"/>
+    <param name="mode" value="WSP"/>
+    <param name="lines" value="lines"/>
+    <param name="devel" value="devel"/>
+    <param name="username" value="<%=hsocks-user%>"/>
+    <param name="hpw" value="<%=hsocks-sticket%>"/>
+    <param name="skin" value="skin"/>
+    <param name="cookie" value="HOBWSP_SID=<%=httpcookie%>" />
+    <param name="rd_vpn" value="Y"/>
+  </applet-desc>
+
+</jnlp>

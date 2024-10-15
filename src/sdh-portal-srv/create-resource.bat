@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\sdh-portal-srv.rc-pre .\res\sdh-portal-srv.rc
