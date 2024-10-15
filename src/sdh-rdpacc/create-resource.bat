@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\sdh-rdpacc.rc-pre .\res\sdh-rdpacc.rc

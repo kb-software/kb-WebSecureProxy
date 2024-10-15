@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{a5910009-ebbe-4485-975b-6491e4ee5912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{712b08e2-479a-4ae7-87f2-6c4c960fb043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{ecf731e8-7de2-4e95-adbd-7cb121bba241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\config">
+      <UniqueIdentifier>{ba9dfeba-2093-4949-8f79-e2814b667ae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{85b89d88-0cc6-4621-ab1e-4071ad585b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="codereview">
+      <UniqueIdentifier>{9c9b6e24-daf6-4ed9-9040-d3d5b60118ae}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\hob-default-values.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sdh_version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_ea_ldap.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdh_ea_ldap.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\ds_crypt.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config\ds_config.h">
+      <Filter>src\config</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ds_ea_ldap.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sdh_ea_ldap.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\ds_crypt.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config\ds_config.cpp">
+      <Filter>src\config</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\sdh_ea_ldap.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\sdh_ea_ldap.rc-pre">
+      <Filter>res</Filter>
+    </None>
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt">
+      <Filter>codereview</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

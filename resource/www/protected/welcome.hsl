@@ -1,0 +1,450 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    
+    <link rel="stylesheet" href="/public/css/icons.css"/>
+    <link rel="stylesheet" href="/public/css/welcome.css"/>
+    <script src="/public/js/java.js"></script>
+    <script src="/public/js/os_detection.js"></script>
+    <script src="/public/js/bookmark.js"></script>
+	<script src="js/versionRDVPN.js"></script>
+    <script src="js/welcome.js"></script>
+    <xsl:call-template name="redirect-embedded"/>
+    <script>
+        var strg_url_session_id = '<xsl:value-of select="user/url-session-id" />'
+        var dsl_args = {
+            strc_home: '<xsl:value-of select="user/welcomesite"/>',
+            dsc_cookies: null,
+            strc_address_bookmark: '<xsl:value-of select="user/bookmarkhostname"/>',
+            inc_flags: 0,
+            astrc_portlets: [
+                <xsl:for-each select="user/portlet">
+                    <xsl:if test="not(user/portlet/hide)">
+                        '<xsl:value-of select="user/portlet/name"/>',
+                    </xsl:if>
+                </xsl:for-each>
+            ]
+        };
+		HOB.m_initialize(dsl_args);
+    </script>
+</head>
+<body onload="HOB.m_load()">
+    <div id="page-outer" class="wide-page logo-right">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <a id="logo"> 
+                <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+            </a>
+            <div id="welcome">
+                <xsl:value-of select="lang/html/all/welcome"/> <strong><xsl:value-of select="user/name"/></strong>,
+                <xsl:value-of select="lang/html/all/roletxt"/> <strong><xsl:value-of select="user/selected-role"/></strong>.
+                <xsl:if test="user/adm-message">
+                    <!-- message from admin -->
+                    <div class="message"><xsl:value-of select="user/adm-message"/></div>
+                </xsl:if>
+            </div>
+            <div class="clear"></div>
+            <div class="title">
+                <xsl:value-of select="lang/html/welcome/bookmarks-section"/>
+                <xsl:if test="user/allowed/settings and user/allowed/configure-rdvpn-bmarks">
+                    <a class="configure hobtext" href="portlets/settings/settings.hsl#bookmarks">
+                        <span class="icon-configure">
+                            <xsl:attribute name="title"><xsl:value-of select="lang/html/welcome/settings/text1"/></xsl:attribute>
+                        </span>
+                    </a>
+                </xsl:if>
+            </div>
+            <div id="bookmarks" class="scroll-start">
+                <div class="carousel-left"></div>
+                <div id="bookmarks-inner">
+                <xsl:for-each select="user/rdvpn-bookmarks">
+                    <a class="hobtext has-icon">
+                        <xsl:attribute name="href"><xsl:value-of select="user/rdvpn-bookmarks/url"/></xsl:attribute>
+                        <span class="icon-bookmark"></span>
+                        <span><xsl:value-of select="user/rdvpn-bookmarks/name"/></span>
+                    </a>
+                </xsl:for-each>
+                <xsl:if test="user/rdvpn-bookmarks &lt;= 0">
+                    <span class="small"><xsl:value-of select="lang/html/welcome/bookmarks-empty"/></span>
+                </xsl:if>
+                </div>
+                <div class="carousel-right"></div>
+            </div>
+            <div class="title">
+                <xsl:value-of select="lang/html/welcome/portlets-section"/>
+                <xsl:if test="user/allowed/settings and user/allowed/configure-others">
+                    <a class="configure hobtext" href="portlets/settings/settings.hsl#applications">
+                        <span class="icon-configure">
+                            <xsl:attribute name="title"><xsl:value-of select="lang/html/welcome/settings/text1"/></xsl:attribute>
+                        </span>
+                    </a>
+                </xsl:if>
+            </div>
+            <div id="page-inner">
+                <div id="portlets" class="all-closed hobtext-bordered">
+                <!-- the different portlets -->
+                <xsl:for-each select="user/portlet">
+                    <xsl:if test="not(user/portlet/hide) and user/portlet/open and user/portlet/name != settings">
+                        <xsl:call-template name="portlet"/>
+                    </xsl:if>
+                </xsl:for-each>
+                </div>
+                <div id="content-wrapper" class="all-closed">
+                <xsl:for-each select="user/portlet">
+                    <xsl:if test="not(user/portlet/hide) and user/portlet/open">
+                    <div class="fold-content closed hobtext">
+                        <xsl:attribute name="id"><xsl:value-of select="user/portlet/name"/>-content</xsl:attribute>
+                        <a class="content-title link has-icon" href="#">
+                            <span>
+                                <xsl:attribute name="class">icon-<xsl:value-of select="user/portlet/name"/></xsl:attribute>
+                                <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/title</xsl:variable>
+                                <xsl:attribute name="title"><xsl:value-of select="$name"/></xsl:attribute>
+                            </span>
+                            <h2>
+                                <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/title</xsl:variable>
+                                <xsl:value-of select="$name"/>
+                            </h2>
+                            <span class="close icon-close"></span>
+                        </a>
+                        <div>
+                            <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/product</xsl:variable>
+                            <xsl:if test="$name &gt; 0">
+                                <span class="productName"><xsl:value-of select="$name"/></span> &mdash; 
+                            </xsl:if>
+                            <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/description</xsl:variable>
+                            <xsl:if test="$name">
+                                <xsl:value-of select="$name"/>
+                            </xsl:if>
+                        </div>
+                        <br />
+                        <xsl:variable name="name"><xsl:value-of select="user/portlet/name"/></xsl:variable>
+                        <xsl:call-template name="$name"/>
+                    </div>
+                    </xsl:if>
+                </xsl:for-each>
+                </div>
+                <div class="clear"></div>
+            </div>
+		</div>
+    </div>
+    
+    <xsl:if test="user/pwd-expires &gt;= 0">
+        <style type="text/css">@import url("/public/css/slide.css")</style>
+        <script src="/public/js/slide.js"></script>
+        <script>
+            var dsl_div;
+            var dsl_form;
+            var dsl_input;
+            dsl_div = document.createElement("div");
+            dsl_div.id = "password-expire"
+            dsl_form = document.createElement("form");
+            dsl_form.method = "POST";
+            dsl_input = document.createElement("input");
+            dsl_input.type  = "submit";
+            dsl_input.name  = "change-password-now";
+            dsl_input.id    = "change-password-now";
+            dsl_input.value = '<xsl:value-of select="lang/html/welcome/change-password-now"/>';
+            dsl_form.appendChild( dsl_input );
+            dsl_input = document.createElement("input");
+            dsl_input.type  = "submit";
+            dsl_input.name  = "change-password-later";
+            dsl_input.id    = "change-password-later";
+            dsl_input.value = '<xsl:value-of select="lang/html/welcome/change-password-later"/>';
+            dsl_form.appendChild( dsl_input );
+            dsl_div.appendChild( dsl_form );
+            <xsl:if test="user/pwd-expires &gt; 1">
+                m_slide_start( false, '<xsl:value-of select="lang/html/welcome/password-expire1"/> <xsl:value-of select="user/pwd-expires"/> <xsl:value-of select="lang/html/welcome/password-expire2"/>', dsl_div, '' );
+            </xsl:if>            
+            <xsl:if test="user/pwd-expires == 1">
+                m_slide_start( false, '<xsl:value-of select="lang/html/welcome/password-expire3"/>', dsl_div, '' );
+            </xsl:if>
+            <xsl:if test="user/pwd-expires == 0">
+                m_slide_start( false, '<xsl:value-of select="lang/html/welcome/password-expire4"/>', dsl_div, '' );
+            </xsl:if>
+        </script>
+    </xsl:if>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />
+
+<xsl:template match="portlet">
+    <a class="fold-title hobtext closed">
+        <xsl:attribute name="id"><xsl:value-of select="user/portlet/name"/>-title</xsl:attribute>
+        <xsl:attribute name="href">#<xsl:value-of select="user/portlet/name"/></xsl:attribute>
+        <div class="has-icon">
+            <span>
+                <xsl:attribute name="class">icon-<xsl:value-of select="user/portlet/name"/></xsl:attribute>
+                <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/title</xsl:variable>
+                <xsl:attribute name="title"><xsl:value-of select="$name"/></xsl:attribute>
+            </span>
+            <h2>
+                <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/title</xsl:variable>
+                <xsl:value-of select="$name"/>&nbsp;<span class="info">&#x24d8;</span>
+            </h2>
+        </div>
+        <div class="portlet-description">
+            <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/product</xsl:variable>
+            <xsl:if test="$name &gt; 0">
+                <span class="productName"><xsl:value-of select="$name"/></span> &mdash; 
+            </xsl:if>
+            <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/description</xsl:variable>
+            <xsl:if test="$name">
+                <xsl:value-of select="$name"/>
+            </xsl:if>
+        </div>
+    </a>
+</xsl:template>
+
+<xsl:template match="webterm">
+    <!-- webterm portlet -->
+    <ul>
+        <!-- DESKTOP ON DEMAND -->
+		<xsl:for-each select="user/workstations">
+            <li><a>
+					<xsl:attribute name="href">portlets/webterm/rdp/dod.hsl?webterm_name=<xsl:value-of select="user/workstations/name enc:uri"/></xsl:attribute>
+                    Desktop-On-Demand: <xsl:value-of select="user/workstations/name"/>
+            </a></li>
+        </xsl:for-each>
+		<!-- NORMAL RDP -->
+		<xsl:for-each select="user/webterm/rdp">
+            <li><a>
+					<xsl:attribute name="href">portlets/webterm/<xsl:value-of select="user/webterm/protocol-link"/>?webterm_name=<xsl:value-of select="user/webterm/name enc:b64"/></xsl:attribute>
+                    <xsl:value-of select="user/webterm/name"/>
+            </a></li>
+        </xsl:for-each>
+		<!-- SSH -->
+		<xsl:for-each select="user/webterm/ssh">
+            <li><a>
+					<xsl:attribute name="href">portlets/webterm/<xsl:value-of select="user/webterm/protocol-link"/>?webterm_name=<xsl:value-of select="user/webterm/name enc:b64"/></xsl:attribute>
+                    <xsl:value-of select="user/webterm/name"/>
+            </a></li>
+        </xsl:for-each>     
+
+		<xsl:for-each select="user/webterm/te">
+            <li><a>
+					<xsl:attribute name="href">portlets/webterm/<xsl:value-of select="user/webterm/te-protocol-link"/>?webterm_name=<xsl:value-of select="user/webterm/te-name enc:b64"/>&webterm_session=<xsl:value-of select="user/webterm/te-session enc:uri"/></xsl:attribute>
+                    <xsl:value-of select="user/webterm/te-session"/>
+            </a></li>
+        </xsl:for-each>
+        <xsl:if test="user/webterm/rdp &lt;= 0 and user/webterm/te &lt;= 0 and user/webterm/ssh &lt;= 0 and user/workstations &lt;= 0">
+            <li><xsl:value-of select="lang/html/welcome/empty" /></li>
+        </xsl:if>
+    </ul>
+</xsl:template>
+
+<xsl:template match="jwtsa">
+    <!-- jwtsa portlet -->
+    <ul>
+    <xsl:for-each select="user/jwtsa-config">
+        <li><a>
+                <xsl:attribute name="href">portlets/jwtsa/JWT.jnlp?jwtsa_config=<xsl:value-of select="user/jwtsa-config/name enc:uri"/></xsl:attribute>
+                <xsl:value-of select="user/jwtsa-config/name"/>
+        </a></li>
+    </xsl:for-each>
+    <xsl:if test="user/jwtsa-config &lt;= 0">
+        <li><xsl:value-of select="lang/html/welcome/empty" /></li>
+    </xsl:if>
+    </ul>
+</xsl:template>
+<xsl:template match="jterm">
+    <!-- session portlet -->
+    <a class="reopen" target="_blank"><xsl:value-of select="lang/html/welcome/restart"/></a>
+    <script>
+        var link = "portlets/jterm/jtermlaunch.hsl";
+        if( !dsg_java.m_use_applets() ) {
+            link = "portlets/jterm/jlaunch.jnlp";
+            if(dsg_java.m_use_hoblaunch()) {
+                link = HOB.m_get_hobweblaunch_link("/protected/"+link);
+            }
+       }
+        HOB.m_update_fold_link('jterm', link);
+    </script>
+</xsl:template>
+<xsl:template match="admin">
+    <!-- administration portlet -->
+    <a class="reopen" target="_blank"><xsl:value-of select="lang/html/welcome/restart"/></a>
+    <script>
+        var link = "/public/lib/eaadminExtern.jnlp";
+        if(dsg_java.m_use_hoblaunch()) {
+            link = HOB.m_get_hobweblaunch_link(link);
+        }
+        HOB.m_update_fold_link('admin',link);
+    </script>
+</xsl:template>
+<xsl:template match="globaladmin">
+    <!-- administration portlet -->
+    <a class="reopen" target="_blank"><xsl:value-of select="lang/html/welcome/restart"/></a>
+    <script>
+        HOB.m_update_fold_link('globaladmin',"portlets/globaladmin/index.hsl");
+    </script>
+</xsl:template>
+<xsl:template match="wsg">
+    <!-- wsg portlet -->
+    <xsl:if test="user/allowed/wsg-input">
+    <form onsubmit="return HOB.m_open_wsg_input()" name="connectform" action="">
+        <input value="http://" type="url" name="url"/>
+        <button class="browse" onclick="HOB.m_open_wsg_input(); return false" name="browse">
+            <span class="icon-goto">
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/welcome/wsg/browse"/></xsl:attribute>
+            </span>
+        </button>
+    </form>
+    <br/>
+    </xsl:if>
+    <strong><xsl:value-of select="lang/html/welcome/wsg/bookmark"/></strong>
+    <xsl:if test="user/allowed/settings and user/allowed/configure-wsg-bmarks">
+        <a class="configure hobtext" href="portlets/settings/settings.hsl#wsg">
+            <span class="icon-configure">
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/welcome/settings/text1"/></xsl:attribute>
+            </span>
+        </a>
+    </xsl:if>
+    <br/>
+    <ul>
+        <xsl:if test="user/wsg-bookmarks">
+        <xsl:for-each select="user/wsg-bookmarks">
+        <li><a target="_blank">
+                <xsl:attribute name="href"><xsl:value-of select="user/url-session-id" />/wsg/<xsl:value-of select="user/wsg-bookmarks/url"/></xsl:attribute>
+                <xsl:value-of select="user/wsg-bookmarks/name"/>
+        </a></li>
+        </xsl:for-each>
+        </xsl:if>
+        <xsl:if test="not(user/wsg-bookmarks)">
+            <li><i><xsl:value-of select="lang/html/welcome/empty"/></i></li>
+        </xsl:if>
+    </ul>
+</xsl:template>
+<xsl:template match="wfa">
+    <!-- wfa portlet -->
+    <a class="reopen" target="_blank"><xsl:value-of select="lang/html/welcome/restart"/></a>
+    <script>
+        HOB.m_update_fold_link('wfa', '/WebFileAccess/start');
+    </script>
+</xsl:template>
+<xsl:template match="wspuc">
+    <!-- WSP UC portlet -->
+    <a class="reopen" target="_blank"><xsl:value-of select="lang/html/welcome/restart"/></a>
+    <script>
+        var link = "portlets/wspuc/wspuc.hsl";
+        if( !dsg_java.m_use_applets() ) {
+            link ="portlets/wspuc/launchuc.jnlp";
+            if(dsg_java.m_use_hoblaunch()) {
+                link = HOB.m_get_hobweblaunch_link("/protected/"+link);
+            }
+        }
+        HOB.m_update_fold_link('wspuc', link);
+    </script>
+</xsl:template>
+<xsl:template match="hobphone">
+    <!-- HOBPhone portlet -->
+    <a class="reopen" target="_blank"><xsl:value-of select="lang/html/welcome/restart"/></a>
+    <script>
+        var link = "portlets/hobphone/hobphone.hsl";
+        if( !dsg_java.m_use_applets() ) {
+            link = "portlets/hobphone/HOBPHONE.jnlp";
+            if(dsg_java.m_use_hoblaunch()) {
+                link = HOB.m_get_hobweblaunch_link("/protected/"+link);
+            }
+        }
+        HOB.m_update_fold_link('hobphone', link);
+    </script>
+</xsl:template>
+<xsl:template match="ppptunnel">
+    <!-- ppptunnel portlet -->
+    <xsl:if test="ppptunnel &gt; 0">
+    <ul>
+    <xsl:for-each select="ppptunnel">
+        <li>
+            <a class="ppp_selector" target="_blank">
+                <xsl:attribute name="href">portlets/ppptunnel/HOBPPPTunnel.hsl?ID=<xsl:value-of select="ppptunnel/id"/></xsl:attribute>
+                <xsl:value-of select="ppptunnel/name"/>
+            </a>
+        </li>
+    </xsl:for-each>
+    </ul>
+    <script>
+        if( !dsg_java.m_use_applets() )
+        {
+            var links = document.querySelectorAll( ".ppp_selector" );
+            
+            for( i = 0; i < links.length; i++ )
+            {
+                var url = links[i].href;
+                var query = url.split( "?" )[1];
+                links[i].href = "portlets/ppptunnel/launchppp.jnlp?" + query;
+            }
+        }
+    </script>
+    </xsl:if>
+    <xsl:if test="ppptunnel &lt;= 0">
+    <ul>
+        <li><xsl:value-of select="lang/html/welcome/empty" /></li>
+    </ul>
+    </xsl:if>
+</xsl:template>
+<xsl:template match="settings">
+    <!-- user settings portlet -->
+    <ul>
+        <li>
+            <a href="portlets/settings/settings.hsl"><xsl:value-of select="lang/html/welcome/settings/title"/></a>
+        </li>
+        <li>
+            <a href="portlets/settings/cookies.hsl"><xsl:value-of select="lang/html/welcome/settings/text2"/></a>
+        </li>
+        <li>
+            <a href="change-password.hsl"><xsl:value-of select="lang/html/welcome/settings/text4"/></a>
+        </li>
+        <li>
+            <a href="/public/about.hsl"><xsl:value-of select="lang/html/welcome/about"/></a>
+        </li>
+    </ul>
+</xsl:template>
+<xsl:template match="mobile">
+    <!-- mobile apps portlet -->
+    <ul>
+        <li class="ios-app header"><a target="_blank">
+            <xsl:attribute name="href"><xsl:value-of select="lang/html/welcome/mobile/link/ios/overview"/></xsl:attribute>
+            <xsl:value-of select="lang/html/welcome/mobile/header_ios"/>
+        </a></li>
+        <li class="ios-app"><a target="_blank">
+            <xsl:attribute name="href"><xsl:value-of select="lang/html/welcome/mobile/link/ios/dash"/></xsl:attribute>
+            <xsl:value-of select="lang/html/welcome/mobile/apps/dash"/>
+        </a></li>
+        <li class="ios-app"><a target="_blank">
+            <xsl:attribute name="href"><xsl:value-of select="lang/html/welcome/mobile/link/ios/iwt"/></xsl:attribute>
+            <xsl:value-of select="lang/html/welcome/mobile/apps/iwt"/>
+        </a></li>
+        <li class="ios-app"><a target="_blank">
+            <xsl:attribute name="href"><xsl:value-of select="lang/html/welcome/mobile/link/ios/mobile"/></xsl:attribute>
+            <xsl:value-of select="lang/html/welcome/mobile/apps/mobile"/>
+        </a></li>
+        <br />
+        <li class="android-app header"><a target="_blank">
+            <xsl:attribute name="href"><xsl:value-of select="lang/html/welcome/mobile/link/android/overview"/></xsl:attribute>
+            <xsl:value-of select="lang/html/welcome/mobile/header_android"/>
+        </a></li>
+        <li class="android-app"><a target="_blank">
+            <xsl:attribute name="href"><xsl:value-of select="lang/html/welcome/mobile/link/android/dash"/></xsl:attribute>
+            <xsl:value-of select="lang/html/welcome/mobile/apps/dash"/>
+        </a></li>
+        <li class="android-app"><a target="_blank">
+            <xsl:attribute name="href"><xsl:value-of select="lang/html/welcome/mobile/link/android/mobile"/></xsl:attribute>
+            <xsl:value-of select="lang/html/welcome/mobile/apps/mobile"/>
+        </a></li>
+        <li class="android-app"><a target="_blank">
+            <xsl:attribute name="href"><xsl:value-of select="lang/html/welcome/mobile/link/android/netaccess"/></xsl:attribute>
+            <xsl:value-of select="lang/html/welcome/mobile/apps/netaccess"/>
+        </a></li>
+        <li class="android-app"><a target="_blank">
+            <xsl:attribute name="href"><xsl:value-of select="lang/html/welcome/mobile/link/android/phone"/></xsl:attribute>
+            <xsl:value-of select="lang/html/welcome/mobile/apps/phone"/>
+        </a></li>
+    </ul>
+    <script>
+        HOB.m_update_mobile_selection();
+    </script>
+</xsl:template>

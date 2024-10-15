@@ -1,0 +1,68 @@
+///////////////////////////////////
+// changed: 09.10.2003 bei FF [NEW_PAGE] anhängen, anstatt V_TOP_MARGIN
+// changed: 01.10.2003 mit der Sequence SKIP_PERFORATION kann endlich auch der untere Rand gekürzt werden!!
+//          NEWPAGE-Sequence wird beim SCS-Kommando "AVM" (Absolut Vertical Movement) aufgerufen!!
+//			V_TOP_MARGIN von relative "+" auf absolut gesetzt
+// changed: 29.09.2003 
+//					   exakte (Dezipoints 1/720) Topmargin
+//					   PageLength wird intern berechnet
+// changed: 25.08.2003 HP_Printer setzt TopMargin in Zeilen im
+//						Gegensatz zu HP_PrinterVM wo nur Dezipoints gesetzt werden und TopMargin immer 0 ist!
+// changed: 25.08.2003 codepage 819 from "(0N" to "(19U"
+// changed: 20.03.2003
+//
+//////////////////////////////////
+
+TOP_EDGE = -0.12
+LEFT_EDGE = 0.25
+CR = 0D
+LF = 0A
+FF = 0C [TOPMARGIN]
+ESC = 1B
+CPI = [ESC] \"(s\" Text (CPI) \"H\" [HMI]
+CPI-10 = [ESC] \"(s10H\" [ESC] \"&k11.989H\"
+HMI = [ESC] \"&k\" Text(120/CPI) \"H\"
+BOLD_ON = [ESC] 28 73 33 42
+BOLD_OFF = [ESC] 28 73 30 42
+LINEDENSITY = [ESC] \"&l\" Text (LineDensity) \"C\"
+
+INIT = [ESC] 45 [SKIP_PERFORATION] [CODEPAGE] 
+
+CODEPAGE-437 = [ESC] \"(10U\"  [CPI] [LINEDENSITY] [TOPMARGIN0] [V_TOP_MARGIN] [LEFTMARGIN]
+CODEPAGE-819 = [ESC] \"(0N\"  [CPI] [LINEDENSITY] [TOPMARGIN0] [V_TOP_MARGIN] [LEFTMARGIN]
+CODEPAGE-850 = [ESC] \"(12U\"  [CPI] [LINEDENSITY] [TOPMARGIN0] [V_TOP_MARGIN] [LEFTMARGIN]
+
+PORTRAIT = [ESC] 26 6c 30 4f [ESC] 26 61 30 50
+LANDSCAPE = [ESC] 26 6c 31 4f
+ORIENT90 = [ESC] 26 6c 32 4f
+ORIENT270 = [ESC] 26 6c 30 4f [ESC] 26 61 32 37 30 50 [ESC] 26 61 30 52
+SKIP_PERFORATION = [ESC] \"&l0\"L\"
+PAGESIZE = [ESC] \"&l70\"P\"
+// PAGELENGTH = [ESC] \"&l\" Text(PageLength) \"F\"
+COURIER = [ESC]28733354
+UL_ON = [ESC] 26 64 30 44
+UL_OFF = [ESC] 26 64 40
+ONE_SIDED = [ESC] 26 6C 30 53
+TWO_SIDED = [ESC] 26 6C 31 53
+
+TOPMARGIN0 = [ESC] \"&l0E\"
+TOPMARGIN = [TOPMARGIN0] [V_TOP_MARGIN]
+V_TOP_MARGIN =  [ESC] \"&a\" Text (TopMargin1440/2) \"V\"
+
+//NEWPAGE-Sequence wird beim SCS-Kommando "AVM" (Absolut Vertical Movement) aufgerufen!!
+//NEWPAGE= [TOPMARGIN0] [V_TOP_MARGIN]
+
+MOVERIGHT = [ESC] \"&a+\" Text (MoveRight) \"H\"
+MOVEVERT720 = [ESC] \"&a\" Text (MoveVert720) \"V\"
+
+LEFTMARGIN = [ESC] \"&a\" Text (LeftMargin)  \"L\"
+MOVEROWUP = [ESC] \"&a-60V\"
+MOVEROWDOWN = [ESC] \"&a+60V\"
+
+FONT65 = [ESC] 28 31 32 55 [ESC] 28 73 31 30 68 3354
+FONT153 = [ESC] 28 31 32 55 [ESC] 28 73 31 32 68 3354
+FONT200 = [ESC] 28 31 32 55 [ESC] 28 73 31 32 68 3354
+FONT239 = [ESC] 28 31 32 55 [ESC] 28 73 31 35 68 [ESC] 26 6B 38 68 3354
+DRAWER-1 = [ESC] 26 6c 31 48
+DRAWER-2 = [ESC] 26 6c 34 48
+

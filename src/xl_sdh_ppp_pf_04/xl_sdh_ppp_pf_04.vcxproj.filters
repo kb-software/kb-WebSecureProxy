@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{ef3b48f2-d191-4dcc-9359-0b2c7cc5e92a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{5e3e7f3c-abcd-466e-9c25-a5e2915135cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{2bc2ec56-4247-4ab3-975e-2906edb44d23}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\xl-sdh-ppp-pf-04.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\xl-sdh-ppp-pf-04.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\xl-sdh-ppp-pf-04.rc-pre">
+      <Filter>res</Filter>
+    </None>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>

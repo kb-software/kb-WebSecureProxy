@@ -1,0 +1,38 @@
+table {
+    table-layout:     fixed;
+    width:            100%;
+    border-collapse:  collapse;
+    font-size: 14px;
+}
+tr:not(.head) td:first-child {
+    padding-left: 1em;
+}
+    
+td {
+    word-wrap: break-word;
+    vertical-align: top;
+}
+
+td input{
+    margin-top: 10px;
+}
+
+.fixedWidth {
+    width: 7em;
+}
+input[type="submit"] {
+    float: right;
+}
+.stretch {
+    width: 100%;
+}
+
+
+tr.head td {
+    font-weight:      bold;
+    border-bottom: 1px solid black;
+}
+
+tr.head + tr td{
+    line-height: 0.5em;
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    
+    <link rel="stylesheet" href="admin.css"/>
+    <script src="admin.js"></script>
+    <script>
+    /*redirect to equal index.hsl sub-page, if this is the toplevel document*/
+    if ( top == self ) {
+        top.location = "index.hsl?page="+encodeURIComponent(location.pathname+location.search);
+    }
+    </script>
+</head>
+<body id="admin-frame">
+    <!-- parse search string and get current wsp handle -->
+    <script>
+        dsg_query.m_init();
+        str_handle = dsg_query.m_get('<xsl:value-of select="wspadmin/query/select-cluster"/>');
+        if ( str_handle == "" ) {
+            str_handle = "0";
+        }
+    </script>
+    
+    <div class="admin-content">
+        <table>
+            <colgroup>
+                <col width="30%">
+                <col width="*">
+            </colgroup>
+            <xsl:for-each select="wspadmin/listen">
+                <!-- gateway -->
+                <tr class="thead">
+                    <th><xsl:value-of select="lang/html/admin/listen/gate-name"/></th>
+                    <th><xsl:value-of select="wspadmin/listen/gate-name"/></th>
+                </tr>
+
+                <!-- tcp stuff -->
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/listen/port"/>:</td>
+                    <td><xsl:value-of select="wspadmin/listen/port"/></td>
+                </tr>
+                <xsl:if test="wspadmin/listen/backlog &gt; -1">
+                    <tr>
+                        <td><xsl:value-of select="lang/html/admin/listen/backlog"/>:</td>
+                        <td><xsl:value-of select="wspadmin/listen/backlog"/></td>
+                    </tr>
+                </xsl:if>
+                <xsl:if test="wspadmin/listen/timeout &gt; 0">
+                    <tr>
+                        <td><xsl:value-of select="lang/html/admin/listen/timeout"/>:</td>
+                        <td><xsl:value-of select="wspadmin/listen/timeout"/> sec</td>
+                    </tr>
+                </xsl:if>
+                
+                <!-- configurtation stuff -->
+                <tr><td>&nbsp;</td><td></td></tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/listen/time-conf-loaded"/>:</td>
+                    <td>
+                        <script>
+                            dsg_date.m_write(<xsl:value-of select="wspadmin/listen/time-conf-loaded"/>*1000);
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/listen/active-conf"/>:</td>
+                    <td><xsl:value-of select="wspadmin/listen/active-conf"/></td>
+                </tr>
+                <!--<tr>
+                    <td><xsl:value-of select="lang/html/admin/listen/use-listen-gateway"/>:</td>
+                    <td><xsl:value-of select="wspadmin/listen/use-listen-gateway"/></td>
+                </tr>-->
+
+                <!-- tcp connections on this listen gate -->
+                <tr><td>&nbsp;</td><td></td></tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/listen/active-sessions"/>:</td>
+                    <td><xsl:value-of select="wspadmin/listen/current-sessions"/></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/listen/max-sessions"/>:</td>
+                    <td><xsl:value-of select="wspadmin/listen/max-sessions"/> (<xsl:value-of select="wspadmin/listen/max-sessions-exceeded"/> <xsl:value-of select="lang/html/admin/listen/max-sessions-exceeded"/>)</td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/listen/start-sessions"/>:</td>
+                    <td><xsl:value-of select="wspadmin/listen/start-session"/></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/listen/peak-sessions"/>:</td>
+                    <td><xsl:value-of select="wspadmin/listen/max-sessions-reached"/></td>
+                </tr>
+                
+                <!-- session treshhold stuff -->
+                <xsl:if test="wspadmin/listen/threshold &gt; 0">
+                    <tr><td>&nbsp;</td><td></td></tr>
+                    <tr>
+                        <td><xsl:value-of select="lang/html/admin/listen/threshold"/>:</td>
+                        <td><xsl:value-of select="wspadmin/listen/threshold"/></td>
+                    </tr>
+                    <tr>
+                        <td><xsl:value-of select="lang/html/admin/listen/over-threshold"/>:</td>
+                        <td><xsl:value-of select="wspadmin/listen/over-threshold"/></td>
+                    </tr>
+                    <tr>
+                        <td><xsl:value-of select="lang/html/admin/listen/time-last-threshold"/>:</td>
+                        <td>
+                            <script>
+                                dsg_date.m_write(<xsl:value-of select="wspadmin/listen/time-last-threshold"/>*1000);
+                            </script>
+                        </td>
+                    </tr>
+                </xsl:if>
+            </xsl:for-each>
+        </table>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

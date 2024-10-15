@@ -1,0 +1,22 @@
+﻿<skins>
+	<skin>
+        <name>default</name>
+        <display-name>Default</display-name>
+    </skin>
+	<skin>
+        <name>maroon</name>
+        <display-name>Maroon</display-name>
+    </skin>
+	<skin>
+        <name>green</name>
+        <display-name>Green</display-name>
+    </skin>
+	<skin>
+        <name>blue</name>
+        <display-name>Dark-Blue</display-name>
+    </skin>
+    <skin>
+        <name>No-Banner</name>
+        <display-name>No-Banner</display-name>
+    </skin>
+</skins>

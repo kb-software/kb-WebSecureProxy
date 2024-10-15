@@ -1,0 +1,35 @@
+<xsl:template match="rdp-page">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link type="text/css" rel="stylesheet" href="webtermrdp.css" />
+    
+    <xsl:call-template name="html-header"/>
+    <xsl:call-template name="rdp-init"/>
+
+    <script type="text/javascript" language="javascript" src="webtermrdp/webtermrdp.nocache.js"></script>
+    
+</head>
+<body>
+    <div id="page-outer" class="wide-page">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+            <noscript>
+                <div
+                    style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+                    Your web browser must have JavaScript enabled in order for this
+                    application to display correctly.</div>
+            </noscript>
+            
+            <div id="webtermContainer" oncontextmenu="return false;"></div>
+		</div>
+    </div>
+	<!-- OPTIONAL: include this if you want history support -->
+	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
+</body>
+</html>
+
+</xsl:template>

@@ -1,0 +1,414 @@
+%SET INCLCHAIN=1;
+%SET INCLFIFO=1;
+%IF DEF UNIX$GCC;
+%DISP:precompiling islock03-64.pre for Unix GCC
+        .intel_syntax noprefix
+.text
+%DEFT COMMENT:#
+%DEFT METH$NAME1:.globl
+%MACRO:METH$START(mtext:name);
+%TEXT:name;:
+%MEND;
+%MACRO:METH$END(mtext:name);
+%MEND;
+%DEFT METH$NAME3:
+%DEFT REGPAR1:rdi
+%DEFT REGPAR2:rsi
+%DEFT REGPAR3:rdx
+%MACRO:SET$EQU(mtext:label,mtext:value);
+        .equ %TEXT:label;,(%TEXT:value;)
+%MEND;
+%TEXT:COMMENT;use: xbprecomp01 islock03-64.pre islock03-64-gcc.s "xxSET UNIX$GCC=1;"
+%TEXT:COMMENT;     xx = double-percent
+%CEND;
+%IF DEF WIN$VC;
+%DISP:precompiling islock03-64.pre for Windows Visual Studio
+%DEFT COMMENT:;
+%DEFT METH$NAME1:public
+%MACRO:METH$START(mtext:name);
+%TEXT:name; proc
+%MEND;
+%MACRO:METH$END(mtext:name);
+%TEXT:name; endp
+%MEND;
+%DEFT METH$NAME3:
+%MACRO:SET$EQU(mtext:label,mtext:value);
+%TEXT:label; equ (%TEXT:value;)
+%MEND;
+%DEFT REGPAR1:rcx
+%DEFT REGPAR2:rdx
+%DEFT REGPAR3:r8
+%TEXT:COMMENT;use: xbprecomp01 islock03-64.pre islock03-64-win.asm "xxSET WIN$VC=1;"
+%TEXT:COMMENT;     xx = double-percent
+%TEXT:COMMENT;     cmasm64 islock03-64-win
+%CEND;
+%IF DEF UNIX$NASM;
+%DISP:precompiling islock03-64.pre for Unix NASM
+section .text
+%DEFT COMMENT:;
+%DEFT METH$NAME1:global_function
+%MACRO:METH$START(mtext:name);
+%TEXT:name;:
+_%TEXT:name;:
+%MEND;
+%MACRO:METH$END(mtext:name);
+%MEND;
+%DEFT METH$NAME3:
+%DEFT REGPAR1:rdi
+%DEFT REGPAR2:rsi
+%DEFT REGPAR3:rdx
+%MACRO:SET$EQU(mtext:label,mtext:value);
+%TEXT:label; equ (%TEXT:value;)
+%MEND;
+%TEXT:COMMENT;use: xbprecomp01 islock03-64.pre islock03-64-nasm.s "xxSET UNIX$NASM=1;"
+%TEXT:COMMENT;     xx = double-percent
+%CEND;
+%TEXT:COMMENT;        islock03-64.asm
+%TEXT:COMMENT;        copyright (c) HOB electronic D-90556 Cadolzburg, Germany
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2012
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2013
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2015
+%TEXT:COMMENT;        derived from ISLOCK01.asm written 27.11.01 KB
+%TEXT:COMMENT;        28.08.12 KB
+%TEXT:COMMENT;        24.09.13 KB
+%TEXT:COMMENT;        11.10.13 KB
+%TEXT:COMMENT;        30.09.15 KB
+%TEXT:COMMENT;
+%IF DEF UNIX$NASM;
+
+; This macro will generate the right symbols for the external functions, depending on output format
+%%ifidn __OUTPUT_FORMAT__,macho64
+%%macro global_function 1
+global %%1
+global _%%1
+%%endmacro
+%%else
+%%macro global_function 1
+global %%1:function
+global _%%1:function
+%%endmacro
+%%endif
+
+; This define removes the PTR parts of the code, that NASM can't use
+%%define PTR
+
+; NASM doesn't use OWORD. As this is only used with cmpxchg16b, width specifiers are unnecessary anyway.
+%%define OWORD
+%CEND;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_inc_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_dec_1
+%IF DEF INCLCHAIN;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_inc_2
+%CEND;
+%IF DEF XYZ1;
+        %TEXT:METH$NAME1; _m_hl_lock_inc_2
+        %TEXT:METH$NAME1; _m_hl_lock_dec_2
+%CEND;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_dec_b
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_set_true_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_set_null_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_set_var_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_cas_var_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_cas_var_2
+%IF DEF INCLCHAIN;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_get_chain
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_put_chain
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_check_chain
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_spin_enter
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_set_zero_1
+%CEND;
+%IF DEF INCLFIFO;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_get_fifo
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_put_fifo
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_check_fifo
+%CEND;
+
+%IF DEF WIN$VC;
+.code
+%CEND;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_inc_1( int * )%TEXT:COMMENT;
+%METH$START(m_hl_lock_inc_1);
+        lock inc DWORD PTR[ %TEXT:REGPAR1; ];
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_inc_1);
+%TEXT:COMMENT;       extern "C" void m_hl_lock_dec_1( int * );
+%METH$START(m_hl_lock_dec_1);
+        lock dec DWORD PTR[ %TEXT:REGPAR1; ];
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_dec_1);
+%TEXT:COMMENT;       extern "C" BOOL m_hl_lock_dec_b( int * )%TEXT:COMMENT;
+%TEXT:COMMENT;       return TRUE if value less than zero
+%METH$START(m_hl_lock_dec_b);
+        xor  rax,rax                        %TEXT:COMMENT;clear return code
+        lock dec DWORD PTR[ %TEXT:REGPAR1; ];
+        jns  pdecb_40
+        inc  rax
+pdecb_40:
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_dec_b);
+%IF DEF INCLCHAIN;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_inc_2( long long int * )%TEXT:COMMENT;
+%METH$START(m_hl_lock_inc_2);
+        lock inc QWORD PTR[ %TEXT:REGPAR1; ];
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_inc_2);
+%CEND;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_set_true_1( int * );
+%METH$START(m_hl_lock_set_true_1);
+        xor  eax,eax                        %TEXT:COMMENT;clear register
+        inc  eax                            %TEXT:COMMENT;set to one / TRUE
+%IF DEF B170727;
+        lock xchg eax,DWORD PTR[ %TEXT:REGPAR1; ]       %TEXT:COMMENT;exchange operands
+%CEND;
+        xchg eax,DWORD PTR[ %TEXT:REGPAR1; ]            %TEXT:COMMENT;exchange operands
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_set_true_1);
+%TEXT:COMMENT;       extern "C" void m_hl_lock_set_null_1( void * );
+%METH$START(m_hl_lock_set_null_1);
+        xor  rax,rax                        %TEXT:COMMENT;clear register
+%IF DEF B170727;
+        lock xchg rax,QWORD PTR[ %TEXT:REGPAR1; ]       %TEXT:COMMENT;exchange operands
+%CEND;
+        xchg rax,QWORD PTR[ %TEXT:REGPAR1; ]            %TEXT:COMMENT;exchange operands
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_set_null_1);
+%TEXT:COMMENT;       extern "C" void m_hl_lock_set_var_1( void **, void * );
+%METH$START(m_hl_lock_set_var_1);
+%IF DEF B170727;
+        lock xchg %TEXT:REGPAR2;,QWORD PTR[ %TEXT:REGPAR1; ]       %TEXT:COMMENT;exchange operands
+%CEND;
+        xchg %TEXT:REGPAR2;,QWORD PTR[ %TEXT:REGPAR1; ]            %TEXT:COMMENT;exchange operands
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_set_var_1);
+%TEXT:COMMENT;       extern "C" BOOL m_hl_cas_var_1( void **, void **, void * );
+%METH$START(m_hl_cas_var_1);
+        mov  rax,QWORD PTR[ %TEXT:REGPAR2; ];          %TEXT:COMMENT;get old content
+        lock cmpxchg QWORD PTR[ %TEXT:REGPAR1; ],%TEXT:REGPAR3;;  %TEXT:COMMENT;exchange operands
+        jz   pcasv1_20;                     %TEXT:COMMENT;  did succeed
+                                            %TEXT:COMMENT;did not succeed
+        mov  QWORD PTR[ %TEXT:REGPAR2; ],rax;          %TEXT:COMMENT;set old content - return
+        xor  rax,rax;                       %TEXT:COMMENT;clear register - return value FALSE
+        ret;                                %TEXT:COMMENT;return to calling program
+pcasv1_20:                                  %TEXT:COMMENT;did succeed
+        xor  rax,rax;                       %TEXT:COMMENT;clear register - return value
+        inc  rax;                           %TEXT:COMMENT;set register to one - return value TRUE
+        ret;                                %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_cas_var_1);
+%TEXT:COMMENT;       extern "C" BOOL m_hl_cas_var_2( void **, void **, void ** );
+%METH$START(m_hl_cas_var_2);
+        mov  r9,rbx                         %TEXT:COMMENT;save register
+%IF NDF WIN$VC;
+        mov  r10,rdx;                       %TEXT:COMMENT;get address third parameter
+%CEND;
+%IF DEF WIN$VC;
+        mov  r10,rcx;                       %TEXT:COMMENT;get address first parameter
+        mov  r11,rdx;                       %TEXT:COMMENT;get address second parameter
+%CEND;
+        mov  rax,QWORD PTR[ %TEXT:REGPAR2; ];          %TEXT:COMMENT;get old content part one
+        mov  rdx,QWORD PTR[ %TEXT:REGPAR2; + DVOIDSI ] %TEXT:COMMENT;get old content part two
+%IF NDF WIN$VC;
+        mov  rbx,QWORD PTR[ r10 ];          %TEXT:COMMENT;get new content part one
+        mov  rcx,QWORD PTR[ r10 + DVOIDSI ] %TEXT:COMMENT;get new content part two
+        lock cmpxchg16b OWORD PTR[ rdi ];   %TEXT:COMMENT;exchange operands
+%IFF;
+        mov  rbx,QWORD PTR[ %TEXT:REGPAR3; ];          %TEXT:COMMENT;get new content part one
+        mov  rcx,QWORD PTR[ %TEXT:REGPAR3; + DVOIDSI ] %TEXT:COMMENT;get new content part two
+        lock cmpxchg16b OWORD PTR[ r10 ];   %TEXT:COMMENT;exchange operands
+%CEND;
+        jz   pcasv2_20;                     %TEXT:COMMENT;  did succeed
+                                            %TEXT:COMMENT;did not succeed
+%IF NDF WIN$VC;
+        mov  QWORD PTR[ %TEXT:REGPAR2; ],rax;          %TEXT:COMMENT;set old content part one - return
+        mov  QWORD PTR[ %TEXT:REGPAR2; + DVOIDSI ],rdx %TEXT:COMMENT;set old content part two - return
+%CEND;
+%IF DEF WIN$VC;
+        mov  QWORD PTR[ r11 ],rax;          %TEXT:COMMENT;set old content part one - return
+        mov  QWORD PTR[ r11 + DVOIDSI ],rdx %TEXT:COMMENT;set old content part two - return
+%CEND;
+        xor  rax,rax;                       %TEXT:COMMENT;clear register - return value FALSE
+        mov  rbx,r9;                        %TEXT:COMMENT;restore register
+        ret;                                %TEXT:COMMENT;return to calling program
+pcasv2_20:                                  %TEXT:COMMENT;did succeed
+        xor  rax,rax;                       %TEXT:COMMENT;clear register - return value
+        inc  rax;                           %TEXT:COMMENT;set register to one - return value TRUE
+        mov  rbx,r9;                        %TEXT:COMMENT;restore register
+        ret;                                %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_cas_var_2);
+%IF DEF INCLCHAIN;
+%IF DEF XYZ1;
+%TEXT:COMMENT;       extern "C" void * m_hl_get_chain( void **, int * );
+%METH$START(m_hl_get_chain);
+        mov  rax,QWORD PTR[ %TEXT:REGPAR1; ];          %TEXT:COMMENT;get first element in chain
+        cmp  rax,0                          %TEXT:COMMENT;is the cache empty?
+        jne  pgetc_40                       %TEXT:COMMENT;  no, get buffer from chain
+        ret                                 %TEXT:COMMENT;return to calling program
+pgetc_40:
+        push rdx                            %TEXT:COMMENT;save register
+        mov  edx,255
+pgetc_60:
+        xor  eax,eax                        %TEXT:COMMENT;clear register
+        lock cmpxchg DWORD PTR[ %TEXT:REGPAR2; ],edx  %TEXT:COMMENT;exchange operands
+        jnz  pgetc_60                       %TEXT:COMMENT;  failed, try again
+        mov  rax,QWORD PTR[ %TEXT:REGPAR1; ];          %TEXT:COMMENT;get first element in chain
+        cmp  rax,0                          %TEXT:COMMENT;is the cache empty?
+        je   pgetc_80                       %TEXT:COMMENT;  yes
+pgetc_68:
+        mov  rdx,QWORD PTR[ rax ];          %TEXT:COMMENT;get second element in chain
+        lock cmpxchg QWORD PTR[ %TEXT:REGPAR1; ],rdx   %TEXT:COMMENT;exchange operands
+        jz   pgetc_80                       %TEXT:COMMENT;  succeeded
+        cmp  rax,0                          %TEXT:COMMENT;is the cache empty?
+        jne  pgetc_68                       %TEXT:COMMENT;  no, try again
+pgetc_80:
+        xor  edx,edx                        %TEXT:COMMENT;clear register
+%IF DEF B170727;
+        lock xchg edx,DWORD PTR[ %TEXT:REGPAR2; ]  %TEXT:COMMENT;exchange operands
+%CEND;
+        xchg edx,DWORD PTR[ %TEXT:REGPAR2; ]       %TEXT:COMMENT;exchange operands
+        pop  rdx                            %TEXT:COMMENT;restore register
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_get_chain);
+%TEXT:COMMENT;       extern "C" void m_hl_put_chain( void **, void * );
+%METH$START(m_hl_put_chain);
+        mov  rax,QWORD PTR[ %TEXT:REGPAR1; ];          %TEXT:COMMENT;get first element in chain
+pputc_20:
+        mov  QWORD PTR[ %TEXT:REGPAR2; ],rax           %TEXT:COMMENT;anchor of chain gets next buffer
+        lock cmpxchg QWORD PTR[ %TEXT:REGPAR1; ],%TEXT:REGPAR2;   %TEXT:COMMENT;exchange operands
+        jnz  pputc_20                       %TEXT:COMMENT;  did not succeed
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_put_chain);
+%CEND;
+%SET$EQU(DVOIDSI,8);
+%TEXT:COMMENT;       extern "C" void * m_hl_get_chain( void ** );
+%METH$START(m_hl_get_chain);
+        mov  rax,QWORD PTR[ %TEXT:REGPAR1; ];    %TEXT:COMMENT;get first element in chain
+        test rax,rax                        %TEXT:COMMENT;is the cache empty?
+        jne  pgetc_40                       %TEXT:COMMENT;  no, get buffer from chain
+        ret                                 %TEXT:COMMENT;return to calling program
+pgetc_40:
+%IF DEF OLD01;
+        push rdx                            %TEXT:COMMENT;save register
+        push rcx                            %TEXT:COMMENT;save register
+        push rbx                            %TEXT:COMMENT;save register
+%CEND;
+        mov  r8,rbx                         %TEXT:COMMENT;save register
+%IF DEF WIN$VC;
+        mov  r9,rcx                         %TEXT:COMMENT;get address second parameter
+%CEND;
+pgetc_60:
+%IF NDF NO_TRACE;
+%IF NDF WIN$VC;
+        lock inc QWORD PTR[ rdi + (2*DVOIDSI)];
+%IFF;
+        lock inc QWORD PTR[ r9 + (2*DVOIDSI)];
+%CEND;
+%CEND;
+%IF NDF WIN$VC;
+        mov  rdx,QWORD PTR[ rdi + DVOIDSI ] %TEXT:COMMENT;get count
+        mov  rax,QWORD PTR[ rdi + DVOIDSI ] %TEXT:COMMENT;get first element in chain
+%IFF;
+        mov  rdx,QWORD PTR[ r9 + DVOIDSI ]  %TEXT:COMMENT;get count
+        mov  rax,QWORD PTR[ r9 ];           %TEXT:COMMENT;get first element in chain
+%CEND;
+        test rax,rax                        %TEXT:COMMENT;is the cache empty?
+        je   pgetc_80                       %TEXT:COMMENT;  no, get buffer from chain
+        mov  rbx,QWORD PTR[ rax ];          %TEXT:COMMENT;get second element in chain
+        mov  rcx,rdx                        %TEXT:COMMENT;get count
+        inc  rcx                            %TEXT:COMMENT;increase count
+%IF NDF WIN$VC;
+        lock cmpxchg16b OWORD PTR[ rdi ]    %TEXT:COMMENT;exchange operands
+%IFF;
+        lock cmpxchg16b OWORD PTR[ r9 ]     %TEXT:COMMENT;exchange operands
+%CEND;
+        jz   pgetc_80                       %TEXT:COMMENT;  succeeded
+        test rax,rax                        %TEXT:COMMENT;is the cache empty?
+        jne  pgetc_60                       %TEXT:COMMENT;  no, try again
+pgetc_80:
+%IF NDF NO_TRACE;
+%IF NDF WIN$VC;
+        lock dec QWORD PTR[ rdi + (2*DVOIDSI)];
+%IFF;
+        lock dec QWORD PTR[ r9 + (2*DVOIDSI)];
+%CEND;
+%CEND;
+%IF DEF OLD01;
+        pop  rbx                            %TEXT:COMMENT;restore register
+        pop  rcx                            %TEXT:COMMENT;restore register
+        pop  rdx                            %TEXT:COMMENT;restore register
+%CEND;
+        mov  rbx,r8                         %TEXT:COMMENT;restore register
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_get_chain);
+%TEXT:COMMENT;       extern "C" void m_hl_put_chain( void **, void * );
+%METH$START(m_hl_put_chain);
+        mov  rax,QWORD PTR[ %TEXT:REGPAR1; ];          %TEXT:COMMENT;get first element in chain
+pputc_20:
+%IF NDF NO_TRACE;
+        lock inc QWORD PTR[ %TEXT:REGPAR1; + (3*DVOIDSI)];
+%CEND;
+        mov  QWORD PTR[ %TEXT:REGPAR2; ],rax           %TEXT:COMMENT;anchor of chain gets next buffer
+        lock cmpxchg QWORD PTR[ %TEXT:REGPAR1; ],%TEXT:REGPAR2;   %TEXT:COMMENT;exchange operands
+        jnz  pputc_20                       %TEXT:COMMENT;  did not succeed
+%IF NDF NO_TRACE;
+        lock dec QWORD PTR[ %TEXT:REGPAR1; + (3*DVOIDSI)];
+%CEND;
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_put_chain);
+%TEXT:COMMENT;       extern "C" void * m_hl_check_chain( void ** );
+%METH$START(m_hl_check_chain);
+        mov  rax,QWORD PTR[ %TEXT:REGPAR1; ];          %TEXT:COMMENT;get first element in chain
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_check_chain);
+%TEXT:COMMENT;       extern "C" void * m_hl_get_fifo( void ** );
+%TEXT:COMMENT;       extern "C" void m_hl_put_fifo( void **, void * );
+%TEXT:COMMENT;       extern "C" void * m_hl_check_fifo( void ** );
+%TEXT:COMMENT;       extern "C" void m_hl_spin_enter( int * );
+%METH$START(m_hl_spin_enter);
+%SET DEF$NICE=1;
+%IF DEF OLD01;
+        push rdx
+%CEND;
+        mov  edx,255
+p_spin_enter_20:
+        xor  eax,eax                        %TEXT:COMMENT;clear register
+%IF DEF DEF$NICE;
+p_spin_enter_24:
+%CEND;
+        lock cmpxchg DWORD PTR[ %TEXT:REGPAR1; ],edx  %TEXT:COMMENT;exchange operands
+%IF NDF DEF$NICE;
+        jnz  p_spin_enter_20
+%CEND;
+%IF DEF DEF$NICE;
+        jz   p_spin_enter_60
+p_spin_enter_40:
+        mov  eax,DWORD PTR[ %TEXT:REGPAR1; ]
+        cmp  eax,0
+        jne  p_spin_enter_40
+        jmp  p_spin_enter_24
+p_spin_enter_60:
+%CEND;
+%IF DEF OLD01;
+        pop  rdx
+%CEND;
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_spin_enter);
+%TEXT:COMMENT;       extern "C" void m_hl_lock_set_zero_1( int * );
+%METH$START(m_hl_lock_set_zero_1);
+        xor  eax,eax                        %TEXT:COMMENT;clear register
+%IF DEF B170727;
+        lock xchg eax,DWORD PTR[ %TEXT:REGPAR1; ]  %TEXT:COMMENT;exchange operands
+%CEND;
+        xchg eax,DWORD PTR[ %TEXT:REGPAR1; ]       %TEXT:COMMENT;exchange operands
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_set_zero_1);
+%CEND;
+%IF DEF INCLFIFO;
+%INCLUDE:islock03-64-fifo-03.pcopy
+%CEND;
+%IF DEF WIN$VC;
+        end
+%CEND;
+%IF DEF B160414;  - because of CLANG
+%IF DEF UNIX$GCC;
+        .end
+%CEND;
+%CEND;

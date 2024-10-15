@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="refresh" content="3; url=/public/login.hsl" /> <!-- Automatic redirect -->
+    
+    <xsl:call-template name="redirect-embedded"/>
+    <script>
+        var dsg_date = {
+            m_write: function( in_milliseconds )
+            {
+                document.write( this.m_to_string(in_milliseconds) );
+            },
+            
+            m_to_string: function( in_milliseconds )
+            {
+                var dsl_today = new Date();
+                var dsl_epoch = new Date( in_milliseconds );
+                var inl_hours = dsl_epoch.getHours();
+                var inl_min   = dsl_epoch.getMinutes();
+                var inl_sec   = dsl_epoch.getSeconds();
+                var inl_day   = dsl_epoch.getDate();
+                var inl_month = dsl_epoch.getMonth() + 1;
+                var inl_year  = dsl_epoch.getYear();
+                
+                if (    inl_day   == dsl_today.getDate()
+                     && inl_month == dsl_today.getMonth() + 1
+                     && inl_year  == dsl_today.getYear()      ) {
+                    return   ((inl_hours < 10) ? "0"  + inl_hours : inl_hours ) + ":"
+                           + ((inl_min < 10)   ? "0"  + inl_min   : inl_min   ) + ":"
+                           + ((inl_sec < 10)   ? "0"  + inl_sec   : inl_sec   );
+                }
+
+                return   ((inl_day < 10)   ? "0"  + inl_day   : inl_day   ) + "."
+                       + ((inl_month < 10) ? "0"  + inl_month : inl_month ) + "."
+                       + ((inl_year < 999) ? inl_year + 1900  : inl_year  ) + " "
+                       + ((inl_hours < 10) ? "0"  + inl_hours : inl_hours ) + ":"
+                       + ((inl_min < 10)   ? "0"  + inl_min   : inl_min   ) + ":"
+                       + ((inl_sec < 10)   ? "0"  + inl_sec   : inl_sec   );
+            }
+        }
+    </script>
+
+    <xsl:if test="user/end-control-applet">
+        <link rel="stylesheet" type="text/css" href="css/slide.css"/>
+        <script src="js/slide.js"></script>
+        <script>
+            /**
+             * function m_callback
+             * java applet will call this function when ready
+            */
+            function m_callback()
+            {
+                //-------------------------------------
+                // stop progress bar:
+                //-------------------------------------
+                m_progress_stop();
+            }
+        </script>
+    </xsl:if>
+</head>
+<body>
+    <div id="page-outer" class="fixed-page simple">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <div id="logo"></div>
+            <div id="page-inner">
+            <xsl:if test="logout/session">
+                <xsl:value-of select="lang/html/logout/existing-sessions"/>
+                <table class="session-list">
+                    <tr>
+                        <th><xsl:value-of select="lang/html/logout/time-started"/></th>
+                        <th><xsl:value-of select="lang/html/logout/protocol"/></th>
+                        <th><xsl:value-of select="lang/html/logout/server-entry"/></th>
+                    </tr>
+                    <tbody>
+                        <xsl:for-each select="logout/session">
+                            <tr>
+                                <td><script>dsg_date.m_write(<xsl:value-of select="logout/session/time-started"/>*1000);</script></td>
+                                <td><xsl:value-of select="logout/session/protocol"/></td>
+                                <td><xsl:value-of select="logout/session/server-entry"/></td>
+                            </tr>
+                        </xsl:for-each>
+                    </tbody>
+                </table>        
+                <xsl:value-of select="lang/html/logout/ensure"/><br/>
+                <form method="POST" action="/public/logout.hsl">
+                    <input type="submit" name="logout"><xsl:attribute name="value"><xsl:value-of select="lang/html/logout/real-logoff"/></xsl:attribute></input>
+                    <input type="submit" onclick="history.back(); return false;"><xsl:attribute name="value"><xsl:value-of select="lang/html/logout/go-back"/></xsl:attribute></input>
+                </form>
+            </xsl:if>
+            <xsl:if test="not(logout/session)">
+                <xsl:value-of select="user/message"/>
+                <xsl:if test="not(user/message)">
+                    <xsl:value-of select="lang/html/logout/logout"/>
+                </xsl:if>
+                <br/>
+                <br/>
+                <form method="get" action="/public/login.hsl">
+                    <button><xsl:value-of select="lang/html/logout/return-to-login"/></button>
+                </form>
+                <br/>
+                <xsl:if test="user/end-control-applet">
+                    <!-- start progress bar -->
+                    <applet
+                      code="hob.tools.ca.CtrlApplet.class"
+                      codebase="/public/lib"
+                      archive="ca-J2.jar"
+                      width="1px" height="1px" >
+                        <param name="version"    value="1.5"/>
+                        <param name="mode"       value="STOP"/>
+                        <param name="props_file" value="compliance-check-tmp.props"/>
+                        <param name="version_webserver"><xsl:attribute name="value"><xsl:value-of select="rdvpn/iws/version"/></xsl:attribute></param>
+                        <param name="jnlp_name"><xsl:attribute name="value"><xsl:value-of select="lang/html/quarantine/compliance-check"/></xsl:attribute></param>
+                        <br/><xsl:value-of select="lang/html/all/java-missing1"/>
+                        <a target="_blank"><xsl:attribute name="href"><xsl:value-of select="lang/html/all/java-missing-link"/></xsl:attribute><xsl:value-of select="lang/html/all/java-missing2"/></a>
+                        <xsl:value-of select="lang/html/all/java-missing3"/><br/>
+                   </applet>
+                </xsl:if>
+            </xsl:if>
+            </div>
+		</div>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

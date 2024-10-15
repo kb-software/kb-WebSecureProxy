@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\sdh-vnc-bridge.rc-pre .\res\sdh-vnc-bridge.rc

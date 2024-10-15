@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\sdh_hobphone2.rc-pre .\res\sdh_hobphone2.rc

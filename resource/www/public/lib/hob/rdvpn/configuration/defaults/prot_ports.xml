@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HOB_-_20WSP_-_20Protocols>
+<C01>
+<name>RDP Windows Terminal Server - HOB EXT-1</name>
+<port>3389</port>
+<protocol>HOB-RDP-EXT1</protocol>
+</C01>
+<C02>
+<name>RDP Windows Terminal Server</name>
+<port>3389</port>
+<protocol>RDP</protocol>
+</C02>
+<C03>
+<name>TELNET 3270</name>
+<port>23</port>
+<protocol>3270</protocol>
+</C03>
+<C04>
+<name>TELNET 5250</name>
+<port>23</port>
+<protocol>5250</protocol>
+</C04>
+<C05>
+<name>TELNET VT</name>
+<port>23</port>
+<protocol>VT</protocol>
+</C05>
+<C06>
+<name>TELNET HOBCOM</name>
+<port>23</port>
+<protocol>HOBY</protocol>
+</C06>
+<C07>
+<name>TELNET HP 700</name>
+<port>23</port>
+<protocol>HP700</protocol>
+</C07>
+<C08>
+<name>SIEMENS 9750</name>
+<port>23</port>
+<protocol>SM9750</protocol>
+</C08>
+<C09>
+<name>SIEMENS  97801</name>
+<port>23</port>
+<protocol>SM97801</protocol>
+</C09>
+<C10>
+<name>MAIL POP3</name>
+<port>110</port>
+<protocol>POP3</protocol>
+<cdh_class>hob.proxy.mailcpr.cdhpop</cdh_class>
+<cdh_category>1</cdh_category>
+</C10>
+<C11>
+<name>MAIL IMAP</name>
+<port>143</port>
+<protocol>IMAP</protocol>
+<cdh_class>hob.proxy.mailcpr.cdhimap</cdh_class>
+<cdh_category>1</cdh_category>
+</C11>
+<C12>
+<name>MAIL SEND</name>
+<protocol>SMTP</protocol>
+<port>25</port>
+<cdh_class>hob.proxy.mailcpr.cdhsmtp</cdh_class>
+<cdh_category>1</cdh_category>
+</C12>
+<C13>
+<name>SSH</name>
+<protocol>SSH</protocol>
+<port>22</port>
+</C13>
+</HOB_-_20WSP_-_20Protocols>

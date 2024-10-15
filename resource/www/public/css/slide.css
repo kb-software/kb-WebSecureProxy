@@ -1,0 +1,115 @@
+/**
+ * slide.css
+ * get your own view for 'slide window'
+ *
+ * Michael Jakobs, 17.03.09
+ * Copyright HOB GmbH Germany 
+*/
+
+
+
+/*+---------------------------------------------------------------------+*/
+/*| background stuff:                                                   |*/
+/*+---------------------------------------------------------------------+*/
+/**
+ * the background div
+ * overwrites total browser window with 50% opactiy
+*/
+.sl_background {
+   background-color:       #000000;
+}
+
+
+
+/*+---------------------------------------------------------------------+*/
+/*| foreground stuff:                                                   |*/
+/*+---------------------------------------------------------------------+*/
+/**
+ * the foreground div
+ * containing anything you want to (plus title and text)
+*/
+.sl_foreground {
+   width:                  400px;
+   height:                 120px;
+   padding:                20px;
+   -moz-border-radius:     10px;    /* mozilla           */
+   -khtml-border-radius:   10px;    /* konqueror, safari */
+   border-radius:          10px;    /* css3              */
+   border-style:           solid;
+   border-width:           3px;
+   border-color:           #000080;/*#FFFFFF;*/
+   text-align:             center;
+   color:                  #000080;/*#FFFFFF;*/
+   background-color:       #C3D3FD;/*#000000;*/
+}
+
+/**
+ * title of foreground div
+*/
+.sl_title {
+   font-family:            Arial,Helvetica,Helv,sans-serif;
+   font-size:              1.5em;
+}
+
+/**
+ * text of foreground div
+*/
+.sl_text {
+   width:                  300px;
+   height:                 20px;
+   margin:                 auto;
+   margin-top:             20px;
+   font-family:            Arial,Helvetica,Helv,sans-serif;
+   font-size:              0.8em;
+   text-align:             left;
+}
+
+/* 
+ * the close button
+ * if wanted, a close button is shown
+*/
+.sl_close {
+   width:                  32px;
+   height:                 32px;
+   margin:                 -50px 0 0 200px;
+   background-image:       url(/public/img/navigate_cross.png);
+}
+
+
+
+/*+---------------------------------------------------------------------+*/
+/*| progress bar stuff:                                                 |*/
+/*+---------------------------------------------------------------------+*/
+/**
+ * the container which holds the bar
+*/
+.sl_progress {
+   width:                  300px;
+   height:                 20px;
+   margin:                 auto;
+   margin-top:             40px;
+   border-style:           solid;
+   border-width:           1px;
+   border-color:           #000080;/*#FFFFFF;*/
+   text-align:             left;
+}
+
+/**
+ * the (moving) bar
+*/
+.sl_pbar {
+   width:                  20px;
+   height:                 20px;
+   /*background-color:       #000080;/*#ff8c00;*/
+   background-image:       url(/public/img/bar2.gif);
+}
+
+/**
+ * the text
+*/
+.sl_ptext {
+   width:                  300px;
+   height:                 20px;
+   margin:                 auto;
+   text-align:             center;
+}

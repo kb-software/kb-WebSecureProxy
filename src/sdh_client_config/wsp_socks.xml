@@ -1,0 +1,530 @@
+﻿<sslgate-configuration>
+  <general>
+    <max-poss-work-thread>128</max-poss-work-thread>
+    <max-active-work-thread>64</max-active-work-thread>
+    <network-statistic-level>9</network-statistic-level>
+  </general>
+
+  <connection>
+    <name>SELECT</name>
+    <language>en</language>
+    <function>SELECT-SOCKS5-HTTP</function>
+    <max-session>1000</max-session>
+
+    <gateport>4015</gateport>
+
+    <SSL-config-file>D:\Bauer\WSP\svn\resource\sslsettings\hserver.cfg</SSL-config-file>
+    <SSL-certdb-file>D:\Bauer\WSP\svn\resource\sslsettings\hserver.cdb</SSL-certdb-file>
+    <SSL-password-file>D:\Bauer\WSP\svn\resource\sslsettings\hserver.pwd</SSL-password-file>
+
+    <select-server>
+      <server-list-name>SERVERLIST</server-list-name>
+    </select-server>
+    <authentication-library>
+      <library-file-name>plugins/web_server/xl-sdh-webserver-01.dll</library-file-name>
+	<configuration-section>
+        <!-- log -->
+        <log>
+          <enable>NO</enable>
+          <!--<level>WARN</level>-->
+        </log>
+
+        <allow-multiple-login>YES</allow-multiple-login>
+        <!--<allow-multiple-login>NO</allow-multiple-login>-->
+        <close-sessions-at-logout>YES</close-sessions-at-logout>
+
+       
+        <domains>
+          <!-- show domain list at login -->
+          <show-list>YES</show-list>
+
+
+          <domain>
+            <name>hobc02p-ldap</name>
+            <type>ldap</type>
+            <display-name>hob.de - ldap</display-name>
+            <corresponding-LDAP-service>hobc02p-ldap</corresponding-LDAP-service>
+           <!-- <auto-user-create>YES</auto-user-create>
+            <base>dc=hobc02p-ldap</base>
+            <admin-dn>cn=administrator,ou=users,dc=internal,dc=root</admin-dn>
+            <admin-password>adminpw</admin-password>
+            <admin-group-dn></admin-group-dn>-->
+          </domain>
+
+  
+        </domains>
+
+        <!-- check client ineta -->
+        <check-client-ineta>NO</check-client-ineta>
+
+        <!-- roles -->
+        <roles>
+          <!-- guest role -->
+          <role>
+            <name>Guest</name>
+            <priority>1</priority>
+
+            <portlets>
+              <portlet>
+                <name>jterm</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wsg</name>
+                <open>YES</open>
+              </portlet>
+            </portlets>
+            
+            <gui-skin>Dark-Blue</gui-skin>
+
+            <members>
+              <member>
+                <type>ou</type>
+                <dn>dc=hob,dc=de</dn>
+              </member>
+              
+            </members>
+            
+         
+
+            <allow-browser-caching>NO</allow-browser-caching>
+
+            <!--<compliancecheck>guest</compliancecheck>-->
+          </role>
+
+          <!-- user rule -->
+          <role>
+            <name>Normal User</name>
+            <priority>50</priority>
+
+            <portlets>
+              <portlet>
+                <name>settings</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wsg</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>ppptunnel</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>wfa</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>jterm</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>hobphone</name>
+              </portlet>
+            </portlets>
+
+            <allow-browser-caching>NO</allow-browser-caching>
+            <gui-skin>Maroon</gui-skin>
+
+            <members>
+              <member>
+                <type>group</type>
+                <dn>CN=RD-VPN-7,OU=Groups,DC=hob,DC=de</dn>
+              </member>
+              
+              <member>
+                <type>ou</type>
+                <dn>dc=hob,dc=de</dn>
+              </member>
+            </members>
+
+            <!--<compliancecheck>user</compliancecheck>-->
+          </role>
+
+          <!-- admin role -->
+          <role>
+            <name>Administrator</name>
+            <priority>100</priority>
+
+            <portlets>
+              <portlet>
+                <name>admin</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>settings</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wsg</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>jterm</name>
+              </portlet>
+              <portlet>
+                <name>ppptunnel</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>wfa</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>wspuc</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>hobphone</name>
+              </portlet>
+            </portlets>
+
+            <!--<domains>
+              <entry>frankjm-1</entry>
+              <entry>hobc02p-ldap</entry>
+              <entry>hob.de</entry>
+            </domains>-->
+
+            <allow-browser-caching>YES</allow-browser-caching>
+            <allow-configuration>
+              <wsg-bookmarks>YES</wsg-bookmarks>
+              <wfa-bookmarks>YES</wfa-bookmarks>
+              <session-bookmarks>YES</session-bookmarks>
+              <desktop-on-demand>YES</desktop-on-demand>
+              <others>YES</others>
+            </allow-configuration>
+            <!--<site-after-auth>/protected/portlets/admin/status.hsl</site-after-auth>-->
+            <!--<gui-skin>default</gui-skin>
+            <gui-skin>maroon</gui-skin>
+            <gui-skin>no-banner</gui-skin>
+            <gui-skin>Dark-Blue</gui-skin>
+            <gui-skin>olive</gui-skin>-->
+            <gui-skin>no-banner</gui-skin>
+
+            <session-time-limits>
+              <!--
+                all session limits are given in seconds
+                
+                maximal-period:
+                    Set time limit for active RDVPN sessions
+                
+                idle-period:
+                    Set time limit for active but idle RDVPN sessions
+              -->
+              <maximal-period>28800</maximal-period>
+              <idle-period>360</idle-period>
+            </session-time-limits>
+
+            <members>
+              <member>
+                <type>group</type>
+                <dn>cn=domainAdministrators,ou=groups,dc=hobsoft,dc=root</dn>
+              </member>
+              <member>
+                <type>user</type>
+                <dn>CN=Jakobsml,OU=Connectivity,OU=Development,OU=Cadolzburg,DC=hob,DC=de</dn>
+              </member>
+              <member>
+                <type>name</type>
+                <name>rettnear</name>
+              </member>
+              <member>
+                <type>ou</type>
+                <dn>cn=Users,dc=hob-rc01,dc=local</dn>
+              </member>
+              <member>
+                <type>name</type>
+                <name>gurovmm</name>
+              </member>
+              <member>
+                <type>name</type>
+                <name>hobphone1</name>
+              </member>
+              <member>
+                <type>name</type>
+                <name>neu1</name>
+              </member>
+              <member>
+                <type>name</type>
+                <name>neu2</name>
+              </member>
+              <member>
+                <type>name</type>
+                <name>neu3</name>
+              </member>
+              <member>
+                <type>name</type>
+                <name>neu4</name>
+              </member>
+              <member>
+                <type>name</type>
+                <name>neu5</name>
+              </member>
+              <member>
+                <type>name</type>
+                <name>systemAdmin</name>
+              </member>
+            </members>
+
+            <!--<target-filter>filter</target-filter>-->
+
+            <!--<select-server>
+              <server-list-name>Terminal Servers</server-list-name>
+              <server-list-name>Desktop-On-Demand</server-list-name>
+              <server-list-name>Outlook</server-list-name>
+            </select-server>-->
+
+            <!--<compliancecheck>admin</compliancecheck>-->
+          </role>
+
+          <role>
+            <name>demo-skin-default</name>
+            <priority>101</priority>
+
+            <portlets>
+              <portlet>
+                <name>admin</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>settings</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wsg</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>jterm</name>
+              </portlet>
+              <portlet>
+                <name>ppptunnel</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wfa</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>hobphone</name>
+              </portlet>
+            </portlets>
+            
+            <gui-skin>Default</gui-skin>
+
+            <members>
+              <member>
+                <type>name</type>
+                <name>poweruser</name>
+              </member>
+            </members>            
+          </role>
+
+          <role>
+            <name>demo-skin-maroon</name>
+            <priority>101</priority>
+
+            <portlets>
+              <portlet>
+                <name>admin</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>settings</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wsg</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>jterm</name>
+              </portlet>
+              <portlet>
+                <name>ppptunnel</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wfa</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>hobphone</name>
+              </portlet>
+            </portlets>
+
+            <domains>
+              <entry>USERGROUP1</entry>
+            </domains>
+
+            <gui-skin>maroon</gui-skin>
+
+            <members>
+              <member>
+                <type>name</type>
+                <name>maroon</name>
+              </member>
+            </members>
+          </role>
+
+          <role>
+            <name>demo-skin-no-banner</name>
+            <priority>101</priority>
+
+            <portlets>
+              <portlet>
+                <name>admin</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>settings</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wsg</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>jterm</name>
+              </portlet>
+              <portlet>
+                <name>ppptunnel</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wfa</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>hobphone</name>
+              </portlet>
+            </portlets>
+
+            <domains>
+              <entry>USERGROUP1</entry>
+            </domains>
+
+            <gui-skin>no-banner</gui-skin>
+
+            <members>
+              <member>
+                <type>name</type>
+                <name>no-banner</name>
+              </member>
+            </members>
+          </role>
+
+          <role>
+            <name>demo-skin-olive</name>
+            <priority>101</priority>
+
+            <portlets>
+              <portlet>
+                <name>admin</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>settings</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wsg</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>jterm</name>
+              </portlet>
+              <portlet>
+                <name>ppptunnel</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wfa</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>hobphone</name>
+              </portlet>
+            </portlets>
+
+            <domains>
+              <entry>USERGROUP1</entry>
+            </domains>
+
+            <gui-skin>olive</gui-skin>
+
+            <members>
+              <member>
+                <type>name</type>
+                <name>olive</name>
+              </member>
+            </members>
+          </role>
+        </roles>
+      </configuration-section>
+      
+    </authentication-library>
+	<dynamic-LDAP>YES</dynamic-LDAP>
+   <!-- <user-list>
+    
+	  <user-group-name>USERLIST</user-group-name> 
+    </user-list>-->
+  </connection>
+<LDAP-service>
+    <name>hobc02p-ldap</name>
+    <LDAP-entry>
+      <name>LDAP_hobc02p</name>
+      <comment>comment</comment>
+      <LDAP-template>Microsoft Active Directory</LDAP-template>
+      <serverineta>172.22.160.80</serverineta>
+      <serverport>389</serverport>
+      <wait-connect>20</wait-connect>
+      <timeout-search>20</timeout-search>
+      <search-result-buffer-size>2048</search-result-buffer-size>
+      <max-session>10</max-session>
+      <base-dn>dc=hob-rc01,dc=local</base-dn>
+      <dn>cn=Demo1,cn=Users,dc=hob-rc01,dc=local</dn>
+      <password>Hobtext99%</password>
+    </LDAP-entry>
+  </LDAP-service>
+  <LDAP-template>
+    <name>Microsoft Active Directory</name>
+    <user-attribute>person</user-attribute>
+    <group-attribute>group</group-attribute>
+    <member-attribute>member</member-attribute>
+    <membership-attribute>memberOf</membership-attribute>
+    <user-prefix>cn</user-prefix>
+    <search-default-attribute>sAMAccountName</search-default-attribute>
+  </LDAP-template>
+    <!-- list of servers -->
+    <server-list>
+        <name>SERVERLIST</name>
+    
+        <!-- REAL VNC ENTERPRISE SERVERS -->
+        <server-entry>
+           <name>HOB Client Configuration Provider</name>
+            <function>DIRECT</function>
+            <protocol>HTTP-INTERN</protocol>
+            <server-data-hook>
+                <library-file-name>D:\Bauer\WSP\trunk\bin\debug\windows\x86\plugins\client-config\xl-sdh-client-config.dll</library-file-name>
+                <configuration-section>
+
+                </configuration-section>
+            </server-data-hook>
+        </server-entry>     
+   </server-list>
+
+	
+  <user-group>
+	<name>USERLIST</name>
+	<user>
+	  <name>a</name> 
+	  <password-plain>a</password-plain> 
+	</user>
+	<user>
+	  <name>prog01</name> 
+	  <password-plain>p123p123</password-plain> 
+	</user>
+  </user-group>
+
+</sslgate-configuration>

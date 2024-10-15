@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    
+    <link rel="stylesheet" href="admin.css"/>
+    <script src="admin.js"></script>
+    <script src="jquery.js"></script>
+    <xsl:call-template name="redirect-embedded"/>
+    <script>
+        strg_handleKey = '<xsl:value-of select="wspadmin/query/select-cluster"/>';
+        <xsl:if test="wspadmin/cluster &gt; 1">
+            bog_clusters = true;
+        </xsl:if>
+        <xsl:if test="wspadmin/cluster &lt; 2">
+            bog_clusters = false;
+        </xsl:if>
+        
+        $(function() {
+            $('a[target="admin-content"]').click(function() {
+                $(".selected").removeClass("selected");
+                $(this).addClass("selected");
+            });
+            
+            m_restorePage();
+            
+            window.onpopstate = m_restorePage;
+        });
+    </script>
+    
+    <script src="admin_iframe.js"></script>
+</head>
+<body>
+    <div id="page-outer" class="menu-page">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <!-- 
+                left hand menu containing:
+                    links to special pages
+                    cluster node overview        
+            -->
+            <ul id="menu">
+                <a id="logo"> 
+                    <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                    <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+                </a>
+
+                <xsl:if test="wspadmin/cluster &gt; 1">
+                    <li><a target="admin-content" data-cluster="-1"><xsl:attribute name="href">users.hsl?<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1&<xsl:value-of select="wspadmin/query/search-user"/>=*&<xsl:value-of select="wspadmin/query/search-usergroup"/>=*&<xsl:value-of select="wspadmin/query/search-with-wildcard"/>=1</xsl:attribute><xsl:value-of select="lang/html/admin/active-users"/></a></li>
+                    <li><a target="admin-content" data-cluster="-1"><xsl:attribute name="href">sessions.hsl?<xsl:value-of select="wspadmin/query/select-cluster"/>=-1&<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1&<xsl:value-of select="wspadmin/query/search-user"/>=*&<xsl:value-of select="wspadmin/query/search-usergroup"/>=*&<xsl:value-of select="wspadmin/query/search-with-wildcard"/>=1</xsl:attribute><xsl:value-of select="lang/html/admin/active-sessions"/></a></li>
+                    <li><a target="admin-content" data-cluster="-1"><xsl:attribute name="href">traces_all.hsl?<xsl:value-of select="wspadmin/query/select-cluster"/>=-1&<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1&<xsl:value-of select="wspadmin/query/search-user"/>=*&<xsl:value-of select="wspadmin/query/search-usergroup"/>=*&<xsl:value-of select="wspadmin/query/search-with-wildcard"/>=1</xsl:attribute><xsl:value-of select="lang/html/admin/trace-user"/></a></li>
+                    <li><a target="admin-content" data-cluster="-1"><xsl:attribute name="href">log.hsl?<xsl:value-of select="wspadmin/query/select-cluster"/>=-1&<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1</xsl:attribute><xsl:value-of select="lang/html/admin/logfile-page"/></a></li>
+                    <xsl:for-each select="wspadmin/cluster">
+                        <xsl:if test="wspadmin/cluster/process-id &gt; 0">
+                            <li class="server-name"><xsl:value-of select="wspadmin/cluster/conf-name"/> - <xsl:value-of select="wspadmin/cluster/server-name"/></li>
+                            <li class="indented"><a target="admin-content"><xsl:attribute name="data-cluster"><xsl:value-of select="wspadmin/cluster/select-handle"/></xsl:attribute><xsl:attribute name="href">status.hsl?<xsl:value-of select="wspadmin/query/select-cluster"/>=<xsl:value-of select="wspadmin/cluster/select-handle"/></xsl:attribute><xsl:value-of select="lang/html/admin/system-overview"/></a></li>
+                            <li class="indented"><a target="admin-content"><xsl:attribute name="data-cluster"><xsl:value-of select="wspadmin/cluster/select-handle"/></xsl:attribute><xsl:attribute name="href">listen.hsl?<xsl:value-of select="wspadmin/query/select-cluster"/>=<xsl:value-of select="wspadmin/cluster/select-handle"/></xsl:attribute><xsl:value-of select="lang/html/admin/listen-overview"/></a></li>
+                            <li class="indented"><a target="admin-content"><xsl:attribute name="data-cluster"><xsl:value-of select="wspadmin/cluster/select-handle"/></xsl:attribute><xsl:attribute name="href">sessions.hsl?<xsl:value-of select="wspadmin/query/select-cluster"/>=<xsl:value-of select="wspadmin/cluster/select-handle"/>&<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1&<xsl:value-of select="wspadmin/query/search-user"/>=*&<xsl:value-of select="wspadmin/query/search-usergroup"/>=*&<xsl:value-of select="wspadmin/query/search-with-wildcard"/>=1</xsl:attribute><xsl:value-of select="lang/html/admin/active-sessions"/></a></li>
+                            <li class="indented"><a target="admin-content"><xsl:attribute name="data-cluster"><xsl:value-of select="wspadmin/cluster/select-handle"/></xsl:attribute><xsl:attribute name="href">log.hsl?<xsl:value-of select="wspadmin/query/select-cluster"/>=<xsl:value-of select="wspadmin/cluster/select-handle"/>&<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1</xsl:attribute><xsl:value-of select="lang/html/admin/logfile-page"/></a></li>
+                            <li class="indented"><a target="admin-content"><xsl:attribute name="data-cluster"><xsl:value-of select="wspadmin/cluster/select-handle"/></xsl:attribute><xsl:attribute name="href">traces.hsl?<xsl:value-of select="wspadmin/query/select-cluster"/>=<xsl:value-of select="wspadmin/cluster/select-handle"/>&<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1&<xsl:value-of select="wspadmin/query/search-user"/>=*&<xsl:value-of select="wspadmin/query/search-usergroup"/>=*&<xsl:value-of select="wspadmin/query/search-with-wildcard"/>=1</xsl:attribute><xsl:value-of select="lang/html/admin/trace-user"/></a></li>
+                        </xsl:if>
+                        <xsl:if test="wspadmin/cluster/process-id &lt; 1">
+                            <li class="server-name warn">
+                                <xsl:attribute name="title"><xsl:value-of select="lang/html/admin/inactive-wsp"/></xsl:attribute>
+                                <xsl:attribute name="alt"><xsl:value-of select="lang/html/admin/inactive-wsp"/></xsl:attribute>
+                                <xsl:value-of select="wspadmin/cluster/conf-name"/>
+                            </li>
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:if>
+                <xsl:if test="wspadmin/cluster &lt; 2">
+                    <!--li style="font-style: italic;"><xsl:value-of select="wspadmin/cluster/server-name"/></li-->
+                    <li><a target="admin-content" href="status.hsl"><xsl:value-of select="lang/html/admin/system-overview"/></a></li>
+                    <li><a target="admin-content" href="listen.hsl"><xsl:value-of select="lang/html/admin/listen-overview"/></a></li>
+                    <li><a target="admin-content"><xsl:attribute name="href">users.hsl?<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1&<xsl:value-of select="wspadmin/query/search-user"/>=*&<xsl:value-of select="wspadmin/query/search-usergroup"/>=*&<xsl:value-of select="wspadmin/query/search-with-wildcard"/>=1</xsl:attribute><xsl:value-of select="lang/html/admin/active-users"/></a></li>
+                    <li><a target="admin-content"><xsl:attribute name="href">sessions.hsl?<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1&<xsl:value-of select="wspadmin/query/search-user"/>=*&<xsl:value-of select="wspadmin/query/search-usergroup"/>=*&<xsl:value-of select="wspadmin/query/search-with-wildcard"/>=1</xsl:attribute><xsl:value-of select="lang/html/admin/active-sessions"/></a></li>
+                    <li><a target="admin-content"><xsl:attribute name="href">log.hsl?<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1</xsl:attribute><xsl:value-of select="lang/html/admin/logfile-page"/></a></li>
+                    <li><a target="admin-content"><xsl:attribute name="href">traces.hsl?<xsl:value-of select="wspadmin/query/select-cluster"/>=<xsl:value-of select="wspadmin/cluster/select-handle"/>&<xsl:value-of select="wspadmin/query/display-total"/>=50&auto-fit=1&<xsl:value-of select="wspadmin/query/search-user"/>=*&<xsl:value-of select="wspadmin/query/search-usergroup"/>=*&<xsl:value-of select="wspadmin/query/search-with-wildcard"/>=1</xsl:attribute><xsl:value-of select="lang/html/admin/trace-user"/></a></li>
+                </xsl:if>
+                <br/>
+                <li><a target="admin-content" data-cluster="-1" href="/RDVPNPluginManager/"><xsl:value-of select="lang/html/admin/plugin-manager"/></a></li>
+                <li><a target="admin-content" data-cluster="-1" href="/public/lib/eaadminExtern.jnlp"><xsl:value-of select="lang/html/admin/user-administration"/></a></li>
+                <li><a target="admin-content" data-cluster="-1" href="/RDVPNDirectoryServices/"><xsl:value-of select="lang/html/admin/ldap-export-import"/></a></li>
+                <li><a target="admin-content" data-cluster="-1" href="/RDVPNCertificateManager/"><xsl:value-of select="lang/html/admin/certificate-manager"/></a></li>
+                <xsl:comment><li><a target="admin-content" data-cluster="-1" href="/RDVPNUpdater/"><xsl:value-of select="lang/html/admin/updater"/></a></li></xsl:comment>
+                <li><a target="admin-content" data-cluster="-1" href="/RDVPN_KeyChanger/keychanger"><xsl:value-of select="lang/html/admin/keychanger"/></a></li>
+                <li><a target="admin-content" data-cluster="-1" href="extensions.hsl"><xsl:value-of select="lang/html/admin/extensions"/></a></li>
+            </ul>
+            <!--
+                right hand stuff
+            -->
+            <iframe id="admin" name="admin-content" frameborder="0" scrolling="no" onload="m_iframeLoaded();" src="status.hsl">
+                    
+            </iframe>
+		</div>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

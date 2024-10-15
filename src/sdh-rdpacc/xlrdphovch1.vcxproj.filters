@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{febee448-7f9b-4ef9-af24-1691764d4160}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{729b98e6-b24d-42ec-8ce9-de192a88c779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{086be4cd-7534-499e-a10c-689572662e4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="codereview">
+      <UniqueIdentifier>{4e1e00a4-12bd-4c8e-bf39-4a62bf44a998}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\xlrdpho1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-cdr-mppc-4.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-cdr-mppc-5.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xs-encry-1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xsl-stor-sdh-big.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xsrdptracer1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xsrdpvch1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\hob-cd-record-1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-rdptracer1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-stor-sdh.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sdh-version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\sdh-rdpacc.rc-pre">
+      <Filter>res</Filter>
+    </None>
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt">
+      <Filter>codereview</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

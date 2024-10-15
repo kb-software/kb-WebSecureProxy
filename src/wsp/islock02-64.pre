@@ -1,0 +1,81 @@
+%IF DEF UNIX$GCC;
+%DISP:precompiling islock02-64.pre for Unix GCC
+        .intel_syntax noprefix
+
+.text
+%DEFT COMMENT:#
+%DEFT METH$NAME1:.globl
+%DEFT METH$NAME2::
+%DEFT METH$NAME3:
+%DEFT REGPAR1:rdi
+%CEND;
+%IF DEF WIN$VC;
+%DISP:precompiling islock02-64.pre for Windows Visual Studio
+%DEFT COMMENT:;
+%DEFT METH$NAME1:public
+%DEFT METH$NAME2: proc
+%DEFT METH$NAME3:
+%DEFT REGPAR1:rcx
+%CEND;
+%TEXT:COMMENT;        islock02-64.asm
+%TEXT:COMMENT;        copyright (c) HOB electronic D-90556 Cadolzburg, Germany
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2012
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2013
+%TEXT:COMMENT;        derived from ISLOCK01.asm written 27.11.01 KB
+%TEXT:COMMENT;        28.08.12 KB
+%TEXT:COMMENT;        24.09.13 KB
+%TEXT:COMMENT;        11.10.13 KB
+%TEXT:COMMENT;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_inc_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_dec_1
+%IF DEF XYZ1;
+        %TEXT:METH$NAME1; _m_hl_lock_inc_2
+        %TEXT:METH$NAME1; _m_hl_lock_dec_2
+%CEND;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_dec_b
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_set_true_1
+
+%IF DEF WIN$VC;
+.code
+%CEND;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_inc_1( int * )%TEXT:COMMENT;
+%TEXT:METH$NAME3;m_hl_lock_inc_1%TEXT:METH$NAME2;
+        lock inc DWORD PTR[ %TEXT:REGPAR1; ];
+        ret                                 %TEXT:COMMENT;return to calling program
+%IF DEF WIN$VC;
+%TEXT:METH$NAME3;m_hl_lock_inc_1 endp
+%CEND;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_dec_1( int * );
+%TEXT:METH$NAME3;m_hl_lock_dec_1%TEXT:METH$NAME2;
+        lock dec DWORD PTR[ %TEXT:REGPAR1; ];
+        ret                                 %TEXT:COMMENT;return to calling program
+%IF DEF WIN$VC;
+%TEXT:METH$NAME3;m_hl_lock_dec_1 endp
+%CEND;
+%TEXT:COMMENT;       extern "C" BOOL m_hl_lock_dec_b( int * )%TEXT:COMMENT;
+%TEXT:COMMENT;       return TRUE if value less than zero
+%TEXT:METH$NAME3;m_hl_lock_dec_b%TEXT:METH$NAME2;
+        xor  rax,rax                        %TEXT:COMMENT;clear return code
+        lock dec DWORD PTR[ %TEXT:REGPAR1; ];
+        jns  pdecb_40
+        inc  rax
+pdecb_40:
+        ret                                 %TEXT:COMMENT;return to calling program
+%IF DEF WIN$VC;
+%TEXT:METH$NAME3;m_hl_lock_dec_b endp
+%CEND;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_set_true_1( int * );
+%TEXT:METH$NAME3;m_hl_lock_set_true_1%TEXT:METH$NAME2;
+        xor  eax,eax                        %TEXT:COMMENT;clear register
+        inc  eax                            %TEXT:COMMENT;set to one / TRUE
+        xchg eax,DWORD PTR[ %TEXT:REGPAR1; ]           %TEXT:COMMENT;exchange operands
+        ret                                 %TEXT:COMMENT;return to calling program
+%IF DEF WIN$VC;
+%TEXT:METH$NAME3;m_hl_lock_set_true_1 endp
+%CEND;
+%IF DEF WIN$VC;
+        end
+%CEND;
+%IF DEF UNIX$GCC;
+        .end
+%CEND;

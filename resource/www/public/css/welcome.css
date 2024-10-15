@@ -1,0 +1,339 @@
+div#portlets.all-closed div.fold {
+    margin: 0.5em 0.2em;
+}
+
+div#content-wrapper.all-closed,
+div.fold-content.closed  {
+    display: none;
+}
+
+#page-inner {
+    position: relative;
+}
+
+div.fold-content {
+    line-height: 1.8em;
+    font-size: 0.6em;
+}
+
+a.content-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    padding: 0.5em;
+    margin-left: -0.5em;
+}
+
+.closed span.close {
+    display: none;
+}
+
+span.close {
+    content: '';
+    display: block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 2em;
+    width: 2.3em; 
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+#portlets .portlet-description {
+    font-size: 0.6em;
+    margin: 0 1em 0.4em;
+    padding: 0.2em 0.4em;
+    border-radius: 0.5em;
+}
+
+#portlets > .fold-title:not(.desc-open) .portlet-description {
+    display: none; 
+}
+
+#portlets .fold-title {
+    display: block;
+    margin: 0.2em 0;
+}
+
+.fold-title.desc-open {
+    border-color: unset;
+}
+
+.fold-title .info {
+    color: rgba(39, 80, 155, 0.4);
+}
+
+.fold-title .info:hover {
+    color: #27509B;
+    background-color: unset;
+}
+
+a.download span[class^="icon"]::after,
+a[href*=".jnlp"]:not(.fold-title)::after {
+  /*Unicode: Downwards Triangle-Headed Arrow to Bar */
+  content: '\279C';
+  font-size: 0.6em;
+  font-weight: normal;
+  display: inline-block;
+  margin-left: 0.5em;
+  line-height: 0.1em;
+  transform: rotate(90deg);
+}
+a.download span[class^="icon"]::after {
+  position: relative;
+  left: 3.7em;
+  top: 5px;
+}
+
+
+
+@media (min-width: 602px) and (min-height:702px) {
+/*if display big enough: slide to left*/
+    div#content-wrapper {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin-left: calc(3.6em - 1px);
+        width: calc(100% - 3.6em);
+        padding: 0.2em 0 0 1.5em;
+    }
+    
+    div#portlets:not(.all-closed) {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        float: left;
+        width: 3.6em;
+        border-right: 1px solid;
+    }
+
+    div#portlets:not(.all-closed) a.fold-title:not(.closed) {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border-color: inherit;
+        border-right-color: white !important;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        width: calc(100% + 1px);
+        z-index: 10;
+        position: relative;
+        margin: 0.2em 0;
+    }
+    
+    div#portlets:not(.all-closed) a.fold-title:not(.closed):focus {
+        box-shadow: 2px 0 1px 1px inset;
+    }
+    
+    div#portlets:not(.all-closed) a.fold-title {
+        display: inline-flex;
+        position: relative;
+    }
+    
+    div#portlets:not(.all-closed) a.fold-title :not(:first-child) {
+        display: none;
+    }
+    
+    div#portlets:not(.all-closed) a.fold-title::after {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+    }
+    
+    div.fold-content a.content-title span:not(.close) {
+        display: none;
+    }
+}
+
+@media (max-width: 601px), (max-height:701px) {
+/*if display to small hide all options, show close "button" in titel*/
+    div#portlets:not(.all-closed) {
+       display: none;
+    }
+    
+    div.fold-content a.content-title span:not(.close) {
+        font-size: 1.5em;
+    }
+}
+
+@media (min-width: 701px) {
+    div#portlets.all-closed {
+        -webkit-column-count: 2;
+           -moz-column-count: 2;
+                column-count: 2;
+    }
+    /*avoid breaking inside icon/heading*/
+    div#portlets > * {
+        break-inside : avoid; /*standard since 2011, todays 2017 and only MS does this*/
+        page-break-inside : avoid; /*firefox?*/
+        -webkit-column-break-inside : avoid; /*chrome/safari, but not working*/
+        overflow: hidden; /*chrome workaround, probably others to*/
+    }
+    
+}
+
+
+a.fold-title h2 {
+    font-size: 0.7em;
+    margin-left: 0.5em;
+}
+
+div.fold-content ul {
+    list-style: none;
+}
+
+div.fold-content ul li {
+    padding-left: 1.5em;
+    position: relative;
+}
+
+div.fold-content ul li:before { 
+    content: "";
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-style: solid;
+    border-width: 0.55em 0 0.55em 0.9em;
+    display: block;
+    height: 0;
+    width: 0;
+    left: 0em;
+    top: 0.35em;
+    position: absolute;
+}
+
+div.title {
+    border-bottom: 1px solid black;
+    margin: 1.5em 0 0.5em;
+}
+
+div#bookmarks {
+    margin: 0.2em 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+}
+
+div#bookmarks-inner {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    overflow: hidden;
+    /*default to spec, but ie has default 0*/
+    flex: 1 1 auto;
+    padding: 0.2em 0;
+}
+
+div#bookmarks-inner > * {
+    font-size: 0.7em;
+    margin: 0 0.2em;
+    padding-right: 0.7em;
+    flex: 0 0 auto;
+}
+div#bookmarks-inner * {
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+div.carousel-left, div.carousel-right {
+    background-image: url("/public/img/bm_arrow.png");
+    background-size: 100% 100%;
+    width: 0.5em;
+    height: 1em;
+    margin: 0 0.5em;
+    flex: 0 0 auto;
+}
+div.carousel-left {
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+            transform: rotate(180deg);
+}
+div#bookmarks.scroll-start div.carousel-left, 
+div#bookmarks.scroll-end   div.carousel-right {
+    background-image: url("/public/img/bm_arrow_disabled.png");
+    pointer-events: none;
+}
+
+div#bookmarks.scroll-start.scroll-end div.carousel-left,
+div#bookmarks.scroll-start.scroll-end div.carousel-right {
+    display: none;
+}
+
+
+div#mobile-content ul.android li:not(.android-app),
+div#mobile-content ul.ios li:not(.ios-app) {
+    display: none;
+}
+
+div#mobile-content ul li.header {
+    font-weight: bold;
+    padding-left: 0; 
+}
+div#mobile-content ul li.header::before {
+    display: none;
+}
+
+
+#welcome .message {
+    padding-top: 0.5em;
+    font-size: 0.7em;
+}
+
+#welcome {
+    padding-bottom: 0.8em;
+}
+
+
+div#wsg-content form {
+    display: flex;
+    align-items: baseline;
+}
+
+div#wsg-content input {
+    flex: 1 0;
+    max-width: 30em;
+}
+button[name="browse"] span {
+    height: 1em;
+    width: 1em;
+}
+
+button[name="browse"] {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    width: 1em;
+    height: 1em;
+}
+
+a.configure {
+    float: right;
+    height: 1em;
+    width: 1em;
+}
+
+a.configure span {
+    width: 100%;
+    height: 100%;
+    border: 0px; /*IE 10 bug*/
+}
+
+div.title a.configure {
+    position: relative;
+    bottom: 0.15em;
+}
+
+div#wsg-content a.configure {
+    line-height: initial;
+    width: 1.66em;
+    height: 1.66em;
+}
+
+span.productName {
+    /*color: hsl(219, 20%, 38%);
+    font-style: italic;*/
+    white-space: nowrap;
+}

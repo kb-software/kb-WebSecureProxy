@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    <link rel="stylesheet" href="cookies.css"/>
+</head>
+<body>
+    <div id="page-outer" class="wide-page logo-right">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <a id="logo"> 
+                <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+            </a>
+            <div id="page-inner">
+                <xsl:if test="user/cookie &lt; 1">
+                    <xsl:value-of select="lang/html/cookies/no-cookies"/>
+                </xsl:if>
+                <table>
+                  <colgroup>
+                    <col class="fixedWidth">
+                    <col width="*">
+                    <col class="right">
+                  </colgroup>
+                  <tbody>
+                <xsl:for-each select="user/cookie">
+                    <xsl:if test="user/cookie/domain-changed">
+                        <tr class="head">
+                            <td colspan="3"><xsl:value-of select="lang/html/cookies/cookies"/> "<xsl:value-of select="user/cookie/domain"/>"</td>
+                        </tr>
+                        <tr class="separator">
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
+                    </xsl:if>
+                    <tr>
+                        <td><xsl:value-of select="lang/html/cookies/name"/></td>
+                        <td><xsl:value-of select="user/cookie/name"/></td>
+                        <td rowspan="3">
+                            <form action="" method="POST">
+                                <input type="hidden" name="domain"><xsl:attribute name="value"><xsl:value-of select="user/cookie/domain"/></xsl:attribute></input>
+                                <input type="hidden" name="path"><xsl:attribute name="value"><xsl:value-of select="user/cookie/path"/></xsl:attribute></input>
+                                <input type="hidden" name="name"><xsl:attribute name="value"><xsl:value-of select="user/cookie/name"/></xsl:attribute></input>
+                                <input type="hidden"><xsl:attribute name="name"><xsl:value-of select="queryparam/rm-cookie"/></xsl:attribute><xsl:attribute name="value"><xsl:value-of select="user/cookie/handle"/></xsl:attribute></input>
+                                <input type="submit"><xsl:attribute name="value"><xsl:value-of select="lang/html/cookies/delete"/></xsl:attribute></input>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><xsl:value-of select="lang/html/cookies/path"/></td>
+                        <td><xsl:value-of select="user/cookie/path"/></td>
+                    </tr>
+                    <tr>
+                        <td><xsl:value-of select="lang/html/cookies/expires"/></td>
+                        <td>                                                
+                            <xsl:if test="user/cookie/discard">
+                                <xsl:value-of select="lang/html/cookies/end-of-session"/>
+                            </xsl:if>
+                            <xsl:if test="not(user/cookie/discard)">
+                                <script>m_write_date(<xsl:value-of select="user/cookie/expires"/>*1000)</script>
+                            </xsl:if>
+                        </td>
+                    </tr>
+                    <xsl:if test="user/cookie/secure">
+                        <tr>
+                            <td><xsl:value-of select="lang/html/cookies/secure"/></td>
+                            <td><xsl:value-of select="user/cookie/secure"/></td>
+                            <td></td>
+                        </tr>
+                    </xsl:if>
+                    <xsl:if test="user/cookie/http-only">
+                        <tr>
+                            <td><xsl:value-of select="lang/html/cookies/http-only"/></td>
+                            <td><xsl:value-of select="user/cookie/http-only"/></td>
+                            <td></td>
+                        </tr>
+                    </xsl:if>
+                    <tr>
+                        <td><xsl:value-of select="lang/html/cookies/value"/></td>
+                        <td colspan="2"><xsl:value-of select="user/cookie/value"/></td>
+                    </tr>
+                    <tr class="separator">
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                </xsl:for-each>
+                  </tbody>
+                </table>
+            </div>
+		</div>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

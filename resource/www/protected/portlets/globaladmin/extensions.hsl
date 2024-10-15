@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    
+    <link rel="stylesheet" href="admin.css"/>
+    <script src="admin.js"></script>
+    <script>
+    /*redirect to equal index.hsl sub-page, if this is the toplevel document*/
+    if ( top == self ) {
+        top.location = "index.hsl?page="+encodeURIComponent(location.pathname+location.search);
+    }
+    </script>
+</head>
+<body id="admin-frame">   
+    <ul class="extensions-list hobtext">
+        <li><a href="install/vdiwsp/win/HOB_VDI.exe"><xsl:value-of select="lang/html/admin/extensions/vdiwsp"/></a></li>
+        <li><a href="install/wolagent/win/install.exe"><xsl:value-of select="lang/html/admin/extensions/wolagent-win"/></a></li>
+        <li><a href="install/wolagent/java/hlwolr_unix.tar.gz"><xsl:value-of select="lang/html/admin/extensions/wolagent-unix"/></a></li>
+        <li><a href="install/wtslb/win/HOB_RD_Balancer.exe"><xsl:value-of select="lang/html/admin/extensions/wtslb"/></a></li>
+        <li><a href="install/hl_secu_mgr/Web_Installers/InstData/Windows/VM/install.exe"><xsl:value-of select="lang/html/admin/extensions/secman-win"/></a></li>
+        <li><a href="install/hl_secu_mgr/Web_Installers/InstData/Linux/VM/install.bin"><xsl:value-of select="lang/html/admin/extensions/secman-lin"/></a></li>
+        <li><a href="install/hl_secu_mgr/Web_Installers/InstData/MacOSX/NoVM/install.zip"><xsl:value-of select="lang/html/admin/extensions/secman-mac"/></a></li>
+        <li><a href="install/printer_drivers/HOB_PDF_Printer.exe">HOB PDF Printer (exe)</a></li>
+        <li><a href="install/printer_drivers/HOB_PDF_Printer.zip">HOB PDF Printer (zip)</a></li>
+        <li><a href="install/printer_drivers/HOB_PCL_Printer.exe">HOB PCL Printer (exe)</a></li>
+    </ul>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

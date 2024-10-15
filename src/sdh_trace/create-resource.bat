@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\sdh_trace.rc-pre .\res\sdh_trace.rc

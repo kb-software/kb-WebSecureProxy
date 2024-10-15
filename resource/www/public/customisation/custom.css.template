@@ -1,0 +1,165 @@
+/* Template file with examples for configuring logo and color schema;
+   add your customizations to the file custom.css */
+
+/* logo */
+
+#logo {
+	height: 2.3em;
+    min-width: 5em;
+	background-image: url("/public/custom/<filename>");
+}
+
+/* color scheme*/
+
+.hobtext {
+  color: #27509B;
+}
+
+.hobtext-inverted {
+  color: white;
+  background-color: #27509B;
+}
+
+.hobtext-bordered {
+  color: #27509B;
+  border-color: #27509B;
+}
+
+a:focus, input:focus, select:focus {
+  box-shadow: 0 0 4px 2px #27509B;
+}
+
+input, select, button {
+  background-color: #efefef;
+}
+
+button, input[type=submit], input[type=button] {
+  color: white;
+  background-color: #27509B;
+  border-color: #27509B;
+}
+button:hover, input[type=submit]:hover, input[type=button]:hover {
+  color: #27509B;
+  background-color: rgba(39, 80, 155, 0.2);
+}
+
+div#page-outer.menu-page ul#menu {
+  color: #27509B;
+}
+
+div#page-outer::after {
+  background-color: #27509B;
+  border-color: #A5A5A5;
+}
+
+div#page-area {
+	border: 1px #A5A5A5 solid;
+	background-color: white;
+}
+div#footer {
+	border: 1px #A5A5A5 solid;
+	background-color: white;
+}
+.ddmenu > ul {
+  background:  #ececec;
+  border-color: #A5A5A5;
+}
+div#page-outer.menu-page ul#menu {
+  border-color: #A5A5A5;
+}
+
+
+/* other icons and images*/
+
+body {
+    background-image: url("/public/img/hintergrund.jpg");
+}
+
+div.carousel-left, div.carousel-right {
+    background-image: url("/public/img/bm_arrow.png");
+}
+div#bookmarks.scroll-start div.carousel-left, 
+div#bookmarks.scroll-end   div.carousel-right {
+    background-image: url("/public/img/bm_arrow_disabled.png");
+    pointer-events: none;
+}
+table span.selectable:hover + span.favorite-icon,
+table span.selectable + span.favorite-icon:hover,
+table span.default + span.favorite-icon {
+    background-image: url("/public/img/favorit.png"); 
+}
+table span.default:hover + span.favorite-icon,
+table span.default + span.favorite-icon:hover {
+    background-image: url("/public/img/favorit_deselected.png"); 
+}
+
+.icon-bookmark {
+    background-image: url("/public/img/icon_bookmark.png");
+}
+
+.icon-globaladmin {
+    background-image: url("/public/img/icon_settings.png");
+}
+.icon-admin {
+    background-image: url("/public/img/icon_eaadmin.png");
+}
+.icon-webterm {
+    background-image: url("/public/img/icon_webterm.png");
+}
+.icon-jwtsa {
+    background-image: url("/public/img/icon_jwtsa.png");
+}
+.icon-jterm {
+    background-image: url("/public/img/icon_jterm.png");
+}
+.icon-wsg {
+    background-image: url("/public/img/icon_wsg.png");
+}
+.icon-wfa {
+    background-image: url("/public/img/icon_wfa.png");
+}
+.icon-wspuc {
+    background-image: url("/public/img/icon_wspuc.png");
+}
+.icon-hobphone {
+    background-image: url("/public/img/icon_hobphone.png");
+}
+.icon-ppptunnel {
+    background-image: url("/public/img/icon_ppptunnel.png");
+}
+.icon-settings {
+    background-image: url("/public/img/icon_settings.png");
+}
+.icon-mobile {
+    background-image: url("/public/img/icon_mobile.png");
+}
+
+.icon-installer {
+    background-image: url("/public/img/arrow_down.png");
+}
+.icon-uninstaller {
+    background-image: url("/public/img/arrow_down_grey.png");
+}
+
+.icon-up {
+    background-image: url("/public/img/arrow_up.png");
+}
+.icon-down {
+    background-image: url("/public/img/arrow_down.png");
+}
+.icon-add {
+    background-image: url("/public/img/add.png");
+}
+.icon-delete {
+    background-image: url("/public/img/delete.png");
+}
+
+.icon-close {
+    background-image: url("/public/img/close.png");
+}
+.icon-configure {
+    background-image: url("/public/img/zahnrad.png");
+}
+.icon-goto {
+    background-image: url("/public/img/dreieck_inverted.png");
+}

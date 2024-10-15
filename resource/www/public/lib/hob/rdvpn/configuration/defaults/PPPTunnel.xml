@@ -1,0 +1,12 @@
+<HOB-PPP-Tunnel>
+    <server-entry-name></server-entry-name>
+    <address></address>
+    <localhost></localhost>
+    <system-parameters>
+        <windows>rasdial HOB-L2TP-01 %TEXT:wsp_userid; %TEXT:wsp_password; /PHONEBOOK:HOB-PPP-T1-01.pbk</windows>
+              <mac>-detach refuse-chap lock passive : ipcp-accept-local ipcp-accept-remote crtscts usepeerdns noccp novj idle 1800 mtu 1410 mru 1410 debug dump connect-delay 5000 nodefaultroute call hobppptunnel ipparam hob-%%TEXT:snw_ineta;-%%text:snw_mask; user %TEXT:wsp_userid; password %TEXT:wsp_password;</mac>
+              <freebsd>-detach refuse-chap lock passive : ipcp-accept-local ipcp-accept-remote crtscts noccp novj idle 1800 mtu 1410 mru 1410 debug nodefaultroute call hobppptunnel ipparam hob-%%TEXT:snw_ineta;-%%text:snw_mask; user %TEXT:wsp_userid;</freebsd>
+              <solaris>-detach refuse-chap lock passive : ipcp-accept-local ipcp-accept-remote crtscts usepeerdns noccp novj idle 1800 mtu 1410 mru 1410 debug dump connect-delay 5000 nodefaultroute call hobppptunnel ipparam hob-%%TEXT:snw_ineta;-%%text:snw_mask; user %TEXT:wsp_userid; password %TEXT:wsp_password;</solaris>
+              <linux>-detach refuse-chap refuse-eap lock passive : ipcp-accept-local ipcp-accept-remote crtscts usepeerdns noccp novj idle 1800 mtu 1410 mru 1410 debug dump connect-delay 5000 nodefaultroute call hobppptunnel ipparam hob-%%TEXT:snw_ineta;-%%text:snw_mask; user %TEXT:wsp_userid; password %TEXT:wsp_password;</linux>
+    </system-parameters>
+</HOB-PPP-Tunnel>

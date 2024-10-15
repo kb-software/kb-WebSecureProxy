@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    
+    <link rel="stylesheet" href="admin.css"/>
+    <script src="admin.js"></script>
+    <script>
+    /*redirect to equal index.hsl sub-page, if this is the toplevel document*/
+    if ( top == self ) {
+        top.location = "index.hsl?page="+encodeURIComponent(location.pathname+location.search);
+    }
+    </script>
+</head>
+<body id="admin-frame">
+    <!-- parse search string and get current wsp handle -->
+    <script>
+        dsg_query.m_init();
+        str_handle = dsg_query.m_get('<xsl:value-of select="wspadmin/query/select-cluster"/>');
+        if ( str_handle == "" ) {
+            str_handle = "0";
+        }
+    </script>
+    
+    <div class="admin-content">
+        <table>
+            <colgroup>
+                <col width="30%">
+                <col width="*">
+            </colgroup>
+            <!-- general stuff -->
+            <tr class="thead">
+                <th><xsl:value-of select="lang/html/admin/status/wsp"/></th>
+                <th></th>
+            </tr>
+            <tr>
+                <td><xsl:value-of select="lang/html/admin/status/version"/>:</td>
+                <td><xsl:value-of select="wspadmin/cluster/wsp-query"/></td>
+            </tr>
+            <tr>
+                <td><xsl:value-of select="lang/html/admin/status/group"/>:</td>
+                <td><xsl:value-of select="wspadmin/cluster/server-group"/></td>
+            </tr>
+            <tr>
+                <td><xsl:value-of select="lang/html/admin/status/location"/>:</td>
+                <td><xsl:value-of select="wspadmin/cluster/server-location"/></td>
+            </tr>
+            <tr>
+                <td><xsl:value-of select="lang/html/admin/status/process-id"/>:</td>
+                <td><xsl:value-of select="wspadmin/cluster/process-id"/></td>
+            </tr>
+            <tr>
+                <td><xsl:value-of select="lang/html/admin/status/start-time"/>:</td>
+                <td>
+                    <script>
+                        dsg_date.m_write(<xsl:value-of select="wspadmin/cluster/start-time"/>);
+                    </script>
+                </td>
+            </tr>
+            
+            <xsl:if test="wspadmin/cluster &gt; 1">
+                <tr><td>&nbsp;</td><td></td></tr>
+
+                <!-- load balancing stuff -->
+                <tr class="thead">
+                    <th><xsl:value-of select="lang/html/admin/status/load-balancing"/></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/status/listen-active"/>:</td>
+                    <td><xsl:value-of select="wspadmin/cluster/active"/></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/status/load-bal-load"/>:</td>
+                    <td><xsl:value-of select="wspadmin/cluster/lb-load"/></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/admin/status/load-bal-last-report"/>:</td>
+                    <td>
+                        <script>
+                            dsg_date.m_write(<xsl:value-of select="wspadmin/cluster/lb-time"/> * 1000);
+                        </script>
+                    </td>
+                </tr>
+            </xsl:if>
+        </table>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

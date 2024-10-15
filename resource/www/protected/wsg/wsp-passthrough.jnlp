@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File from the WSP Passthrough-->
+<jnlp codebase="https://<%=url_jnlp%>/public/lib/"> 
+  
+  <information>
+    <title>WSP Passthrough</title>
+    <vendor>HOB</vendor>
+    <homepage href="http://www.hobsoft.com/"/>
+    <description>WSP Passthrough</description>
+    <description kind="short">WSP Passthrough</description>
+    <description kind="tooltip">WSP Passthrough</description>
+    <description kind="on-line">WSP Passthrough</description>
+    <!--
+    	<icon href="images/wsp_passthrough.png"/>
+    	<icon kind="splash" href="images/wsp_passthrough.png"/>
+    -->
+    <update check="always"/>
+  </information> 
+ 
+  <security>
+      <all-permissions/>
+  </security>
+  
+  <resources>
+    <j2se version="1.5+"/>
+    <property name="jnlp.packEnabled" value="true"/>
+    <jar href="wsp_passthrough.jar" main="true"/>
+    <jar href="HOBssl-J2.jar" download="eager"/>
+  </resources>
+  
+  <application-desc main-class="hob.wsp_passthrough.main_class">
+      <argument>-n</argument><argument><%=wsp-url%></argument>
+      <argument>-p</argument><argument><%=wsp-port%></argument>
+      <argument>-u</argument><argument><%=hsocks-user%></argument>
+      <argument>-s</argument><argument><%=password%></argument>
+      <argument>-cdb</argument><argument><%=client-cdb%></argument>
+      <argument>-cfg</argument><argument><%=client-cfg%></argument>
+      <argument>-pwd</argument><argument><%=client-pwd%></argument>
+  </application-desc>
+</jnlp>

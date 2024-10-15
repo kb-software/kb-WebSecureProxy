@@ -1,0 +1,595 @@
+/*+-------------------------------------------------------------------+*/
+/*|                                                                   |*/
+/*| PROGRAM NAME: xsl-http-header-1.cpp                               |*/
+/*| -------------                                                     |*/
+/*|  program for processing of HTTP headers                           |*/
+/*|    on server side and on client side                              |*/
+/*|  part of HOB Framework                                            |*/
+/*|  KB + Alexander Urlaub 31.08.12                                   |*/
+/*|                                                                   |*/
+/*| COPYRIGHT:                                                        |*/
+/*| ----------                                                        |*/
+/*|  Copyright (C) HOB Germany 2012                                   |*/
+/*|                                                                   |*/
+/*+-------------------------------------------------------------------+*/
+
+/**
+   RFC 2616
+     Hypertext Transfer Protocol -- HTTP/1.1
+   RFC 1738
+     Uniform Resource Locators (URL)
+*/
+
+%MACRO:M$DEF$METHOD( MQUOTE:TNAME, MTEXT:TVALUE );
+   { "%TEXT:TNAME;", %INT:L'TNAME;, %TEXT:TVALUE; },
+%IF DEF FORKEDIT;
+   }
+%CEND;
+%MEND;
+%MACRO:M$DEF$OPT1( MQUOTE:TNAME, MTEXT:TVALUE );
+   { "%TEXT:TNAME;", %INT:L'TNAME;, %TEXT:TVALUE; },
+%IF DEF FORKEDIT;
+   }
+%CEND;
+%MEND;
+
+/*+-------------------------------------------------------------------+*/
+/*| System and library header files.                                  |*/
+/*+-------------------------------------------------------------------+*/
+
+//#ifndef HL_LINUX
+#ifdef HL_UNIX
+#include <unistd.h>
+#endif
+//#endif
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#ifndef HL_UNIX
+#include <conio.h>
+#endif
+#include <time.h>
+#ifndef HL_UNIX
+//#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <windows.h>
+//#include <Iptypes.h>
+//#include <Iphlpapi.h>
+#endif
+//#include <hob-xslunic1.h>
+//#include <hob-netw-01.h>
+//#include <hob-tab-ascii-ansi-1.h>
+//#include <hob-tab-mime-base64.h>
+#include "hob-http-header-1.h"
+#ifdef HL_SDH
+#include "hob-stor-sdh.h"
+#endif
+
+#define CHAR_CR                0X0D         /* carriage-return         */
+#define CHAR_LF                0X0A         /* line-feed               */
+
+#define DEF_HTTP_BLANK_TAB     4            /* size blank table        */
+
+#define ADLER_BASE             65521        /* largest prime smaller than 65536 */
+static int m_calc_adler( char *achp_buffer, int imp_len_buffer );
+
+#ifndef HL_SDH
+extern "C" void * m_aux_stor_alloc( void **, int );
+#endif
+
+struct dsd_http_method_def_tab {            /* HTTP method definition  */
+   char       *achc_name;
+   int        imc_len_name;                 /* length of name          */
+   enum ied_http_method iec_hme;            /* HTTP method             */
+};
+
+enum ied_http_parse_opt1 {                  /* HTTP parsing options    */
+   ied_hpo_user_agent = 0,                  /* User-Agent              */
+   ied_hpo_accept_plain,                    /* Accept                  */
+   ied_hpo_accept_language,                 /* Accept-Language         */
+   ied_hpo_accept_encoding,                 /* Accept-Encoding         */
+   ied_hpo_authorization,                   /* Authorization           */
+   ied_hpo_connection,                      /* Connection              */
+   ied_hpo_host,                            /* Host                    */
+   ied_hpo_dnt,                             /* DNT                     */
+   ied_hpo_cookie,                          /* Cookie                  */
+   ied_hpo_sec_webso_origin,                /* Sec-WebSocket-Origin    */
+   ied_hpo_sec_webso_key,                   /* Sec-WebSocket-Key       */
+   ied_hpo_sec_webso_version                /* Sec-WebSocket-Version   */
+};
+
+struct dsd_http_parse_opt1_def_tab {        /* HTTP parsing options definition */
+   char       *achc_name;
+   int        imc_len_name;                 /* length of name          */
+   enum ied_http_parse_opt1 iec_hpo;        /* HTTP parsing options    */
+};
+
+%IF DEF XYZ1;
+static const struct dsd_http_method_def_tab dsrs_http_method_def_tab[] = {
+   { "GET",               3, ied_hme_get     },  /* GET                */
+   { "HEAD",              4, ied_hme_head    },  /* HEAD               */
+   { "POST",              4, ied_hme_post    },  /* POST               */
+   { "PUT",               3, ied_hme_put     },  /* PUT                */
+   { "CONNECT",           7, ied_hme_connect },  /* CONNECT            */
+   { "OPTIONS",           7, ied_hme_options },  /* OPTIONS            */
+   { "DELETE",            6, ied_hme_delete  },  /* DELETE             */
+   { "TRACE",             5, ied_hme_trace   },  /* TRACE              */
+   { "SSTP_DUPLEX_POST", 16, ied_hme_sstp    },  /* SSTP               */
+   { "RPC_IN_DATA",      11, ied_hme_ms_rpc  }   /* MS-RPC             */
+};
+%CEND;
+static const struct dsd_http_method_def_tab dsrs_http_method_def_tab[] = {
+   %M$DEF$METHOD( 'GET',              ied_hme_get     );  /* GET       */
+   %M$DEF$METHOD( 'HEAD',             ied_hme_head    );  /* HEAD      */
+   %M$DEF$METHOD( 'SSTP_DUPLEX_POST', ied_hme_sstp    );  /* SSTP      */
+   %M$DEF$METHOD( 'RPC_IN_DATA',      ied_hme_ms_rpc  );  /* MS-RPC    */
+};
+
+/* message header                                                      */
+static const struct dsd_http_parse_opt1_def_tab dsrs_http_parse_opt1_def_tab[] = {
+   %M$DEF$OPT1( 'User-Agent:',              ied_hpo_user_agent         );  /* User-Agent              */
+   %M$DEF$OPT1( 'Accept:',                  ied_hpo_accept_plain       );  /* Accept                  */
+   %M$DEF$OPT1( 'Accept-Language:',         ied_hpo_accept_language    );  /* Accept-Language         */
+   %M$DEF$OPT1( 'Accept-Encoding:',         ied_hpo_accept_encoding    );  /* Accept-Encoding         */
+   %M$DEF$OPT1( 'Authorization:',           ied_hpo_authorization      );  /* Authorization           */
+   %M$DEF$OPT1( 'Connection:',              ied_hpo_connection         );  /* Connection              */
+   %M$DEF$OPT1( 'Host:',                    ied_hpo_host               );  /* Host                    */
+   %M$DEF$OPT1( 'DNT:',                     ied_hpo_dnt                );  /* DNT                     */
+   %M$DEF$OPT1( 'Cookie:',                  ied_hpo_cookie             );  /* Cookie                  */
+   %M$DEF$OPT1( 'Sec-WebSocket-Origin:',    ied_hpo_sec_webso_origin   );  /* Sec-WebSocket-Origin    */
+   %M$DEF$OPT1( 'Sec-WebSocket-Key:',       ied_hpo_sec_webso_key      );  /* Sec-WebSocket-Key       */
+   %M$DEF$OPT1( 'Sec-WebSocket-Version:',   ied_hpo_sec_webso_version  );  /* Sec-WebSocket-Version   */
+};
+
+#ifndef HL_SDH
+#define ADSL_STOR_G
+extern "C" void * m_aux_stor_alloc( void **, int );
+#endif
+#ifndef HL_SDH
+#define ADSL_STOR_G (&adsp_chhs1->ac_stor_1)  /* storage management    */
+#else
+#define ADSL_STOR_G adsp_chhs1->adsc_stor_sdh_1;  /* storage management */
+#endif
+
+extern "C" BOOL m_proc_http_header_server( struct dsd_proc_http_header_server_1 *adsp_phhs1,
+                                           struct dsd_call_http_header_server_1 *adsp_chhs1,  /* call HTTP processing at server */
+                                           struct dsd_http_header_server_1 *adsp_hhs1 ) {  /* HTTP processing at server */
+   int        iml1, iml2;                   /* working variables       */
+   int        iml_read_pos;                 /* position read           */
+   int        iml_state;                    /* state CR / LF           */
+   int        iml_blank_tab;                /* position blank table    */
+   int        iml_xx_len1;                  /* temporary - PRECOMP     */
+   int        iml_adler_1;                  /* calculate hash          */
+   int        iml_adler_2;                  /* calculate hash          */
+   int        imrl_hbt[ DEF_HTTP_BLANK_TAB ];  /* blank table          */
+   char       *achl_w1, *achl_w2;           /* working variables       */
+   char       *achl_rp;                     /* read pointer            */
+   char       *achl_end;                    /* end of this part        */
+   struct dsd_gather_i_1 *adsl_gai1_rp;     /* gather input read pointer */
+   struct dsd_gather_i_1 *adsl_gai1_w1;     /* gather input working variable */
+   struct dsd_http_cookie **aadsl_ht_cookie;  /* last in chain of Cookies */
+   char       chrl_work1[ 512 ];            /* work area               */
+
+   memset( adsp_hhs1, 0, sizeof(struct dsd_http_header_server_1) );  /* HTTP processing at server */
+   adsl_gai1_rp = adsp_chhs1->adsc_gai1_in;  /* gather input data      */
+   iml_read_pos = 0;                        /* position read           */
+   iml_state = 0;                           /* state CR / LF           */
+   iml_blank_tab = 0;                       /* position blank table    */
+
+   p_pone_00:                               /* pass one start          */
+   if (adsl_gai1_rp == NULL) return TRUE;
+   if (iml_read_pos >= MAX_LEN_HTTP_HEADER) {
+     adsp_chhs1->imc_error = HTTP_ERROR_HEADER_TOO_LONG;
+     return FALSE;
+   }
+   achl_rp = adsl_gai1_rp->achc_ginp_cur;   /* read pointer            */
+   iml_read_pos += adsl_gai1_rp->achc_ginp_end - adsl_gai1_rp->achc_ginp_cur;
+
+   p_pone_20:                               /* pass one character      */
+   if (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* at end of gather  */
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     goto p_pone_00;                        /* pass one start          */
+   }
+   if (*achl_rp == CHAR_CR) {               /* carriage-return         */
+     if ((iml_state & 1) == 0) {            /* state CR / LF           */
+       iml_state++;                         /* next state CR / LF      */
+     } else {
+       iml_state = 1;                       /* state CR / LF after CR  */
+     }
+   } else if (*achl_rp == CHAR_LF) {        /* line-feed               */
+     if ((iml_state & 1) != 0) {            /* state CR / LF           */
+       iml_state++;                         /* next state CR / LF      */
+       if (iml_blank_tab >= 0) {            /* position blank table    */
+         imrl_hbt[ iml_blank_tab ] = -1;    /* set end of table        */
+         iml_blank_tab = -1;                /* do not fill table any more */
+       }
+       if (iml_state >= 4) {                /* double CR / LF          */
+         goto p_pone_80;                    /* end of pass one         */
+       }
+     } else {
+       iml_state = 0;                       /* reset state CR / LF     */
+     }
+   } else if (*achl_rp == ' ') {            /* blank                   */
+     if (iml_blank_tab >= 0) {              /* position blank table    */
+       imrl_hbt[ iml_blank_tab++ ]
+         = iml_read_pos - (adsl_gai1_rp->achc_ginp_end - achl_rp);
+       if (iml_blank_tab >= sizeof(imrl_hbt) / sizeof(imrl_hbt[0])) {
+         iml_blank_tab = -1;                /* do not search any more  */
+       }
+     }
+     iml_state = 0;                         /* state CR / LF           */
+   } else {                                 /* all other characters    */
+     iml_state = 0;                         /* state CR / LF           */
+   }
+   achl_rp++;                               /* next character          */
+   goto p_pone_20;                          /* pass one character      */
+
+   p_pone_80:                               /* end of pass one         */
+   achl_rp++;                               /* after last character    */
+   adsp_hhs1->imc_length_http_header        /* length of HTTP header   */
+     = iml_read_pos - (adsl_gai1_rp->achc_ginp_end - achl_rp);
+   if (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* at end of gather  */
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     achl_rp = NULL;
+     if (adsl_gai1_rp) {                    /* still in gather         */
+       achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* first character of new gather */
+     }
+   }
+   aadsl_ht_cookie = &adsp_hhs1->adsc_ht_cookie_ch;  /* last in chain of Cookies */
+   adsp_chhs1->adsc_gai1_out = adsl_gai1_rp;  /* last gather input data */
+   adsp_chhs1->achc_pos_out = achl_rp;      /* position in gather input data */
+
+   /* process first part till CR LF                                    */
+   if (imrl_hbt[0] <= 0) {                  /* check first blank       */
+// to-do 08.09.12 KB error message
+     return FALSE;
+   }
+   adsl_gai1_rp = adsp_chhs1->adsc_gai1_in;  /* gather input data      */
+   achl_w1 = adsl_gai1_rp->achc_ginp_cur;   /* start of method         */
+   if ((achl_w1 + imrl_hbt[0]) <= adsl_gai1_rp->achc_ginp_end) {  /* check in gather */
+     achl_rp = achl_w1 + imrl_hbt[0];       /* scan end of method      */
+     goto p_meth_20;                        /* check method            */
+   }
+   achl_rp = achl_w1;                       /* start here              */
+   iml1 = imrl_hbt[0];                      /* get length              */
+   achl_w1 = chrl_work1;                    /* fill this area          */
+
+   p_meth_08:                               /* fill method             */
+   if (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* end of gather     */
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+     goto p_meth_08;                        /* fill method             */
+   }
+   iml2 = adsl_gai1_rp->achc_ginp_end - achl_rp;
+   if (iml2 > iml1) iml2 = iml1;
+   memcpy( achl_w1, achl_rp, iml2 );
+   achl_w1 += iml2;
+   achl_rp += iml2;
+   iml1 -= iml2;
+   if (iml1 > 0) {                          /* needs more data         */
+     goto p_meth_08;                        /* fill method             */
+   }
+   achl_w1 = chrl_work1;                    /* this area filled        */
+
+   p_meth_20:                               /* check method            */
+   iml1 = 0;                                /* clear index             */
+   do {
+     if (   (dsrs_http_method_def_tab[ iml1 ].imc_len_name == imrl_hbt[0])  /* length of name */
+         && (!memcmp( dsrs_http_method_def_tab[ iml1 ].achc_name, achl_w1, imrl_hbt[0] ))) {
+       goto p_meth_40;                      /* method found            */
+     }
+     iml1++;                                /* increment index         */
+   } while (iml1 < (sizeof(dsrs_http_method_def_tab) / sizeof(dsrs_http_method_def_tab[0])));
+   adsp_hhs1->iec_hme = ied_hme_undef;      /* undefined               */
+   goto p_url_00;                           /* process URL             */
+
+   p_meth_40:                               /* method found            */
+   adsp_hhs1->iec_hme = dsrs_http_method_def_tab[ iml1 ].iec_hme;  /* HTTP method */
+
+   p_url_00:                                /* process URL             */
+   while (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* end of gather  */
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+   }
+   achl_rp++;                               /* after space             */
+   while (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* end of gather  */
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+   }
+   if (imrl_hbt[ 1 ] <= 0) {                /* second space            */
+     return FALSE;
+   }
+   iml1 = imrl_hbt[ 1 ] - (imrl_hbt[ 0 ] + 1);  /* length complete URL */
+   if (iml1 <= 0) {                         /* check length            */
+     return FALSE;
+   }
+// to-do 11.09.12 KB - missing ?
+   adsp_hhs1->imc_length_url_path = iml1;   /* length of URL path      */
+   if ((achl_rp + iml1) <= adsl_gai1_rp->achc_ginp_end) {  /* check in gather */
+     achl_w1 = achl_rp;                     /* here is URL             */
+     achl_rp += iml1;                       /* read pointer after URL  */
+     goto p_url_20;                         /* we have the URL         */
+   }
+// to-do 11.09.12 KB - missing copy to work area
+
+   p_url_20:                                /* we have the URL         */
+   if (adsp_chhs1->imc_length_url_path_buffer <= 0) {  /* length memory for URL path */
+     goto p_opt1_00;                        /* process options         */
+   }
+   if (iml1 > adsp_chhs1->imc_length_url_path_buffer) {  /* length memory for URL path */
+     iml1 = adsp_chhs1->imc_length_url_path_buffer;  /* copy only length memory for URL path */
+   }
+   adsp_hhs1->imc_stored_url_path = iml1;   /* stored part of URL path */
+   adsp_hhs1->achc_url_path = adsp_chhs1->achc_url_path;  /* address memory of URL path */
+   memcpy( adsp_chhs1->achc_url_path, achl_w1, iml1 );
+
+   p_opt1_00:                               /* process options         */
+   while (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* end of gather  */
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+   }
+   if (*achl_rp != CHAR_CR) {
+     achl_rp++;                             /* next input character    */
+     goto p_opt1_00;                        /* process options         */
+   }
+   achl_rp++;                               /* next input character    */
+   while (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* end of gather  */
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+   }
+   if (*achl_rp != CHAR_LF) {
+     return FALSE;
+   }
+   achl_rp++;                               /* next input character    */
+
+   p_opt1_20:                               /* start of next option    */
+   iml_xx_len1 = 0;                         /* temporary - PRECOMP     */
+   iml_adler_1 = 0;                         /* calculate hash          */
+   iml_adler_2 = 0;                         /* calculate hash          */
+
+   p_opt1_40:                               /* next part of option     */
+   achl_end = adsl_gai1_rp->achc_ginp_end;  /* end of this part        */
+   if (achl_rp >= achl_end) {
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+     goto p_opt1_40;                        /* next part of option     */
+   }
+   iml_xx_len1 += achl_end - achl_rp;       /* temporary - PRECOMP     */
+   do {                                     /* loop over input         */
+     if (*achl_rp == ' ') {                 /* found space             */
+       goto p_opt1_48;                           /* space found in option   */
+     }
+     if (*achl_rp == CHAR_CR) {             /* found carriage return   */
+       goto p_opt1_80;                      /* carriage-return found in option */
+     }
+     iml_adler_1 += *((unsigned char *) achl_rp);
+     iml_adler_2 += iml_adler_1;
+     if (iml_adler_1 >= ADLER_BASE) iml_adler_1 -= ADLER_BASE;
+     achl_rp++;
+   } while (achl_rp < achl_end);
+   if (adsp_phhs1->boc_consume_input) {     /* consume input           */
+     adsl_gai1_rp->achc_ginp_end = achl_rp;
+   }
+   adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain      */
+   if (adsl_gai1_rp == NULL) {              /* logic error             */
+     return FALSE;
+   }
+   achl_rp = adsl_gai1_rp->achc_ginp_cur;   /* start of data           */
+   goto p_opt1_40;                          /* next part of option     */
+
+   p_opt1_48:                               /* space found in option   */
+   iml_xx_len1 -= achl_end - achl_rp;       /* temporary - PRECOMP     */
+   iml_adler_2 %%= ADLER_BASE;
+   iml2 = iml_adler_1 | (iml_adler_2 << 16);
+   achl_rp++;                               /* next input character    */
+   iml1 = 0;                                /* clear index             */
+   do {
+     if (   (dsrs_http_parse_opt1_def_tab[ iml1 ].imc_len_name == iml_xx_len1)  /* length of name */
+         && (m_calc_adler( dsrs_http_parse_opt1_def_tab[ iml1 ].achc_name,
+                           dsrs_http_parse_opt1_def_tab[ iml1 ].imc_len_name )  /* length of name */
+               == iml2)) {
+       goto p_opt1_60;                      /* option found in table   */
+     }
+     iml1++;                                /* increment index         */
+   } while (iml1 < (sizeof(dsrs_http_parse_opt1_def_tab) / sizeof(dsrs_http_parse_opt1_def_tab[0])));
+   /* option not found in table                                        */
+   goto p_opt1_68;                          /* search end of option    */
+
+   p_opt1_60:                               /* option found in table   */
+   switch (dsrs_http_parse_opt1_def_tab[ iml1 ].iec_hpo) {  /* HTTP parsing options */
+     case ied_hpo_user_agent:               /* User-Agent              */
+     case ied_hpo_accept_plain:             /* Accept                  */
+     case ied_hpo_accept_language:          /* Accept-Language         */
+     case ied_hpo_accept_encoding:          /* Accept-Encoding         */
+     case ied_hpo_authorization:            /* Authorization           */
+     case ied_hpo_connection:               /* Connection              */
+     case ied_hpo_host:                     /* Host                    */
+     case ied_hpo_dnt:                      /* DNT                     */
+       goto p_opt1_68;                      /* search end of option    */
+     case ied_hpo_cookie:                   /* Cookie                  */
+       goto p_cookie_00;                    /* mesage-header Cookie found */
+     case ied_hpo_sec_webso_origin:         /* Sec-WebSocket-Origin    */
+     case ied_hpo_sec_webso_key:            /* Sec-WebSocket-Key       */
+     case ied_hpo_sec_webso_version:        /* Sec-WebSocket-Version   */
+       goto p_opt1_68;                      /* search end of option    */
+   }
+
+   p_opt1_68:                               /* search end of message-header */
+   while (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* end of gather  */
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+   }
+   if (*achl_rp != CHAR_CR) {
+     achl_rp++;                             /* next input character    */
+     goto p_opt1_68;                        /* search end of message-header */
+   }
+   achl_rp++;                               /* next input character    */
+   while (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* end of gather  */
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+   }
+   if (*achl_rp != CHAR_LF) {
+     return FALSE;
+   }
+   achl_rp++;                               /* next input character    */
+   goto p_opt1_20;                          /* start of next option    */
+
+   p_opt1_80:                               /* carriage-return found in option */
+   achl_rp++;                               /* next input character    */
+   while (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* end of gather  */
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+   }
+   if (*achl_rp != CHAR_LF) {
+     return FALSE;
+   }
+   achl_rp++;                               /* next input character    */
+   if (adsp_phhs1->boc_consume_input) {     /* consume input           */
+     adsl_gai1_rp->achc_ginp_end = achl_rp;
+   }
+   return TRUE;
+
+   p_cookie_00:                             /* mesage-header Cookie found */
+   adsp_hhs1->imc_no_ht_cookies++;          /* number of HTTP cookies  */
+   if (adsp_phhs1->boc_store_cookies == FALSE) {  /* store cookies     */
+     goto p_opt1_68;                        /* search end of option    */
+   }
+   /* retrieve length of Cookie                                        */
+   adsl_gai1_w1 = adsl_gai1_rp;             /* get current gather input */
+   achl_w1 = achl_rp;                       /* get read pointer        */
+   iml1 = 0;                                /* clear length of Cookie  */
+
+   p_cookie_20:                             /* search end of Cookie    */
+   while (achl_w1 >= adsl_gai1_w1->achc_ginp_end) {  /* end of gather  */
+     adsl_gai1_w1 = adsl_gai1_w1->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_w1 == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_w1 = adsl_gai1_w1->achc_ginp_cur;  /* start of data          */
+   }
+   achl_w2 = (char *) memchr( achl_w1, CHAR_CR, adsl_gai1_rp->achc_ginp_end - achl_w1 );
+   if (achl_w2 == NULL) {                   /* carriage-return not found */
+     iml1 += adsl_gai1_rp->achc_ginp_end - achl_w1;  /* add to length of Cookie */
+     goto p_cookie_20;                      /* search end of Cookie    */
+   }
+   iml1 += achl_w2 - achl_w1;               /* add to length of Cookie */
+   achl_w1 = (char *) m_aux_stor_alloc( ADSL_STOR_G, sizeof(struct dsd_http_cookie) + iml1 );
+   memset( achl_w1, 0, sizeof(struct dsd_http_cookie) );
+#define ADSL_HTTP_COOKIE_G ((struct dsd_http_cookie *) achl_w1)
+   ADSL_HTTP_COOKIE_G->imc_length_cookie = iml1;  /* length of cookie  */
+   *aadsl_ht_cookie = ADSL_HTTP_COOKIE_G;   /* append to last in chain of Cookies */
+   aadsl_ht_cookie = &ADSL_HTTP_COOKIE_G->adsc_next;  /* last in chain of Cookies */
+   achl_w1 = (char *) (ADSL_HTTP_COOKIE_G + 1);
+#undef ADSL_HTTP_COOKIE_G
+
+   /* copy content of the Cookie                                       */
+   while (adsl_gai1_rp != adsl_gai1_w1) {   /* get gather before       */
+     iml1 = adsl_gai1_rp->achc_ginp_end - achl_rp;
+     if (iml1 > 0) {
+       memcpy( achl_w1, achl_rp, iml1 );    /* copy part of Cookie     */
+       achl_w1 += iml1;                     /* increment address target */
+     }
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+   }
+   iml1 = achl_w2 - achl_rp;
+   if (iml1 > 0) {
+     memcpy( achl_w1, achl_rp, iml1 );      /* copy part of Cookie     */
+   }
+   achl_rp = achl_w2 + 1;                   /* after carriage-return   */
+   while (achl_rp >= adsl_gai1_rp->achc_ginp_end) {  /* end of gather  */
+     if (adsp_phhs1->boc_consume_input) {   /* consume input           */
+       adsl_gai1_rp->achc_ginp_end = achl_rp;
+     }
+     adsl_gai1_rp = adsl_gai1_rp->adsc_next;  /* get next in chain     */
+     if (adsl_gai1_rp == NULL) {            /* logic error             */
+       return FALSE;
+     }
+     achl_rp = adsl_gai1_rp->achc_ginp_cur;  /* start of data          */
+   }
+   if (*achl_rp != CHAR_LF) {
+     return FALSE;
+   }
+   achl_rp++;                               /* next input character    */
+   goto p_opt1_20;                          /* start of next option    */
+} /* end m_proc_http_header_server()                                   */
+
+static int m_calc_adler( char *achp_buffer, int imp_len_buffer ) {
+   int        iml_adler;
+   int        iml_sum2;
+   char       *achl_cur;
+   char       *achl_end;
+
+   iml_adler = iml_sum2 = 0;
+   achl_cur = achp_buffer;
+   achl_end = achp_buffer + imp_len_buffer;
+
+   do {
+     iml_adler += *((unsigned char *) achl_cur);
+     achl_cur++;
+     iml_sum2 += iml_adler;
+     if (iml_adler >= ADLER_BASE) iml_adler -= ADLER_BASE;
+   } while (achl_cur < achl_end);
+   iml_sum2 %%= ADLER_BASE;
+   return iml_adler | (iml_sum2 << 16);
+} /* end m_calc_adler()                                                */

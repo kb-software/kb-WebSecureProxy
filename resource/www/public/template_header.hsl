@@ -1,0 +1,96 @@
+<xsl:template match="header">
+    <!-- header start -->
+    <div id="header">
+        <div id="navigation">
+        <xsl:if test="user/authenticated">
+            <div> <!-- home -->
+                <a id="home-button"><xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                    <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+                    <xsl:value-of select="lang/html/all/btn-home"/>
+                </a>
+            </div>
+            <div id="menu-settings" class="ddmenu"> <!-- settings -->
+                <a class="openMenu nolink" href="#settings"><xsl:value-of select="lang/html/welcome/settings/text1"/></a>
+                <ul>
+                <xsl:if test="user/allowed/settings">
+                    <li><a>
+                        <xsl:attribute name="href"><xsl:value-of select="user/url-session-id" />/protected/portlets/settings/settings.hsl</xsl:attribute>
+                        <xsl:value-of select="lang/html/welcome/settings/title"/>
+                    </a></li>
+                    <li><a>
+                        <xsl:attribute name="href"><xsl:value-of select="user/url-session-id" />/protected/portlets/settings/cookies.hsl</xsl:attribute>
+                        <xsl:value-of select="lang/html/welcome/settings/text2"/>
+                    </a></li>
+                </xsl:if>
+                    <li><a>
+                        <xsl:attribute name="href"><xsl:value-of select="user/url-session-id" />/protected/change-password.hsl</xsl:attribute>
+                        <xsl:value-of select="lang/html/welcome/settings/text4"/>
+                    </a></li>
+                    <li><a>
+                        <xsl:attribute name="href"><xsl:value-of select="user/url-session-id" />/protected/java.hsl</xsl:attribute>
+                        <xsl:value-of select="lang/html/settings/java/title"/>
+                    </a></li>
+                    <li><a>
+                        <xsl:attribute name="href"><xsl:value-of select="user/url-session-id" />/protected/about.hsl</xsl:attribute>
+                        <xsl:value-of select="lang/html/welcome/about"/>
+                    </a></li>
+                </ul>
+            </div>
+        </xsl:if>
+            <div> <!-- language -->
+                <form method="post" accept-charset="UTF-8">
+                    <select size="1" onchange="submit(options[selectedIndex].value)">
+                        <xsl:attribute name="name"><xsl:value-of select="queryparam/set-lang"/></xsl:attribute>
+                        <xsl:for-each select="languages">
+                            <option>
+                                <xsl:attribute name="value"><xsl:value-of select="languages/id"/></xsl:attribute>
+                                <xsl:if test="user/is-selected-lang">
+                                    <xsl:attribute name="selected">selected</xsl:attribute>
+                                </xsl:if>
+                                <xsl:value-of select="languages/name"/>
+                            </option>
+                        </xsl:for-each>
+                    </select>
+                </form>
+            </div>
+        <xsl:if test="user/authenticated">
+            <div> <!-- logout -->
+                <form method="post" accept-charset="UTF-8" action="/public/login.hsl" id="logout">
+                    <input type="hidden" name="action" value="logout"/>
+                </form>
+                <a id="logout-button" href="/public/login.hsl" onclick="document.forms['logout'].submit(); return false;">
+                    <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-logout"/></xsl:attribute>
+                    <xsl:value-of select="lang/html/all/btn-logout"/>
+                </a>
+            </div>
+        </xsl:if>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!-- header end -->
+</xsl:template>
+<xsl:template match="html-header">
+    <!-- include head start -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Script-Type" content="text/javascript"/>
+    <meta name="description" content="Secure Remote Access Suite: http://www.hobsoft.com"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon"><xsl:attribute name="href">//<xsl:value-of select="rdvpn/iws/host"/>/public/img/favicon.ico</xsl:attribute></link>
+    <link rel="stylesheet" href="/public/css/hobrdvpn.css" />
+    <link rel="stylesheet" href="/public/customisation/custom.css" />
+    <title>HOB RD VPN</title>
+    <script src="/public/js/portal.js"></script>
+    <!-- include head end -->
+</xsl:template>
+<xsl:template match="redirect-embedded">
+    <xsl:comment>
+        m_check_embedded_use defined in portal.js, always included in html-header.
+        This check is somehow redundant, as the X-Frame-Options header forbidds 
+        iframe usage, more as a debug helper to detect invalid internal iframe use
+    </xsl:comment>
+    <xsl:if test="not(user/allowed/use-embedded)">
+        <script>
+            m_check_embedded_use();
+        </script>
+    </xsl:if>
+</xsl:template>

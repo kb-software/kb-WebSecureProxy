@@ -1,0 +1,781 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    <link rel="stylesheet" href="/public/css/icons.css"/>
+    <link rel="stylesheet" href="settings.css"/>
+    
+    <script src="/public/js/bookmark.js"></script>
+    <script src="settings.js"></script>
+    <xsl:call-template name="redirect-embedded"/>
+    <script>
+        var strg_error_msg = '<xsl:value-of select="lang/html/settings/error"/>';
+        var strg_leave_msg = '<xsl:value-of select="lang/html/settings/leavepage"/>';
+        var bog_modified = false;
+        
+        function confirmExit(e) {
+            if(bog_modified) {
+                //This text will only be displayed in old browsers or IE, modern browser display a default text
+                e.returnValue = strg_leave_msg;
+                return strg_leave_msg;
+            }
+            //return null;
+        }
+
+        window.onbeforeunload = confirmExit;
+    </script>
+</head>
+<body>
+    <div id="page-outer" class="menu-page">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <ul id="menu">
+                <a id="logo"> 
+                    <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                    <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+                </a>
+                <li class="title"><xsl:value-of select="lang/html/welcome/settings/title"/></li>
+            <xsl:if test="user/allowed/configure-rdvpn-bmarks">
+                <li class="indented"><a id="open-rdvpn" href="#bookmarks" onclick="m_show('rdvpn-bookmark-settings', this);"><xsl:value-of select="lang/html/settings/rdvpn-bookmarks"/></a></li>
+            </xsl:if>
+            <xsl:if test="user/allowed/configure-wsg-bmarks and user/allowed/wsg">
+                <li class="indented"><a id="open-wsg" href="#wsg" onclick="m_show('wsg-bookmark-settings', this);"><xsl:value-of select="lang/html/settings/WSG-bookmarks"/></a></li>
+            </xsl:if>
+            <xsl:if test="user/allowed/configure-dod">
+                <li class="indented"><a id="open-dod" href="#dod" onclick="m_show('desktop-on-demand-settings', this);"><xsl:value-of select="lang/html/settings/desktop-on-demand"/></a></li>
+            </xsl:if>
+            <xsl:if test="user/allowed/configure-others">
+                <li class="indented">
+                    <a id="open-portlet" href="#applications" onclick="m_show('portlet-settings', this);">
+                        <xsl:value-of select="lang/html/settings/portlets"/>
+                    </a>
+                </li>
+                <li class="indented">
+                    <a id="open-other" href="#other" onclick="m_show('other-settings', this);">
+                        <xsl:value-of select="lang/html/settings/others"/>
+                    </a>
+                </li>
+            </xsl:if>
+            <xsl:if test="not(user/allowed/configure-wsg-bmarks or user/allowed/wsg or user/allowed/configure-rdvpn-bmarks or user/allowed/configure-dod or user/allowed/configure-others)">
+                <li><xsl:value-of select="lang/html/settings/unavailable"/></li>
+            </xsl:if>
+            <xsl:comment>
+                <br />
+                <li>
+                    <a href="cookies.hsl"><xsl:value-of select="lang/html/welcome/settings/text2"/></a>
+                </li>
+                <li>
+                    <a href="../../change-password.hsl"><xsl:value-of select="lang/html/welcome/settings/text4"/></a>
+                </li>
+                <li>
+                    <a href="/public/about.hsl"><xsl:value-of select="lang/html/welcome/about"/></a>
+                </li>
+            </xsl:comment>
+            </ul>
+            <form id="settings" method="POST" accept-charset="UTF-8" onsubmit="m_check_and_submit(this); return false;" autocomplete="off">
+                <input type="hidden">
+                    <xsl:attribute name="value"><xsl:value-of select="queryparam/edit-settings"/></xsl:attribute>
+                    <xsl:attribute name="name"><xsl:value-of select="queryparam/settings-task"/></xsl:attribute>
+                </input>
+                <xsl:if test="user/allowed/configure-wsg-bmarks and user/allowed/wsg">
+                    <xsl:call-template name="wsg-settings"/>
+                </xsl:if>
+                <xsl:if test="user/allowed/configure-rdvpn-bmarks">
+                    <xsl:call-template name="rdvpn-settings"/>
+                </xsl:if>
+                <xsl:if test="user/allowed/configure-dod">
+                    <xsl:call-template name="dod-settings"/>
+                </xsl:if>
+                <xsl:if test="user/allowed/configure-others">
+                    <xsl:call-template name="portlets"/>
+                    <xsl:call-template name="others"/>
+                </xsl:if>
+            </form>
+        </div>
+        <div id="footer">
+            <button type="submit">
+                <xsl:attribute name="onclick">document.location.href='<xsl:value-of select="user/welcomesite"/>';return false;</xsl:attribute>
+                <xsl:attribute name="value"><xsl:value-of select="lang/html/settings/cancel"/></xsl:attribute>
+                <xsl:value-of select="lang/html/settings/cancel"/>
+            </button>
+            <button type="submit" form="settings">
+                <xsl:attribute name="onclick">bog_modified = false; document.forms.settings.submit(); return false;</xsl:attribute>
+                <xsl:attribute name="value"><xsl:value-of select="lang/html/settings/save"/></xsl:attribute>
+                <xsl:value-of select="lang/html/settings/save"/>
+            </button>
+        </div>
+    </div>
+    <script>        
+        m_show_first();
+        m_clean_hidden();
+        m_update_bm_events();
+    </script>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />
+
+<xsl:template match="action-reorder">
+    <a class="up" onclick="m_up(this);return false;">
+        <xsl:attribute name="title"><xsl:value-of select="lang/html/settings/up"/></xsl:attribute>
+        <span class="icon-up"></span></a>
+    <a class="down" onclick="m_down(this);return false;">
+        <xsl:attribute name="title"><xsl:value-of select="lang/html/settings/down"/></xsl:attribute>
+        <span class="icon-down"></span>
+    </a>
+</xsl:template>
+<xsl:template match="action-add">
+    <a class="add" onclick="m_add();return false;">
+        <xsl:attribute name="title"><xsl:value-of select="lang/html/settings/add"/></xsl:attribute>
+        <span class="icon-add"></span>
+        <xsl:value-of select="$text"/>
+    </a>
+</xsl:template>
+<xsl:template match="action-delete">
+    <a class="delete" onclick="m_remove(this);return false;">
+        <xsl:attribute name="title"><xsl:value-of select="lang/html/settings/delete"/></xsl:attribute>
+        <span class="icon-delete"></span>
+    </a>
+</xsl:template>
+
+
+<xsl:template match="wsg-settings">
+    <div id="wsg-bookmark-settings">
+        <div class="separator hobtext"><xsl:value-of select="lang/html/settings/webservergate-bookmarks"/></div>
+        <div id="wsg-bookmarks" class="settings-content">
+            <table class="containerTable checkTable">
+              <colgroup>
+                <col class="col-start" />
+                <col class="coll-content" />
+                <col class="col-order" />
+              </colgroup>
+              <thead>
+                <tr class="head">
+                    <td>
+                        <xsl:call-template name="action-add" />
+                        <xsl:value-of select="lang/html/settings/name"/>
+                    </td>
+                    <td><xsl:value-of select="lang/html/settings/url"/></td>
+                    <td><xsl:value-of select="lang/html/settings/order"/></td>
+                </tr>
+              </thead>
+              <tbody>
+            <xsl:for-each select="user/wsg-bookmarks">
+                <xsl:if test="not(user/wsg-bookmarks/is-own)">
+                <tr class="inherited">
+                    <td><xsl:value-of select="user/wsg-bookmarks/name"/></td>
+                    <td><xsl:value-of select="user/wsg-bookmarks/url"/></td>
+                    <td></td>
+                </tr>
+                </xsl:if>
+                <xsl:if test="user/wsg-bookmarks/is-own">
+                <tr>
+                    <td>
+                        <div class="fill-container">
+                                <xsl:call-template name="action-delete" />
+                                <input class="text" type="text" onchange="return m_check(this);" name="bmark-name" size="1">
+                                <xsl:attribute name="value"><xsl:value-of select="user/wsg-bookmarks/name"/></xsl:attribute>
+                            </input>
+                        </div>
+                    </td>
+                    <td>
+                        <input class="text" type="url" onchange="return m_check(this);" name="bmark-url">
+                            <xsl:attribute name="value"><xsl:value-of select="user/wsg-bookmarks/url"/></xsl:attribute>
+                        </input>
+                        <input type="hidden" class="hiddenNumber" name="wsg-bookmark"></input>
+                    </td>
+                    <td>
+                        <xsl:call-template name="action-reorder" />
+                    </td>
+                </tr>
+                </xsl:if>
+            </xsl:for-each>
+              </tbody>
+              <tfoot class="dummy">
+                <!-- dummy row for adding -->
+                <tr>
+                    <td>
+                        <div class="fill-container">
+                            <xsl:call-template name="action-delete" />
+                            <input class="text clean" type="text" onchange="return m_check(this);" name="bmark-name" size="1"></input>
+                        </div>
+                    </td>
+                    <td>
+                        <input class="text clean" type="url" onchange="return m_check(this);" name="bmark-url"></input>
+                        <input type="hidden" class="hiddenNumber" name="wsg-bookmark"></input>
+                    </td>                    
+                    <td>
+                        <xsl:call-template name="action-reorder" />
+                    </td>
+                </tr>
+                <!-- end of dummy row -->
+              </tfoot>
+            </table>
+        </div>
+    </div>
+</xsl:template>
+
+<xsl:template match="rdvpn-settings">
+    <div id="rdvpn-bookmark-settings">
+        <div class="separator hobtext"><xsl:value-of select="lang/html/settings/rdvpn-bookmarks"/></div>
+        <div id="rdvpn-bookmarks" class="settings-content">
+            <table class="containerTable checkTable">
+              <colgroup>
+                <col class="col-start" />
+                <col class="coll-content" />
+                <col class="col-order" />
+              </colgroup>
+              <thead>
+                <tr class="head">
+                    <td>
+                        <xsl:call-template name="action-add" />
+                        <xsl:value-of select="lang/html/settings/name"/>
+                    </td>
+                    <td><xsl:value-of select="lang/html/settings/url"/></td>
+                    <td><xsl:value-of select="lang/html/settings/order"/></td>
+                </tr>
+              </thead>
+              <tbody>
+            <xsl:for-each select="user/rdvpn-bookmarks">
+                <xsl:if test="not(user/rdvpn-bookmarks/is-own)">
+                <tr class="inherited">
+                    <td><xsl:value-of select="user/rdvpn-bookmarks/name"/></td>
+                    <td><xsl:value-of select="user/rdvpn-bookmarks/url"/></td>
+                    <td></td>
+                </tr>
+                </xsl:if>
+                <xsl:if test="user/rdvpn-bookmarks/is-own">
+                <tr>
+                    <td>
+                        <div class="fill-container">
+                            <xsl:call-template name="action-delete" />
+                            <input class="text" type="text" onchange="return m_check(this);" name="bmark-name" size="1">
+                                <xsl:attribute name="value"><xsl:value-of select="user/rdvpn-bookmarks/name"/></xsl:attribute>
+                            </input>
+                        </div>
+                    </td>
+                    <td>
+                        <xsl:call-template name="bm-configurator"/>
+                        <input type="hidden" class="hiddenNumber" name="rdvpn-bookmark"></input>
+                    </td>                    
+                    <td>
+                        <xsl:call-template name="action-reorder" />
+                    </td>
+                </tr>
+                </xsl:if>
+            </xsl:for-each>
+              </tbody>
+              <tfoot class="dummy">
+                <!-- dummy row for adding -->
+                <tr>
+                    <td>
+                        <div class="fill-container">
+                            <xsl:call-template name="action-delete" />
+                            <input class="text clean" type="text" onchange="return m_check(this);" name="bmark-name" size="1"></input>
+                        </div>
+                    </td>
+                    <td>
+                        <xsl:call-template name="bm-configurator-dummy"/>
+                        <input type="hidden" class="hiddenNumber" name="rdvpn-bookmark"></input>
+                    </td>                    
+                    <td>
+                        <xsl:call-template name="action-reorder" />
+                    </td>
+                </tr>
+                <!-- end of dummy row -->
+              </tfoot>
+            </table>
+        </div>
+    </div>
+</xsl:template>
+
+<xsl:template match="dod-settings">
+    <div id="desktop-on-demand-settings">
+        <div class="separator hobtext"><xsl:value-of select="lang/html/settings/desktop-on-demand"/></div>
+        <div id="desktop-on-demand" class="settings-content">
+            <table class="containerTable checkTable reorder-groups">
+              <colgroup>
+                <col class="col-start" />
+                <col class="coll-content" />
+                <col class="col-order" />
+              </colgroup>
+              <thead>
+                <tr>
+                    <td colspan="2">
+                        <xsl:variable name="text">lang/html/settings/add-config</xsl:variable>
+                        <xsl:call-template name="action-add" />
+                    </td>
+                    <td><xsl:value-of select="lang/html/settings/order"/></td>
+                </tr>
+              </thead>
+            <xsl:for-each select="user/workstations">
+              <tbody>
+                <tr>
+                    <td>
+                        <xsl:call-template name="action-delete" />
+                        <xsl:value-of select="lang/html/settings/workstation"/>:
+                    </td>
+                    <td>
+                        <input type="text" class="text" onchange="return m_check(this);" name="wstat-name">
+                            <xsl:attribute name="value"><xsl:value-of select="user/workstations/name"/></xsl:attribute>
+                        </input>
+                    </td>
+                    <td>
+                        <xsl:call-template name="action-reorder" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/ineta"/>:</td>
+                    <td>                            
+                        <input type="text" class="text" onchange="return m_check(this);" name="wstat-ineta">
+                            <xsl:attribute name="value"><xsl:value-of select="user/workstations/ineta"/></xsl:attribute>
+                        </input>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/port"/>:</td>
+                    <td>
+                        <input type="text" class="text" onchange="return m_check(this);" name="wstat-port">
+                            <xsl:attribute name="value"><xsl:value-of select="user/workstations/port"/></xsl:attribute>
+                        </input>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/mac"/>:</td>
+                    <td>
+                        <input type="text" class="text" onchange="return m_check(this);" name="wstat-mac">
+                            <xsl:attribute name="value"><xsl:value-of select="user/workstations/mac"/></xsl:attribute>
+                        </input>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/timeout"/>:</td>
+                    <td>
+                        <input type="text" class="text" onchange="return m_check(this);" name="wstat-timeout">
+                            <xsl:attribute name="value"><xsl:value-of select="user/workstations/timeout"/></xsl:attribute>
+                        </input>
+                        <input type="hidden" class="hiddenNumber" value="0" name="workstation"></input>
+                    </td>
+                    <td></td>
+                </tr>
+               </tbody>
+            </xsl:for-each>
+            </table>
+            <!-- dummy for adding -->
+            <table class="dummy">
+              <tbody>
+                <tr>
+                    <td>
+                        <xsl:call-template name="action-delete" />
+                        <xsl:value-of select="lang/html/settings/workstation"/>:</td>
+                    <td>
+                        <input type="text" class="text clean" onchange="return m_check(this);" name="wstat-name"></input>
+                    </td>
+                    <td>
+                        <xsl:call-template name="action-reorder" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/ineta"/>:</td>
+                    <td>                            
+                        <input type="text" class="text clean" onchange="return m_check(this);" name="wstat-ineta"></input>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/port"/>:</td>
+                    <td>
+                        <input type="text" class="text" value="3389" onchange="return m_check(this);" name="wstat-port"></input>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/mac"/>:</td>
+                    <td>
+                        <input type="text" class="text" value="0" onchange="return m_check(this);" name="wstat-mac"></input>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/timeout"/>:</td>
+                    <td>
+                        <input type="text" class="text" value="180" onchange="return m_check(this);" name="wstat-timeout"></input>
+                        <input type="hidden" class="hiddenNumber" name="workstation"></input>
+                    </td>
+                    <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- end of dummy -->
+        </div>
+    </div>
+</xsl:template>
+
+<xsl:template match="portlets">
+    <div id="portlet-settings">
+        <div class="separator hobtext"><xsl:value-of select="lang/html/settings/portlets"/></div>
+        <div id="portlets" class="settings-content">
+            <table class="border containerTable">
+              <colgroup>
+                <col class="col-content" />
+                <col class="col-start" />
+                <col class="col-order" />
+              </colgroup>
+              <thead>
+                <tr class="head">
+                    <td><xsl:value-of select="lang/html/settings/name"/></td>
+                    <td><xsl:value-of select="lang/html/settings/show-on-home"/></td>
+                    <td><xsl:value-of select="lang/html/settings/order"/></td>
+                </tr>
+                <tr style="display: none">
+                    <td><span id="portlet_select_nodefault">
+                        <xsl:if test="not(user/default-portlet)">
+                            <xsl:attribute name="class">portlet-name default</xsl:attribute>
+                            <xsl:attribute name="title"><xsl:value-of select="lang/html/settings/current-default-portlet"/></xsl:attribute>
+                        </xsl:if>
+                        <xsl:if test="user/default-portlet">
+                            <xsl:attribute name="class">portlet-name selectable</xsl:attribute>
+                            <xsl:attribute name="title"><xsl:value-of select="lang/html/settings/select-default-portlet"/></xsl:attribute>
+                        </xsl:if>
+                    </span>
+                    </td>
+                </tr>
+              </thead>
+              <tbody>
+            <xsl:for-each select="user/portlet">
+              <xsl:if test="user/portlet/name != settings">
+                <tr><xsl:attribute name="portlet"><xsl:value-of select="user/portlet/handle"/></xsl:attribute>
+                    <td>
+                        <xsl:attribute name="id">portlet-name-<xsl:value-of select="user/portlet/handle"/></xsl:attribute>
+                        <div class="has-icon">
+                            <span>
+                                <xsl:attribute name="class">icon-<xsl:value-of select="user/portlet/name"/></xsl:attribute>
+                            </span>
+                            <span>
+                                <xsl:if test="user/portlet/is-default">
+                                    <xsl:attribute name="class">portlet-name default</xsl:attribute>
+                                    <xsl:attribute name="title"><xsl:value-of select="lang/html/settings/current-default-portlet"/></xsl:attribute>
+                                </xsl:if>
+                                <xsl:if test="not(user/portlet/is-default)">
+                                    <xsl:attribute name="class">portlet-name selectable</xsl:attribute>
+                                    <xsl:attribute name="title"><xsl:value-of select="lang/html/settings/select-default-portlet"/></xsl:attribute>
+                                </xsl:if>
+                                <xsl:attribute name="onclick">m_set_default_portlet(this, '<xsl:value-of select="user/portlet/name" />')</xsl:attribute>
+                                <xsl:attribute name="id">portlet_select_<xsl:value-of select="user/portlet/name"/></xsl:attribute>
+                                <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/title</xsl:variable>
+                                <xsl:value-of select="$name"/>
+                            </span>
+                            <span class="favorite-icon">
+                                <xsl:attribute name="onclick">m_set_default_portlet(this, '<xsl:value-of select="user/portlet/name" />')</xsl:attribute>
+                            </span>
+                        </div>
+                        <input type="hidden">
+                            <xsl:attribute name="name"><xsl:value-of select="queryparam/portlet"/></xsl:attribute>
+                            <xsl:attribute name="value"><xsl:value-of select="user/portlet/name"/></xsl:attribute>
+                        </input>
+                    </td>
+                    <td class="toggleSwitch">
+                        <input type="radio" value="1">
+                            <xsl:attribute name="name"><xsl:value-of select="queryparam/portlet-state"/>-<xsl:value-of select="user/portlet/handle"/></xsl:attribute>                            
+                            <xsl:if test="user/portlet/open">
+                                <xsl:attribute name="checked">checked</xsl:attribute>
+                            </xsl:if>
+                            <xsl:attribute name="id">open-<xsl:value-of select="user/portlet/handle"/></xsl:attribute> 
+                        </input>
+                        <input type="radio" value="0">
+                            <xsl:attribute name="name"><xsl:value-of select="queryparam/portlet-state"/>-<xsl:value-of select="user/portlet/handle"/></xsl:attribute>
+                            <xsl:if test="not(user/portlet/open)">
+                                <xsl:attribute name="checked">checked</xsl:attribute>
+                            </xsl:if>
+                            <xsl:attribute name="id">close-<xsl:value-of select="user/portlet/handle"/></xsl:attribute> 
+                        </input>
+                        <label class="box hobtext-inverted hobtext-bordered">
+                            <xsl:attribute name="for">open-<xsl:value-of select="user/portlet/handle"/></xsl:attribute> 
+                        </label><label class="box hobtext-inverted hobtext-bordered">
+                            <xsl:attribute name="for">close-<xsl:value-of select="user/portlet/handle"/></xsl:attribute> 
+                        </label>
+                        <label class="text">
+                            <xsl:attribute name="for">close-<xsl:value-of select="user/portlet/handle"/></xsl:attribute> 
+                            <xsl:value-of select="lang/html/settings/show"/>
+                        </label>
+                        <label class="text">
+                            <xsl:attribute name="for">open-<xsl:value-of select="user/portlet/handle"/></xsl:attribute> 
+                            <xsl:value-of select="lang/html/settings/hide"/>
+                        </label>
+                    </td>
+                    <td>
+                        <xsl:call-template name="action-reorder" />
+                    </td>
+                </tr>
+              </xsl:if>
+            </xsl:for-each>
+              </tbody>
+            </table>
+        </div>
+        <xsl:if test="user/allowed/settings">
+            <input type="hidden">
+                <xsl:attribute name="name"><xsl:value-of select="queryparam/portlet"/></xsl:attribute>
+                <xsl:attribute name="value">settings</xsl:attribute>
+            </input>
+            <input type="hidden" value="0">
+                <xsl:attribute name="name"><xsl:value-of select="queryparam/portlet-state"/>-0</xsl:attribute>
+                <xsl:attribute name="id">close-settings</xsl:attribute> 
+            </input>
+        </xsl:if>
+    </div>
+</xsl:template>
+<xsl:template match="others">
+    <div id="other-settings">
+        <div class="separator hobtext"><xsl:value-of select="lang/html/settings/others"/></div>
+        <div id="others" class="settings-content">
+            <table class="border">
+              <colgroup>
+                <col class="coll-start" />
+                <col class="coll-content" />
+              </colgroup>
+              <tbody>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/language"/></td>
+                    <td>
+                        <select size="1">
+                        <xsl:attribute name="name"><xsl:value-of select="queryparam/save-lang"/></xsl:attribute>
+                        <xsl:for-each select="languages">
+                            <option>
+                                <xsl:attribute name="value"><xsl:value-of select="languages/id"/></xsl:attribute>
+                                <xsl:if test="user/is-selected-lang">
+                                    <xsl:attribute name="selected">selected</xsl:attribute>
+                                </xsl:if>
+                                <xsl:value-of select="languages/name"/>
+                            </option>
+                        </xsl:for-each>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/wsg-flyer"/></td>
+                    <td>
+                        <input type="radio" value="0">
+                            <xsl:attribute name="name"><xsl:value-of select="queryparam/wsg-flyer"/></xsl:attribute>
+                            <xsl:if test="not(user/show-wsg-flyer)">
+                                <xsl:attribute name="checked">checked</xsl:attribute>
+                            </xsl:if>
+                        </input><xsl:value-of select="lang/html/settings/hide"/><br/>
+                        <input type="radio" value="1">
+                            <xsl:attribute name="name"><xsl:value-of select="queryparam/wsg-flyer"/></xsl:attribute>
+                            <xsl:if test="user/show-wsg-flyer">
+                                <xsl:attribute name="checked">checked</xsl:attribute>
+                            </xsl:if>
+                        </input><xsl:value-of select="lang/html/settings/show"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><xsl:value-of select="lang/html/settings/default-portlet"/></td>
+                    <td>
+                        <select id="select_default_portlet" onchange="m_default_portlet_changed(this);">
+                            <xsl:attribute name="name"><xsl:value-of select="queryparam/default-portlet"/></xsl:attribute>
+                            <option value="">
+                                <xsl:if test="not(user/default-portlet)">
+                                    <xsl:attribute name="selected">selected</xsl:attribute>
+                                </xsl:if>
+                                <xsl:value-of select="lang/html/settings/overview-portlet"/>
+                            </option>
+                        <xsl:for-each select="user/portlet">
+                          <xsl:if test="user/portlet/name != settings">
+                            <option>
+                                <xsl:attribute name="value"><xsl:value-of select="user/portlet/name"/></xsl:attribute>
+                                <xsl:if test="user/portlet/is-default">
+                                    <xsl:attribute name="selected">selected</xsl:attribute>
+                                </xsl:if>
+                                <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/title</xsl:variable>
+                                <xsl:value-of select="$name"/>
+                            </option>
+                          </xsl:if>
+                        </xsl:for-each>
+                        </select>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+</xsl:template>
+
+<xsl:template match="bm-configurator-inner">
+        <select class="bm-portlet-switch" onchange="m_update_bm_select(event)">
+            <option disabled selected="selected"><xsl:value-of select="lang/html/settings/select-portlet"/></option>
+            <option disabled value="unknown"> <xsl:value-of select="lang/html/settings/unknown-portlet"/> </option>
+        <xsl:for-each select="user/portlet">
+            <xsl:if test="user/portlet/name != mobile">
+                <option>
+                    <xsl:attribute name="value"><xsl:value-of select="user/portlet/name"/></xsl:attribute>
+                    <xsl:variable name="name">lang/html/welcome/<xsl:value-of select="user/portlet/name"/>/title</xsl:variable>
+                    <xsl:value-of select="$name"/>
+                </option>
+            </xsl:if>
+        </xsl:for-each>
+        </select>
+        <div class="bm-portlet-config">
+            <div class="bm-config-unknown">
+                <xsl:value-of select="lang/html/settings/unknown-portlet-description"/>
+            </div>
+        <xsl:for-each select="user/portlet">
+            <xsl:if test="user/portlet/name != mobile">
+                <div>
+                    <xsl:attribute name="class">bm-config-<xsl:value-of select="user/portlet/name"/></xsl:attribute>
+                    <xsl:variable name="name"><xsl:value-of select="user/portlet/name"/></xsl:variable>
+                    <xsl:call-template name="$name"/>
+                </div>
+            </xsl:if>
+        </xsl:for-each>
+        </div>
+        <div class="clear"></div>
+</xsl:template>
+
+<xsl:template match="bm-configurator">
+    <div class="bm-config">
+        <xsl:call-template name="bm-configurator-inner"/>
+        <input class="text" type="text" onchange="return m_check(this);" name="bmark-url" readonly data-type="rdvpn">
+            <xsl:attribute name="value"><xsl:value-of select="user/rdvpn-bookmarks/url"/></xsl:attribute>
+        </input>
+    </div>
+</xsl:template>
+<xsl:template match="bm-configurator-dummy">
+    <div class="bm-config">
+        <xsl:call-template name="bm-configurator-inner"/>
+        <input class="text clean" type="text" onchange="return m_check(this);" name="bmark-url" readonly data-type="rdvpn" />
+    </div>
+</xsl:template>
+
+<xsl:template match="webterm">
+    <!-- webterm portlet -->
+    <select class="href">
+        <option disabled selected="selected"><xsl:value-of select="lang/html/settings/select-item"/></option>
+    <!-- DESKTOP ON DEMAND -->
+    <xsl:for-each select="user/workstations">
+        <option>
+            <xsl:attribute name="value">/protected/portlets/webterm/rdp/dod.hsl?webterm_name=<xsl:value-of select="user/workstations/name enc:uri"/></xsl:attribute>
+            Desktop-On-Demand: <xsl:value-of select="user/workstations/name"/>
+        </option>
+    </xsl:for-each>
+    <!-- NORMAL RDP -->
+    <xsl:for-each select="user/webterm/rdp">
+        <option>
+            <xsl:attribute name="value">/protected/portlets/webterm/<xsl:value-of select="user/webterm/protocol-link"/>?webterm_name=<xsl:value-of select="user/webterm/name enc:b64"/></xsl:attribute>
+            <xsl:value-of select="user/webterm/name"/>
+        </option>
+    </xsl:for-each>
+    <!-- SSH -->
+    <xsl:for-each select="user/webterm/ssh">
+        <option>
+            <xsl:attribute name="value">/protected/portlets/webterm/<xsl:value-of select="user/webterm/protocol-link"/>?webterm_name=<xsl:value-of select="user/webterm/name enc:b64"/></xsl:attribute>
+            <xsl:value-of select="user/webterm/name"/>
+        </option>
+    </xsl:for-each>     
+
+    <xsl:for-each select="user/webterm/te">
+        <option>
+            <xsl:attribute name="value">/protected/portlets/webterm/<xsl:value-of select="user/webterm/te-protocol-link"/>?webterm_name=<xsl:value-of select="user/webterm/te-name enc:b64"/>&webterm_session=<xsl:value-of select="user/webterm/te-session enc:uri"/></xsl:attribute>
+            <xsl:value-of select="user/webterm/te-session"/>
+        </option>
+    </xsl:for-each>
+    <xsl:if test="user/webterm/rdp &lt;= 0 and user/webterm/te &lt;= 0 and user/webterm/ssh &lt;= 0 and user/workstations &lt;= 0">
+        <option disabled><xsl:value-of select="lang/html/welcome/empty" /></option>
+    </xsl:if>
+    </select>
+</xsl:template>
+
+<xsl:template match="jwtsa">
+    <!-- jwtsa portlet -->
+    <select class="href">
+    <xsl:if test="user/jwtsa-config &gt; 0">
+        <option disabled selected="selected"><xsl:value-of select="lang/html/settings/select-item"/></option>
+
+      <xsl:for-each select="user/jwtsa-config">
+        <option>
+            <xsl:attribute name="value">/protected/portlets/jwtsa/JWT.jnlp?jwtsa_config=<xsl:value-of select="user/jwtsa-config/name"/></xsl:attribute>
+            <xsl:value-of select="user/jwtsa-config/name"/>
+        </option>
+      </xsl:for-each>
+    </xsl:if>
+    <xsl:if test="user/jwtsa-config &lt;= 0">
+        <option disabled><xsl:value-of select="lang/html/welcome/empty" /></option>
+    </xsl:if>
+    </select>
+</xsl:template>
+<xsl:template match="jterm">
+    <!-- session portlet -->
+    <input class="href" type="hidden" value="/protected/portlets/jterm/jtermlaunch.hsl"/>
+</xsl:template>
+<xsl:template match="admin">
+    <!-- administration portlet -->
+    <input class="href" type="hidden" value="/public/lib/eaadminExtern.jnlp"/>
+</xsl:template>
+<xsl:template match="globaladmin">
+    <!-- administration portlet -->
+    <input class="href" type="hidden" value="/protected/portlets/globaladmin/index.hsl"/>
+</xsl:template>
+<xsl:template match="wsg">
+    <!-- wsg portlet -->
+    <select onchange="this.nextElementSibling.value=this.value; m_bm_changed(event);">
+        <option value="http://"></option>
+    <xsl:for-each select="user/wsg-bookmarks">
+        <option>
+            <xsl:attribute name="value"><xsl:value-of select="user/wsg-bookmarks/url"/></xsl:attribute>
+            <xsl:value-of select="user/wsg-bookmarks/name"/>
+        </option>
+    </xsl:for-each>
+    <xsl:if test="user/wsg-bookmarks &lt;= 0">
+        <option disabled><xsl:value-of select="lang/html/welcome/empty" /></option>
+    </xsl:if>
+    </select>
+    <input class="href" value="http://" type="text"/>
+    
+</xsl:template>
+<xsl:template match="wfa">
+    <!-- wfa portlet -->
+    <input class="href" type="hidden" value="/WebFileAccess/start"/>
+</xsl:template>
+<xsl:template match="wspuc">
+    <!-- WSP UC portlet -->
+    <input class="href" type="hidden" value="/protected/portlets/wspuc/wspuc.hsl"/>
+</xsl:template>
+<xsl:template match="hobphone">
+    <!-- HOBPhone portlet -->
+    <input class="href" type="hidden" value="/protected/portlets/hobphone/hobphone.hsl"/>
+</xsl:template>
+<xsl:template match="ppptunnel">
+    <!-- ppptunnel portlet -->
+    <select class="href">
+    <xsl:if test="ppptunnel &gt; 0">
+        <option disabled selected="selected"><xsl:value-of select="lang/html/settings/select-item"/></option>
+      <xsl:for-each select="ppptunnel">
+        <option>
+            <xsl:attribute name="value">/protected/portlets/ppptunnel/HOBPPPTunnel.hsl?ID=<xsl:value-of select="ppptunnel/id"/></xsl:attribute>
+            <xsl:value-of select="ppptunnel/name"/>
+        </option>
+      </xsl:for-each>
+    </xsl:if>
+    <xsl:if test="ppptunnel &lt;= 0">
+        <option disabled><xsl:value-of select="lang/html/welcome/empty" /></option>
+    </xsl:if>
+    </select>
+</xsl:template>
+<xsl:template match="settings">
+    <!-- user settings portlet -->
+    <select class="href">
+        <option value="/protected/portlets/settings/settings.hsl">
+            <xsl:value-of select="lang/html/welcome/settings/title"/>
+        </option>
+        <option value="/protected/portlets/settings/cookies.hsl">
+            <xsl:value-of select="lang/html/welcome/settings/text2"/>
+        </option>
+        <option value="/protected/change-password.hsl">
+            <xsl:value-of select="lang/html/welcome/settings/text4"/>
+        </option>
+    </select>
+</xsl:template>
+

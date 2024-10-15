@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{8ad8bbe6-aaff-4e11-a0f5-ef979c65e14f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{04c2cede-67d5-49d4-8a02-0e11451247c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{3a0a9817-b250-4738-908e-f287c117f61c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="codereview">
+      <UniqueIdentifier>{e0dcf580-edf2-4eaa-ae81-79b6483650ff}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\hob-arraylist.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-func-runner.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-json-func-service.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-json-rpc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hob-json.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sdh-portal-srv.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sdh-version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\hob-arraylist.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sdh-portal-srv.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-func-runner.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-json-func-service.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-json-rpc.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-json.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\sdh-portal-srv.rc-pre">
+      <Filter>res</Filter>
+    </None>
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt">
+      <Filter>codereview</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

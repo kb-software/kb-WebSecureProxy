@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File HOB Enterprise Access Software -->
+<jnlp spec="1.0+" codebase="https://<%=url_jnlp%>/public/lib">
+	<information>
+		<title>HOB EA Administration</title>
+		<vendor>HOB</vendor>
+		<homepage href="http://www.hobsoft.com/"/>
+		<description>HOB Enterprise Access Administration</description>
+		<description kind="short">HOB EA Administration</description>
+		<description kind="tooltip">HOB Enterprise Access Administration</description>
+		<description kind="on-line">HOB Enterprise Access Administration</description>
+		<icon href="images/HOB_Enterprise_Access_adm_32.png"/>
+		<icon kind="splash" href="images/HCsplash.gif"/>
+		<update check="always"/>
+	</information>
+	<information locale="de">
+		<homepage href="http://www.hob.de/"/>
+		<description>HOB Enterprise Access Administration</description>
+		<description kind="short">HOB EA Administration</description>
+		<description kind="tooltip">HOB Enterprise Access Administration</description>
+		<description kind="on-line">HOB Enterprise Access Administration</description>
+		<update check="always"/>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<j2se version="1.5+"/>
+		<property name="jnlp.packEnabled" value="true"/>
+		<jar href="EAAdmin-J2.jar" main="true"/>
+		<jar href="Admin2-J2.jar" download="lazy"/>
+		<jar href="ca-J2.jar" download="lazy"/>
+		<jar href="cerdsp-J2.jar" download="lazy"/>
+		<jar href="cergen-J2.jar" download="lazy"/>
+		<jar href="CheckClient-J2.jar" download="lazy"/>
+		<jar href="comma-J2.jar" download="lazy"/>
+		<jar href="commb-J2.jar" download="lazy"/>
+		<jar href="ComplCheck-J2.jar" download="lazy"/>
+		<jar href="ComplCheckClient-J2.jar" download="lazy"/>
+		<jar href="DesktopOnDemand-J2.jar" download="lazy"/>
+		<jar href="EAAdminPlugins-J2.jar" download="lazy"/>
+		<jar href="easerver-J2.jar" download="lazy"/>
+		<jar href="FTPB-J2.jar" download="lazy"/>
+		<jar href="FTPBconf-J2.jar" download="lazy"/>
+		<jar href="hlset-J2.jar" download="lazy"/>
+		<jar href="hlsetutil-J2.jar" download="lazy"/>
+		<jar href="hobcc-J2.jar" download="lazy"/>
+		<jar href="Hobeans-J2.jar" download="lazy"/>
+		<jar href="hoblibs-J2.jar" download="lazy"/>
+		<jar href="hobphone-J2.jar" download="lazy"/>
+		<jar href="HOBssh-J2.jar" download="lazy"/>
+		<jar href="HOBSSHKG-J2.jar" download="lazy"/>
+		<jar href="HOBssl-J2.jar" download="lazy"/>
+		<jar href="HOBTerminal-J2.jar" download="lazy"/>
+		<jar href="hobxml-J2.jar" download="lazy"/>
+		<jar href="jcalendar-1.3.2.jar" download="lazy"/>
+		<jar href="JLaunch-J2.jar" download="lazy"/>
+		<jar href="JTerm-J2.jar" download="lazy"/>
+		<jar href="JTermconf-J2.jar" download="lazy"/>
+		<jar href="JWT-J2.jar" download="lazy"/>
+		<jar href="JWTcommons-J2.jar" download="lazy"/>
+		<jar href="JWTconf-J2.jar" download="lazy"/>
+		<jar href="JWTconfsa-J2.jar" download="lazy"/>
+		<jar href="launchppp-J2.jar" download="lazy"/>
+		<jar href="LocalVarsEdit-J2.jar" download="lazy"/>
+		<jar href="LogViewer.jar" download="lazy"/>
+		<jar href="mail.jar" download="lazy"/>
+		<jar href="Ohio-J2.jar" download="lazy"/>
+		<jar href="prodkey-J2.jar" download="lazy"/>
+		<jar href="proxyconf-J2.jar" download="lazy"/>
+		<jar href="secman-J2.jar" download="lazy"/>
+		<jar href="secutil-J2.jar" download="lazy"/>
+		<jar href="Startoptions-J2.jar" download="lazy"/>
+		<jar href="symantec-J2.jar" download="lazy"/>
+		<jar href="tool-J2.jar" download="lazy"/>
+		<jar href="wsp_passthrough.jar" download="lazy"/>
+		<jar href="wspcfg-J2.jar" download="lazy"/>
+		<jar href="wspuc-J2.jar" download="lazy"/>
+		<jar href="wspucsom-J2.jar" download="lazy"/>
+		<jar href="xmlpull-1.1.3.1.jar" download="lazy"/>
+		<jar href="xpp3_min-1.1.4c.jar" download="lazy"/>
+		<jar href="xstream-1.4.10.jar" download="lazy"/>
+	</resources>
+	<application-desc main-class="hob.hlc.admin2.EntprAdmin">
+		<argument>-sstartupEAAdminExtern.xml</argument>
+		<argument>-rnologoff</argument>
+		<argument>-lhttps://<%=url_jnlp%>/public/lib</argument>
+		<argument>-L<%=language%></argument>
+	</application-desc>
+</jnlp>

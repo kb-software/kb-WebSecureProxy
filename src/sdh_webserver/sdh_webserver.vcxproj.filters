@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{6ee342f1-1cd2-45e3-8733-d1e149e4a471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\iws">
+      <UniqueIdentifier>{a1b1d285-9c9d-4c54-8706-708285022d56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\portal">
+      <UniqueIdentifier>{1f75816d-8b31-4436-be79-875577222a45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{50e14b12-f35c-49a8-86d3-1d488836b829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\wsg">
+      <UniqueIdentifier>{256df73f-b057-49e4-b948-00c07e9d8310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\wsg\interpreter">
+      <UniqueIdentifier>{11a932c0-4df7-4e51-8599-89fd5d08550d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\authlib">
+      <UniqueIdentifier>{2e9cb730-ebc1-4ece-9349-9f08b2dc4cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\login">
+      <UniqueIdentifier>{1b30cce1-2862-40e7-bcae-25c688ed8641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\spnego">
+      <UniqueIdentifier>{91874d5f-180c-45e9-a44a-dd74e497b013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\config">
+      <UniqueIdentifier>{596c47f7-648b-4ee9-a46d-851209194d72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{b1b7572d-1905-4eb1-863b-087e19c4074b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{d05a5b80-904b-482e-b56f-a5deb41b31eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="codereview">
+      <UniqueIdentifier>{223f39c8-bf1f-4a15-9277-f4e8c42e3d85}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\auth_callback.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_control.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_datablock.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_http_header.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_id.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_page.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_session.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_state.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_transaction.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_url.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_url_parser.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ds_zlib.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sdh_web_server.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xszlib01.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xsl-http-header-1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\iws\ds_webserver.cpp">
+      <Filter>src\iws</Filter>
+    </ClCompile>
+    <ClCompile Include="src\portal\ds_parse_xsl.cpp">
+      <Filter>src\portal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\portal\ds_xsl.cpp">
+      <Filter>src\portal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\helper.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\xs_user_agent_worker.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wsg\ds_ws_gate.cpp">
+      <Filter>src\wsg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wsg\interpreter\ds_attributes.cpp">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wsg\interpreter\ds_interpret.cpp">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wsg\interpreter\ds_interpret_css.cpp">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wsg\interpreter\ds_interpret_html.cpp">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wsg\interpreter\ds_interpret_script.cpp">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wsg\interpreter\ds_interpret_xml.cpp">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wsg\interpreter\ds_scriptvariables.cpp">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wsg\interpreter\dsd_interpret_ica.cpp">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\authlib\xs-wspat-entry.cpp">
+      <Filter>src\authlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\login\ds_auth.cpp">
+      <Filter>src\login</Filter>
+    </ClCompile>
+    <ClCompile Include="src\login\ds_pre_cma.cpp">
+      <Filter>src\login</Filter>
+    </ClCompile>
+    <ClCompile Include="src\spnego\ds_spnego_reader.cpp">
+      <Filter>src\spnego</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config\ds_ppp_tunnel.cpp">
+      <Filter>src\config</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config\ds_virtual_link.cpp">
+      <Filter>src\config</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ds_control.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_datablock.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_http_header.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_id.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_page.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_session.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_state.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_transaction.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_url.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_url_parser.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ds_zlib.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dsd_srv_list.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdh_web_server.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xscddef2.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\iws\ds_webserver.h">
+      <Filter>src\iws</Filter>
+    </ClInclude>
+    <ClInclude Include="src\portal\ds_parse_xsl.h">
+      <Filter>src\portal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\portal\ds_xsl.h">
+      <Filter>src\portal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\portal\hob-postparams.h">
+      <Filter>src\portal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\portal\hob-xslvalues.h">
+      <Filter>src\portal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\helper.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\ds_ws_gate.h">
+      <Filter>src\wsg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\interpreter\ds_attributes.h">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\interpreter\ds_interpret.h">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\interpreter\ds_interpret_css.h">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\interpreter\ds_interpret_html.h">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\interpreter\ds_interpret_script.h">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\interpreter\ds_interpret_xml.h">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\interpreter\ds_scriptvariables.h">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\interpreter\dsd_interpret_ica.h">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wsg\interpreter\states.h">
+      <Filter>src\wsg\interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\login\ds_auth.h">
+      <Filter>src\login</Filter>
+    </ClInclude>
+    <ClInclude Include="src\login\ds_pre_cma.h">
+      <Filter>src\login</Filter>
+    </ClInclude>
+    <ClInclude Include="src\spnego\ds_spnego_reader.h">
+      <Filter>src\spnego</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config\ds_ppp_tunnel.h">
+      <Filter>src\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config\ds_virtual_link.h">
+      <Filter>src\config</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ws_version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\wsg_res.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\xs_user_agent_worker.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\sdh_webserver.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\sdh_webserver.rc-pre">
+      <Filter>res</Filter>
+    </None>
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt">
+      <Filter>codereview</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

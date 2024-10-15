@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    
+    <link rel="stylesheet" href="/public/css/icons.css"/>
+    <link rel="stylesheet" href="/public/css/java-settings.css"/>
+    <script src="/public/js/java.js"></script>
+    <script src="/public/js/os_detection.js"></script>
+    <script>
+        strg_yes = '<xsl:value-of select="lang/yes" />';
+        strg_no  = '<xsl:value-of select="lang/no" />';
+        window.onload = function() {
+            var dsl_applet_avail = document.getElementById('applet-available');
+            var dsl_ws_enforced = document.getElementById('always-webstart');
+            var dsl_hoblaunch = document.getElementById('use-hoblaunch');
+            var dsl_page = document.getElementById('page-area');
+            //load status
+            dsl_applet_avail.innerText = dsg_java.m_is_java_enabled() ? strg_yes : strg_no;
+            var strl_os = m_detect_os();
+            if(strl_os.startsWith('win')) { //windows or windows phone
+                m_add_class(dsl_page, 'windows');
+            } else if (strl_os == 'mac') {
+                m_add_class(dsl_page, 'mac');
+            } else if (m_detect_mobile()) {
+                m_add_class(dsl_page, 'no-installer');
+            }
+            //load config
+            if(m_cookies_enabled()) {
+                dsl_ws_enforced.checked = dsg_java.m_is_webstart_enforced();
+                dsl_hoblaunch.checked = dsg_java.m_use_hoblaunch();
+                dsl_ws_enforced.onchange = function() {
+                    dsg_java.m_set_webstart_enforced(dsl_ws_enforced.checked);
+                };
+                dsl_hoblaunch.onchange = function() {
+                    dsg_java.m_set_hoblaunch(dsl_hoblaunch.checked);
+                };
+            } else {
+                dsl_ws_enforced.setAttribute('disabled', '');
+                dsl_hoblaunch.setAttribute('disabled', '');
+                m_add_class(dsl_page, 'no-cookies')
+            }
+            
+        };
+        function m_test_hl(dsp_btn) {
+            var dsl_hl_detect = document.getElementById('hoblaunch-detected');
+            dsg_java.m_check_hoblaunch_available(function(strp_status) {
+                if(strp_status == "error") {
+                    dsl_hl_detect.innerText = strg_no;
+                } else if (strp_status == "success") {
+                    dsl_hl_detect.innerText = strg_yes;
+                } //else "unknow" -> not supported
+                dsl_hl_detect.style.display = '';
+                dsp_btn.style.display = 'none';
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="page-outer" class="wide-page logo-right">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <a id="logo"> 
+                <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+            </a>
+            <div class="title hobtext">
+                <xsl:value-of select="lang/html/settings/java/title" />
+            </div>
+            <div id="page-inner">
+                <div>
+                    <span class="hobtext"><xsl:value-of select="lang/html/settings/java/applet-available" />:</span>
+                    <span id="applet-available">?</span>
+                </div>
+                <div>
+                    <span class="hobtext"><xsl:value-of select="lang/html/settings/java/always-webstart" />:</span>
+                    <span><input type="checkbox" id="always-webstart" /></span>
+                </div>
+                <div>
+                    <span class="hobtext"><xsl:value-of select="lang/html/settings/java/hoblaunch-detected" />:</span>
+                    <span id="hoblaunch-detected" style="display: none">?</span>
+                    <button onclick="m_test_hl(this)"><xsl:value-of select="lang/html/settings/java/test-for-hoblaunch" /></button>
+                </div>
+                <div>
+                    <span class="hobtext"><xsl:value-of select="lang/html/settings/java/use-hoblaunch" />:</span>
+                    <span><input type="checkbox" id="use-hoblaunch" /></span>
+                </div>
+                <div class="cookie-warning">
+                    <xsl:value-of select="lang/html/settings/java/cookie-warning" />
+                </div>
+            </div>
+            <div class="installer title hobtext">
+                <xsl:value-of select="lang/html/settings/java/install-hoblaunch" />
+            </div>
+            <div class="installer">
+                <div class="description">
+                    <xsl:value-of select="lang/html/settings/java/hoblaunch-description" />
+                </div>
+                <div class="os-dependent mac" id="mac_dmg">
+                    <a class="leading-icon icon-installer" target="_blank"  href="install/HOBLaunch.dmg">
+                        HOBLaunch installer (Mac/dmg)
+                    </a>
+                </div>
+                <div class="os-dependent mac" id="mac_appstore">
+                    <a class="leading-icon icon-installer" target="_blank" href="macappstore://itunes.apple.com/app/id1170536983?mt=12">
+                        HOBLaunch installer (Mac/Appstore)
+                    </a>
+                </div>
+                <div class="os-dependent windows" id="win_inst">
+                    <a class="leading-icon icon-installer" target="_blank" href="install/HOBLaunch_Installer.exe">
+                        HOBLaunch installer (Windows/exe)
+                    </a>
+                </div>
+            </div>
+		</div>
+    </div>
+</body>
+</html>
+
+
+<xsl:include href="/public/template_header.hsl" />

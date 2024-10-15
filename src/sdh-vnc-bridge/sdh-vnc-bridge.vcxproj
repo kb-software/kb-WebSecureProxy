@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Itanium">
+      <Configuration>Debug</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="insure|Itanium">
+      <Configuration>insure</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="insure|Win32">
+      <Configuration>insure</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="insure|x64">
+      <Configuration>insure</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Itanium">
+      <Configuration>Release</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8F8ACDB8-CE01-4DB7-B67A-6D0BAB256B4C}</ProjectGuid>
+    <RootNamespace>sdh-vnc-bridge</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+    <IntermediateOutputPath>$(SolutionDir)obj\</IntermediateOutputPath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|Itanium'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='insure|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='insure|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='insure|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.61030.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)bin\debug\windows\x86\</OutDir>
+    <IntDir>$(SolutionDir)obj\debug\windows\x86\plugins\vnc\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86dbg VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86dbg rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86dbg clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;XH_MPPC_INTF_VERSION=200;HOB_CONTR_TIMER=1;USE_HOB_CONTROL=1;HL_COMP_MULTI;SDH_VNC_BRIDGE_EXPORTS;HL_SDH;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\debug\windows\em64t\</OutDir>
+    <IntDir>$(SolutionDir)obj\debug\windows\em64t\plugins\vnc\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64dbg VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64dbg rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64dbg clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_DEBUG;XH_MPPC_INTF_VERSION=200;HOB_CONTR_TIMER=1;USE_HOB_CONTROL=1;HL_COMP_MULTI;SDH_VNC_BRIDGE_EXPORTS;HL_SDH;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">
+    <OutDir>$(SolutionDir)bin\debug\windows\ipf\</OutDir>
+    <IntDir>$(SolutionDir)obj\debug\windows\ipf\plugins\vnc\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFdbg VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFdbg rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFdbg clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_IA64_;_DEBUG;XH_MPPC_INTF_VERSION=200;HOB_CONTR_TIMER=1;USE_HOB_CONTROL=1;HL_COMP_MULTI;SDH_VNC_BRIDGE_EXPORTS;HL_SDH;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)bin\release\windows\x86\</OutDir>
+    <IntDir>$(SolutionDir)obj\release\windows\x86\plugins\vnc\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86 VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86 rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86 clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;XH_MPPC_INTF_VERSION=200;HOB_CONTR_TIMER=1;USE_HOB_CONTROL=1;HL_COMP_MULTI;SDH_VNC_BRIDGE_EXPORTS;HL_SDH;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\release\windows\em64t\</OutDir>
+    <IntDir>$(SolutionDir)obj\release\windows\em64t\plugins\vnc\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64 VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64 rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64 clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;NDEBUG;XH_MPPC_INTF_VERSION=200;HOB_CONTR_TIMER=1;USE_HOB_CONTROL=1;HL_COMP_MULTI;SDH_VNC_BRIDGE_EXPORTS;HL_SDH;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">
+    <OutDir>$(SolutionDir)bin\release\windows\ipf\</OutDir>
+    <IntDir>$(SolutionDir)obj\release\windows\ipf\plugins\vnc\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPF VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPF rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPF clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_IA64_;NDEBUG;XH_MPPC_INTF_VERSION=200;HOB_CONTR_TIMER=1;USE_HOB_CONTROL=1;HL_COMP_MULTI;SDH_VNC_BRIDGE_EXPORTS;HL_SDH;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|Win32'">
+    <OutDir>$(SolutionDir)bin\insure\windows\x86\</OutDir>
+    <IntDir>$(SolutionDir)obj\insure\windows\x86\plugins\vnc\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86ins VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86ins rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86ins clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;XH_MPPC_INTF_VERSION=200;HOB_CONTR_TIMER=1;USE_HOB_CONTROL=1;HL_COMP_MULTI;SDH_VNC_BRIDGE_EXPORTS;HL_SDH;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|x64'">
+    <OutDir>$(SolutionDir)bin\insure\windows\em64t\</OutDir>
+    <IntDir>$(SolutionDir)obj\insure\windows\em64t\plugins\vnc\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64ins VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64ins rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64ins clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_DEBUG;XH_MPPC_INTF_VERSION=200;HOB_CONTR_TIMER=1;USE_HOB_CONTROL=1;HL_COMP_MULTI;SDH_VNC_BRIDGE_EXPORTS;HL_SDH;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|Itanium'">
+    <OutDir>$(SolutionDir)bin\insure\windows\ipf\</OutDir>
+    <IntDir>$(SolutionDir)obj\insure\windows\ipf\plugins\vnc\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFins VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFins rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFins clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_IA64_;_DEBUG;XH_MPPC_INTF_VERSION=200;HOB_CONTR_TIMER=1;USE_HOB_CONTROL=1;HL_COMP_MULTI;SDH_VNC_BRIDGE_EXPORTS;HL_SDH;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\hobeax.c" />
+    <ClCompile Include="src\mppccmpr.c" />
+    <ClCompile Include="src\mppccodr.c" />
+    <ClCompile Include="src\mppcdcmp.c" />
+    <ClCompile Include="src\xl-rdps-rfbc-3.cpp" />
+    <ClCompile Include="src\xlrdpeclip.cpp" />
+    <ClCompile Include="src\xs-bitmap-compr-1-q.cpp" />
+    <ClCompile Include="src\xs-bitmap-compr-6.cpp" />
+    <ClCompile Include="src\xs-cdr-zlib-1.cpp" />
+    <ClCompile Include="src\xs-encry-1.c" />
+    <ClCompile Include="src\xs-hob-tab-ascii-ansi-1.cpp" />
+    <ClCompile Include="src\xs-rdps-rfbc-splash-screen.cpp" />
+    <ClCompile Include="..\wsp\xsavl03.cpp" />
+    <ClCompile Include="src\xsl-stor-sdh-big.cpp" />
+    <ClCompile Include="src\xsrdpse1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\basemacs.h" />
+    <ClInclude Include="include\basetype.h" />
+    <ClInclude Include="include\hmd5.h" />
+    <ClInclude Include="include\hmd5subs.h" />
+    <ClInclude Include="include\hmemmgr.h" />
+    <ClInclude Include="include\hob-bitmap-compr-1.h" />
+    <ClInclude Include="include\hob-bitmap-compr-6.h" />
+    <ClInclude Include="include\hob-bitswaptab.h" />
+    <ClInclude Include="include\hob-cd-record-1.h" />
+    <ClInclude Include="include\hob-cdrdef1.h" />
+    <ClInclude Include="include\hob-encry-1.h" />
+    <ClInclude Include="include\hob-gather_reader.hpp" />
+    <ClInclude Include="include\hob-get_rdvpn_credentials.hpp" />
+    <ClInclude Include="include\hob-pixel-converter-2.hpp" />
+    <ClInclude Include="include\hob-rdp_keymapping.hpp" />
+    <ClInclude Include="include\hob-rdpacc_clipboard.h" />
+    <ClInclude Include="include\hob-rdpacc_orderqueue.hpp" />
+    <ClInclude Include="include\hob-rdpacc_tahoma.hpp" />
+    <ClInclude Include="include\hob-rdpacc_vector.hpp" />
+    <ClInclude Include="include\hob-rdpserver1.h" />
+    <ClInclude Include="include\hob-stor-sdh.h" />
+    <ClInclude Include="include\hob\util\hob-tk-arch.h" />
+    <ClInclude Include="include\hob\util\hob-tk-queue.hpp" />
+    <ClInclude Include="include\hob\util\hob-tk-types.h" />
+    <ClInclude Include="include\hobeax.h" />
+    <ClInclude Include="include\hrc4cons.h" />
+    <ClInclude Include="include\hsha.h" />
+    <ClInclude Include="include\mcdrdef.h" />
+    <ClInclude Include="include\memfunc.h" />
+    <ClInclude Include="include\mppccmp.h" />
+    <ClInclude Include="include\mppcdef.h" />
+    <ClInclude Include="include\mppchtab.h" />
+    <ClInclude Include="include\sdh-version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\sdh-vnc-bridge.rc-pre" />
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

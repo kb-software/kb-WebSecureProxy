@@ -1,0 +1,52 @@
+//------------------------------------------------------
+//Description=HP Laserjet (PCL5) und Lexmark Optra
+//
+// changed: 23.10.2033 OBR entfernt und Precision Oberen Rand von HP übernommen
+// changed: 15.09.2033 Top/Left Edge eingebaut
+// changed: 26.08.2003 TopMargin in 3 Segmente aufgeteilt
+//					   PageLength intern verarbeiten
+// changed: 25.08.2003 codepage 819 from "(0N" to "(19U"
+// changed: 20.03.2003
+//
+//////////////////////////////////
+
+TOP_EDGE = -0.12
+LEFT_EDGE = 0.23
+CR = 0d
+LF = 0a
+FF = 0c
+ESC = 1B
+MOVERIGHT = [ESC] \"&a+\" Text (MoveRight) \"H\"
+CPI = [ESC] \"(s\" Text (CPI) \"H\"
+CPI10withHMI = [ESC] \"(s10H\" [ESC] \"&k11.689H\" 
+BOLD_ON = [ESC] 28 73 33 42
+BOLD_OFF = [ESC] 28 73 30 42
+LINEDENSITY = [ESC] \"&l\" Text (LineDensity) \"C\"
+
+INIT = [ESC] 45  [CPI] [LPI] [Perfor] [HLF] [CODEPAGE] [COURIER]
+
+PERFOR = [ESC] \"&l1L\"
+OBR = [ESC] 26 6C 30 45
+TOPMARGIN0 = [ESC] \"&l0E\"
+TOPMARGIN = [ESC] \"&l\" TextRnd (TopMargin) \"E\"
+V_TOP_MARGIN =  [ESC] \"&a\" Text (TopMargin1440/2) \"V\"
+
+LEFTMARGIN = [ESC] \"&a\" Text (LeftMargin)  \"L\"
+HLF = [ESC] 3D
+LPI = [ESC] \"&l6D\"
+            
+CODEPAGE-437 = [ESC] \"(10U\"  [CPI] [LPI] [TOPMARGIN0]  [V_TOP_MARGIN] [LEFTMARGIN]
+CODEPAGE-819 = [ESC] \"(19U\"  [CPI] [LPI] [TOPMARGIN0]  [V_TOP_MARGIN] [LEFTMARGIN]
+CODEPAGE-850 = [ESC] \"(12U\"  [CPI] [LPI] [TOPMARGIN0]  [V_TOP_MARGIN] [LEFTMARGIN]
+
+PORTRAIT = [ESC] 26 6c 30 4f [ESC] 26 61 30 50
+LANDSCAPE = [ESC] 26 6c 31 4f
+ORIENT90 = [ESC] 26 6c 32 4f
+ORIENT270 = [ESC] 26 6c 30 4f [ESC] 26 61 32 37 30 50 [ESC] 26 61 30 52
+//PAGE_LENGTH = [ESC] \"&l\" Text(PageLength) \"F\"
+COURIER = [ESC]28733354
+ONE_SIDED = [ESC] 26 6C 30 53
+TWO_SIDED = [ESC] 26 6C 31 53
+MOVEVERT720 = [ESC] \"&a\" Text (MoveVert720) \"V\"
+MOVEROWUP = [ESC] \"&a-60V\"
+MOVEROWDOWN = [ESC] \"&a+60V\"

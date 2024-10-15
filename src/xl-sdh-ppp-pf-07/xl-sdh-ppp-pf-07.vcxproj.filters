@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{2c4752bf-aced-4b05-b35d-29b9e8188236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{f36dface-b5b4-47fb-b24f-fbb61cd3b58b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{5b21ef52-abb6-433f-a850-f31c4bff2f72}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\hob-htcp-01.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hob-htcp-hdr-01.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hob-htcp-int-01.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hob-htcp-sdh-01.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\xl-sdh-ppp-pf-07.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-htcp-01.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-htcp-hdr-01.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xs-htcp-sdh-01.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\wsp\xsavl03.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xslnetw1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\xl-sdh-ppp-pf-07.rc-pre">
+      <Filter>res</Filter>
+    </None>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>

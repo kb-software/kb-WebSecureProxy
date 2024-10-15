@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<ctype>1</ctype>
+<sm_views_mode>1</sm_views_mode>
+<sm_viewbtn_visible>N</sm_viewbtn_visible>
+<conf_wsp>3</conf_wsp>
+<http_proxy_state>1</http_proxy_state>
+<timestamp>20110211093421</timestamp>
+<filetype>1</filetype>
+<showadv>N</showadv>
+<sysuser>N</sysuser>
+<SrvListWSP>
+<_-_23>1</_-_23>
+<__0>
+<host>localhost</host>
+<port>$ADMIN_PORT$</port></__0></SrvListWSP></root>

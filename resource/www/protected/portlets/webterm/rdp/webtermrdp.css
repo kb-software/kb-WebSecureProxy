@@ -1,0 +1,215 @@
+/** Add css rules here for your application. */
+body {
+	-webkit-touch-callout: none;
+	margin:0px;
+}
+
+/** Example rules used by the template application (remove for your app) */
+h1 {
+	font-size: 2em;
+	font-weight: bold;
+	color: #777777;
+	text-align: center;
+}
+
+.sendButton {
+	display: block;
+	font-size: 16pt;
+}
+
+.webterm-spacer{
+    padding-bottom:15px;
+}
+
+.panelclass{
+  margin-top: 15px;
+  text-align: justify;
+}
+
+table.panelclass td{
+  width: 30%;
+  text-align: center;
+}
+
+
+/** The padding is reduced by 1 px on hover to make space for the border without changing the overall size*/
+.canvasPanel input {
+	padding: 3px;
+}
+
+.canvasPanel input:hover{
+	border: 1px solid #ccc;
+	padding: 2px;
+}
+
+#domain_lbl, #password_lbl, #username_lbl  {
+  margin-left: 25%;
+}
+
+
+
+.form-control {
+  display: block;
+  width: 85%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.form-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+.form-control::-moz-placeholder {
+  color: #999;
+  opacity: 1;
+}
+.form-control:-ms-input-placeholder {
+  color: #999;
+}
+.form-control::-webkit-input-placeholder {
+  color: #999;
+}
+.form-control::-ms-expand {
+  background-color: transparent;
+  border: 0;
+}
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  background-color: #eee;
+  opacity: 1;
+}
+.form-control[disabled],
+fieldset[disabled] .form-control {
+  cursor: not-allowed;
+}
+
+/** Most GWT widgets already have a style name defined */
+.gwt-DialogBox {
+	width: 400px;
+}
+
+.dialogVPanel {
+	margin: 5px;
+}
+
+.serverResponseLabelError {
+	color: red;
+}
+
+/** Set ids using widget.getElement().setId("idOfElement") */
+#closeButton {
+	margin: 15px 6px 6px;
+}
+
+.canvasPanel {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+#mainCanvas {
+	z-index: 0;
+}
+
+#mouseLayerCanvas {
+	z-index: 1;
+	/*left: 200px !important;*/
+}
+
+
+#webtermContainer {
+}
+
+#webtermContainer.fs {
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	position: absolute;
+}
+
+#webtermContainer.nonfs {
+}
+
+#webtermContainer.nonfs div#logo {
+  margin-bottom: 2em;
+}
+
+.dodProgressbar {
+	margin: 1.3em;
+	width: 191px;
+}
+
+.dodheader {
+	margin: 40px 0;
+}
+
+.cntr {
+	border-color: #A9A9A9;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0 12px;
+	width: 50%;
+}
+
+.innercntr {
+	text-align: left;
+}
+
+
+.gwt-TabBar {
+	height: 20%;
+	padding-top: 2px;
+}
+
+.gwt-TabBarRest {
+	border-bottom: 1px solid #dedede;
+	margin-left: 5px;
+	z-index: 1;
+}
+
+.gwt-TabBarItem {
+	color: white;
+    background: linear-gradient(to bottom, #c2c2c2 2%, #929292 100%);
+    border-left: 1px solid #dddddd;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    cursor: pointer;
+    margin: 0 -3px;
+    padding: 0 20px;
+    padding-left: 10px;
+    padding-right: 4px;
+    position: relative;
+    padding-top: 5px;
+    padding-bottom: 5px;
+	z-index: 0;
+}
+
+.gwt-TabBarItem-selected {
+	background: #fff;
+    border-right: 1px solid #dedede;
+    cursor: default;
+    font-weight: bold;
+    position: relative;
+    color: #626262;
+    z-index: 1;
+}
+
+
+div[aria-hidden="true"] {
+    left: -20cm;
+}

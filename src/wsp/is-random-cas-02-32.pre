@@ -1,0 +1,163 @@
+%IF DEF UNIX$GCC;
+%DISP:precompiling is-random-cas-02-32.pre for Unix GCC
+        .intel_syntax noprefix
+
+.text
+%DEFT COMMENT:#
+%DEFT METH$NAME1:.globl
+%MACRO:METH$START(mtext:name);
+%TEXT:name;:
+%MEND;
+%MACRO:METH$END(mtext:name);
+%MEND;
+%DEFT METH$NAME3:
+%MACRO:SET$EQU(mtext:label,mint:value);
+        .equ %TEXT:label;,%INT:value;
+%MEND;
+%TEXT:COMMENT;use: xbprecomp01 is-random-cas-02-32.pre is-random-cas-02-32-gcc.s "xxSET UNIX$GCC=1;"
+%TEXT:COMMENT;     xx = double-percent
+%CEND;
+%IF DEF WIN$VC;
+%DISP:precompiling is-random-cas-02-32.pre for Windows Visual Studio
+%DEFT COMMENT:;
+%DEFT METH$NAME1:public
+%MACRO:METH$START(mtext:name);
+_%TEXT:name; proc near
+%MEND;
+%MACRO:METH$END(mtext:name);
+_%TEXT:name; endp
+%MEND;
+%DEFT METH$NAME3:_
+%MACRO:SET$EQU(mtext:label,mint:value);
+%TEXT:label; equ %INT:value;
+%MEND;
+%TEXT:COMMENT;use: xbprecomp01 is-random-cas-02-32.pre is-random-cas-02-32-win.asm "xxSET WIN$VC=1;"
+%TEXT:COMMENT;     xx = double-percent
+%TEXT:COMMENT;     cmasm32 is-random-cas-02-32-win
+%CEND;
+%IF DEF UNIX$NASM;
+%DISP:precompiling is-random-cas-02-32.pre for Unix NASM
+section .text
+%DEFT COMMENT:;
+%DEFT METH$NAME1:global_function
+%MACRO:METH$START(mtext:name);
+%TEXT:name;:
+_%TEXT:name;:
+%MEND;
+%MACRO:METH$END(mtext:name);
+%MEND;
+%DEFT METH$NAME3:
+%MACRO:SET$EQU(mtext:label,mint:value);
+%TEXT:label; equ %INT:value;
+%MEND;
+%TEXT:COMMENT;use: xbprecomp01 islock03-32.pre islock03-32-nasm.s "xxSET UNIX$NASM=1;"
+%TEXT:COMMENT;     xx = double-percent
+%CEND;
+%TEXT:COMMENT;        is-random-cas-02-32.asm
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2016
+%TEXT:COMMENT;        20.03.16 KB
+%TEXT:COMMENT;
+%IF DEF UNIX$NASM;
+
+; This macro will generate the right symbols for the external functions, depending on output format
+%%ifidn __OUTPUT_FORMAT__,macho32
+%%macro global_function 1
+global %%1
+global _%%1
+%%endmacro
+%%else
+%%macro global_function 1
+global %%1:function
+global _%%1:function
+%%endmacro
+%%endif
+
+; This define removes the PTR parts of the code, that NASM can't use
+%%define PTR
+%CEND;
+%IF DEF WIN$VC;
+        .586p
+%CEND;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_random_cas_get
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_random_cas_put
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_random_rdtsc
+
+%IF DEF WIN$VC;
+_TEXT   segment dword public use32 'CODE'
+_TEXT   ends
+_DATA   segment dword public use32 'DATA'
+_DATA   ends
+_BSS    segment dword public use32 'BSS'
+_BSS    ends
+_TEXT   segment dword public use32 'CODE'
+        assume cs:_TEXT
+%CEND;
+%SET$EQU(DVOIDSI,4);
+%SET NO_TRACE=1;
+%TEXT:COMMENT;       extern "C" void * m_random_cas_get( void ** );
+%METH$START(m_random_cas_get);
+        push esi
+        mov  esi,DWORD PTR[ esp + (2 * DVOIDSI) ]  %TEXT:COMMENT;get argument
+        mov  eax,DWORD PTR[ esi ]           %TEXT:COMMENT;get first element in chain
+        test eax,eax                        %TEXT:COMMENT;is the cache empty?
+        jne  pgetc_40                       %TEXT:COMMENT;  no, get buffer from chain
+        pop  esi
+        ret                                 %TEXT:COMMENT;return to calling program
+pgetc_40:
+        push edx
+        mov  eax,DWORD PTR[ esi ]           %TEXT:COMMENT;get first element in chain
+        test eax,eax                        %TEXT:COMMENT;is the cache empty?
+        je   pgetc_80                       %TEXT:COMMENT;  no, get buffer from chain
+pgetc_60:
+%IF NDF NO_TRACE;
+        lock inc DWORD PTR (2*DVOIDSI)[ esi ]
+%CEND;
+        mov  edx,DWORD PTR[ eax ]           %TEXT:COMMENT;get second element in chain
+        lock cmpxchg DWORD PTR[ esi ],edx   %TEXT:COMMENT;exchange operands
+        jz   pgetc_80                       %TEXT:COMMENT;  succeeded
+        test eax,eax                        %TEXT:COMMENT;is the cache empty?
+        jne  pgetc_60                       %TEXT:COMMENT;  no, try again
+pgetc_80:
+%IF NDF NO_TRACE;
+        lock dec DWORD PTR (2*DVOIDSI)[ esi ]
+%CEND;
+        pop  edx
+        pop  esi
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_random_cas_get);
+%TEXT:COMMENT;       extern "C" void m_random_cas_put( void **, void * );
+%METH$START(m_random_cas_put);
+        push esi
+        push edx
+        mov  esi,DWORD PTR[ esp + (3 * DVOIDSI) ]  %TEXT:COMMENT;get first argument
+        mov  edx,DWORD PTR[ esp + (4 * DVOIDSI) ]  %TEXT:COMMENT;get second argument
+        mov  eax,DWORD PTR[ esi ]           %TEXT:COMMENT;get first element in chain
+pputc_20:
+%IF NDF NO_TRACE;
+        lock inc DWORD PTR (3*DVOIDSI)[ esi ]
+%CEND;
+        mov  DWORD PTR[ edx ],eax           %TEXT:COMMENT;anchor of chain gets next buffer
+        lock cmpxchg DWORD PTR[ esi ],edx   %TEXT:COMMENT;exchange operands
+        jnz  pputc_20                       %TEXT:COMMENT;  did not succeed
+%IF NDF NO_TRACE;
+        lock dec DWORD PTR (3*DVOIDSI)[ esi ]
+%CEND;
+        pop  edx
+        pop  esi
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_random_cas_put);
+%TEXT:COMMENT;       extern "C" void m_random_rdtsc( char * );
+%METH$START(m_random_rdtsc);
+        mov  ecx,DWORD PTR[ esp + 4 ];      %TEXT:COMMENT;get argument
+        rdtsc;                              %TEXT:COMMENT;read time-stamp counter
+        mov  DWORD PTR[ ecx + 0 * 4 ],eax;  %TEXT:COMMENT;store low-order 32 bits
+        mov  DWORD PTR[ ecx + 1 * 4 ],edx;  %TEXT:COMMENT;store high-order 32 bits
+        ret;                                %TEXT:COMMENT;return to calling program
+%METH$END(m_random_rdtsc);
+%IF DEF WIN$VC;
+_TEXT   ends
+        end
+%CEND;
+%IF DEF UNIX$GCC;
+        .end
+%CEND;

@@ -1,0 +1,587 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    
+    <link rel="stylesheet" href="admin.css"/>
+    <script src="/public/js/cookies.js"></script>
+    <script src="admin.js"></script>
+    <link rel="stylesheet" href="/public/css/buttons.css"/>
+    <script>
+    /*redirect to equal index.hsl sub-page, if this is the toplevel document*/
+    if ( top == self ) {
+        top.location = "index.hsl?page="+encodeURIComponent(location.pathname+location.search);
+    }
+    </script>
+</head>
+<body id="admin-frame">
+    <!-- parse search string and get current wsp handle -->
+    <script>
+        dsg_query.m_init();
+        str_handle = dsg_query.m_get('<xsl:value-of select="wspadmin/query/select-cluster"/>');
+        if ( str_handle == "" ) {
+            str_handle = "0";
+        }
+    </script>
+
+    <!-- parse cookies -->
+    <script>
+        dsg_cookies.m_init();
+    </script>
+    
+    <div class="admin-content">                                
+    <!-- 
+        control buttons containing:
+            display items
+            next page
+            search fields
+    -->
+        <div class="admin-content-btn">
+            <table class="border">
+                <thead>
+                    <th colspan="2"><xsl:value-of select="lang/html/admin/wsptrace/label-gen-section"/></th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width=20%><label><xsl:value-of select="lang/html/admin/wsptrace/WSP-conf-name"/>     </label></td>
+                        <td width=80%><xsl:value-of select="wspadmin/cluster/conf-name"/>   </td>
+                    </tr>
+                    <tr>
+                        <td><label><xsl:value-of select="lang/html/admin/wsptrace/WSP-server-name"/>   </label></td>
+                        <td><xsl:value-of select="wspadmin/cluster/server-name"/> </td>    
+                    </tr>
+                    <tr>
+                        <td><label><xsl:value-of select="lang/html/admin/status/group"/>   </label></td>
+                        <td><xsl:value-of select="wspadmin/cluster/server-group"/> </td>    
+                    </tr>
+                    <tr>
+                        <td><label><xsl:value-of select="lang/html/admin/status/location"/>   </label></td>
+                        <td><xsl:value-of select="wspadmin/cluster/server-location"/> </td>    
+                    </tr>
+                </tbody>                                
+            </table>
+            <div>
+                <form method="POST" accept-charset="UTF-8">	
+                    <input type="hidden" id="wsptr-dump-handle" name="wspt-handle"><xsl:attribute name="value"><xsl:value-of select="wspadmin/cluster/select-handle"/></xsl:attribute></input>
+                    <input type="hidden" value="true"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/dump-cma"/></xsl:attribute></input>
+                    <input class="wsptrace-updateconf" id="wsptrace-dump-cma" type="submit" style="float: right;"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/wsptrace/dump-cma"/></xsl:attribute></input>
+                </form>
+            </div>
+        <table class="border">
+            <thead>
+                <th colspan="4"><xsl:value-of select="lang/html/admin/wsptrace/label-trace-section"/></th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width=20%><label><xsl:value-of select="lang/html/admin/wsptrace/WSP-trace-status"/>  </label></td>
+                    <td colspan="3">
+                        <label>
+                            <input type="hidden" id="wsptrace-enabled" disabled="disabled">
+                                <xsl:if test="wspadmin/wsptrace/trace-enabled"> <xsl:attribute name="checked">checked</xsl:attribute><xsl:attribute name="value">1</xsl:attribute></xsl:if>
+                                <xsl:if test="wspadmin/wsptrace/trace-enabled"> <xsl:attribute name="value">0</xsl:attribute></xsl:if>
+                            </input>
+                            <xsl:if test="wspadmin/wsptrace/trace-enabled"><xsl:value-of select="lang/html/admin/wsptrace/enabled"/></xsl:if>
+                            <xsl:if test="not(wspadmin/wsptrace/trace-enabled)"><xsl:value-of select="lang/html/admin/wsptrace/disabled"/></xsl:if>
+                        </label>
+                    </td>
+                </tr>
+                <tr> 
+                    <td rowspan="2" width=18%><label><xsl:value-of select="lang/html/admin/wsptrace/general-status"/></label></td>
+                    <td width=18%><label><xsl:value-of select="lang/html/admin/wsptrace/core-status"/></label></td>
+                    <td colspan="2">
+                        <label>
+                            <xsl:if test="wspadmin/wsptrace/core-allsettings &gt; 3"><xsl:value-of select="lang/html/admin/wsptrace/core-active"/></xsl:if>
+                            <xsl:if test="wspadmin/wsptrace/core-allsettings &lt; 4"><xsl:value-of select="lang/html/admin/wsptrace/core-inactive"/></xsl:if>
+                        </label>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td width=18%><label><xsl:value-of select="lang/html/admin/wsptrace/sess-status"/></label></td>
+                    <td colspan="2">
+                        <label>
+                            <xsl:if test="wspadmin/wsptrace/trace-all-sessions">
+                                <xsl:if test="wspadmin/wsptrace/session-allsettings &lt; 4"><xsl:value-of select="lang/html/admin/wsptrace/all-sess-inactive"/></xsl:if>
+                                <xsl:if test="wspadmin/wsptrace/session-allsettings &gt; 3"><xsl:value-of select="lang/html/admin/wsptrace/all-sess-active"/></xsl:if>
+                            </xsl:if>
+                            <xsl:if test="not(wspadmin/wsptrace/trace-all-sessions)">
+                                <xsl:if test="wspadmin/wsptrace/no-single-ineta == 0">
+                                    <xsl:value-of select="lang/html/admin/wsptrace/all-sess-inactive"/>
+                                </xsl:if>
+                                <xsl:if test="wspadmin/wsptrace/no-single-ineta == 1">
+                                    <xsl:value-of select="lang/html/admin/wsptrace/single-sess-active"/>
+                                </xsl:if>
+                                <xsl:if test="wspadmin/wsptrace/no-single-ineta &gt; 1">   
+                                    <xsl:value-of select="lang/html/admin/wsptrace/trace-for"/><xsl:value-of select="wspadmin/wsptrace/no-single-ineta"/><xsl:value-of select="lang/html/admin/wsptrace/several-sess-active"/>
+                                </xsl:if>
+                            </xsl:if>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td width=18%><label><xsl:value-of select="lang/html/admin/wsptrace/out-file"/>          </label></td>
+                    <td width=18%>
+                        <select class="wsptrace-lists" id="wsptrace-output" onchange="m_change_outputfilenametb_state(this.value)">
+                            <xsl:if test="not(wspadmin/wsptrace/trace-enabled)"> 
+                                <option value="0"><xsl:value-of select="lang/html/admin/wsptrace/out-no-output"/></option> 
+                            </xsl:if>
+                            <xsl:if test="wspadmin/wsptrace/trace-enabled">
+                                <option value="0"><xsl:value-of select="lang/html/admin/wsptrace/out-default"/></option>
+                                <option value="1"><xsl:value-of select="lang/html/admin/wsptrace/out-console"/></option>
+                                <option value="2"><xsl:value-of select="lang/html/admin/wsptrace/out-ascfile"/></option> 
+                                <option value="3"><xsl:value-of select="lang/html/admin/wsptrace/out-binfile"/></option> 
+                            </xsl:if>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <label><xsl:value-of select="lang/html/admin/wsptrace/out-dest"/>          </label>
+                        <input type="text" id="wsptrace-outputfilenametb" style="font-size:11px" size="40" maxlength="40" onkeyup="m_replace_badchars()">
+                            <xsl:if test="wspadmin/wsptrace/trace-output == 0">
+                                <xsl:attribute name="disabled">disabled</xsl:attribute>
+                            </xsl:if>
+                            <xsl:if test="wspadmin/wsptrace/trace-output == 1">
+                                <xsl:attribute name="disabled">disabled</xsl:attribute>
+                            </xsl:if>
+                        </input>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <form name="wsptraceconf" method="POST" accept-charset="UTF-8">
+                <input type="hidden" id="wsptr-out-handle" name="wspt-handle" value=""></input>
+                <input type="hidden" id="wsptr-outd" name="wspt-outd" value=""></input>
+                <input type="hidden" id="wsptr-outf" name="wspt-outf" value=""></input>
+                <input class="wsptrace-updateconf" type="submit" id="wsptrace-update-conf" onclick="m_update_wsptrace_conf()" style="float: right;"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/wsptrace/update-gen-values"/></xsl:attribute></input>
+            </form>
+        </div>
+        
+    </div>
+    </div>
+    <div class="admin-content"> 
+        <div class="admin-content-btn">
+        <table class="border">
+                <thead>
+                    <th colspan="7"><xsl:value-of select="lang/html/admin/wsptrace/label-core-section"/></th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="1"><label><xsl:value-of select="lang/html/admin/wsptrace/current-status"/></label>
+                        </td>
+                        <td colspan="6">
+                            <label>
+                                <xsl:if test="wspadmin/wsptrace/core-allsettings &gt; 3"><xsl:value-of select="lang/html/admin/wsptrace/core-active"/></xsl:if>
+                                <xsl:if test="wspadmin/wsptrace/core-allsettings &lt; 4"><xsl:value-of select="lang/html/admin/wsptrace/core-inactive"/></xsl:if>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr><td colspan="7"><input type="checkbox" class="core-checkers" onclick="m_toggle_all(this)"> </input><label><xsl:value-of select="lang/html/admin/wsptrace/select-all"/></label></td></tr>
+                    <tr>
+                        <td rowspan="3" width=100><label style="float: left"><xsl:value-of select="lang/html/admin/wsptrace/data-amount"/>  </label>
+                            <select class="wsptrace-lists" id="wsptrace-c-data-amount" style="float: left;">
+                                <option value="0"><xsl:value-of select="lang/html/admin/wsptrace/da-lo"/></option> 
+                                <option value="1"><xsl:value-of select="lang/html/admin/wsptrace/da-me"/></option> 
+                                <option value="2"><xsl:value-of select="lang/html/admin/wsptrace/da-hi"/></option>
+                                <option value="3"><xsl:value-of select="lang/html/admin/wsptrace/da-ex"/></option> 
+                            </select>
+                        </td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-console">   </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-console"/>  </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-udp">       </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-udp"/>      </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-radius">    </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-radius"/>   </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-hobtun">    </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-hobtun"/>   </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-cluster">   </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-cluster"/>  </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-dod">       </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-dod"/>      </label></td>
+                    </tr>
+                    <tr>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-virusch">   </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-virusch"/>  </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-ldap">      </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-ldap"/>     </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-krb5">      </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-krb5"/>     </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-msrpc">     </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-msrpc"/>    </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-ligw">      </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-ligw"/>     </label></td>
+                        <td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-admin">     </input><label><xsl:value-of select="lang/html/admin/wsptrace/c-admin"/>    </label></td>
+                        
+                    </tr>
+                    <tr><td width=100><input type="checkbox" class="core-checkers" id="wsptrace-c-others">    </input><label><xsl:value-of select="lang/html/admin/wsptrace/other-types"/></label></label></td></tr>
+                </tbody>
+        </table>
+            <form name="wsptraceconf" method="POST" accept-charset="UTF-8">
+                <input type="hidden" id="wsptr-core-handle" name="wspt-handle" value=""></input>
+                <input type="hidden" id="wsptr-core" name="wspt-core" value=""></input>
+                <input class="wsptrace-updateconf" type="submit" id="wsptrace-update-core" onclick="m_update_core_conf()" style="float: right;"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/wsptrace/update-core-values"/></xsl:attribute></input>
+            </form>
+        </div>
+    </div>
+    <!-- admin for WSP Trace form  = document.forms["list-controls"] -->
+    <form method="POST" accept-charset="UTF-8">					
+        <div class="admin-content">
+            <div class="admin-content-btn">
+                <table class="border">
+                    <thead>
+                        <th colspan="7"><xsl:value-of select="lang/html/admin/wsptrace/label-sess-section"/></th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="1"><label><xsl:value-of select="lang/html/admin/wsptrace/current-status"/></label>
+                            </td>
+                            <td colspan="6">
+                                <label>
+                                    <xsl:if test="wspadmin/wsptrace/trace-all-sessions">
+                                        <xsl:if test="wspadmin/wsptrace/session-allsettings &lt; 4"><xsl:value-of select="lang/html/admin/wsptrace/all-sess-inactive"/></xsl:if>
+                                        <xsl:if test="wspadmin/wsptrace/session-allsettings &gt; 3"><xsl:value-of select="lang/html/admin/wsptrace/all-sess-active"/></xsl:if>
+                                    </xsl:if>
+                                    <xsl:if test="not(wspadmin/wsptrace/trace-all-sessions)">
+                                        <xsl:if test="wspadmin/wsptrace/no-single-ineta == 0">
+                                            <xsl:value-of select="lang/html/admin/wsptrace/all-sess-inactive"/>
+                                        </xsl:if>
+                                        <xsl:if test="wspadmin/wsptrace/no-single-ineta == 1">
+                                            <xsl:value-of select="lang/html/admin/wsptrace/single-sess-active"/>
+                                        </xsl:if>
+                                        <xsl:if test="wspadmin/wsptrace/no-single-ineta &gt; 1">   
+                                            <xsl:value-of select="lang/html/admin/wsptrace/trace-for"/><xsl:value-of select="wspadmin/wsptrace/no-single-ineta"/><xsl:value-of select="lang/html/admin/wsptrace/several-sess-active"/>
+                                        </xsl:if>
+                                    </xsl:if>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr><td colspan="7"><input type="checkbox" class="sess-checkers" onclick="m_toggle_all(this)"> </input><label><xsl:value-of select="lang/html/admin/wsptrace/select-all"/></label></label></td></tr>
+                        <tr>
+                            <td width=80 rowspan="3">
+                                <label style="float: left"><xsl:value-of select="lang/html/admin/wsptrace/data-amount"/>  </label>
+                                <select class="wsptrace-lists" id="wsptrace-s-data-amount" style="float: left;">
+                                    <option value="0"><xsl:value-of select="lang/html/admin/wsptrace/da-lo"/></option> 
+                                    <option value="1"><xsl:value-of select="lang/html/admin/wsptrace/da-me"/></option> 
+                                    <option value="2"><xsl:value-of select="lang/html/admin/wsptrace/da-hi"/></option>
+                                    <option value="3"><xsl:value-of select="lang/html/admin/wsptrace/da-ex"/></option> 
+                                </select>
+                            </td>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-network">       </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-network"/>		</label></td>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-sslext">        </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-sslext"/>		</label></td>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-sslint">        </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-sslint"/>		</label></td>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-sslocsp">       </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-sslocsp"/>		</label></td>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-auxcall">       </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-auxcall"/>		</label></td>
+                        </tr>
+                        <tr>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-wspat3int">     </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-wspat3i"/>		</label></td>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-wspat3ext">     </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-wspat3e"/>		</label></td>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-sdhext">        </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-sdhe"/>		</label></td>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-sdhint">        </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-sdhi"/>		</label></td>
+                            <td width=80><input type="checkbox" class="sess-checkers" id="wsptrace-s-miscell">       </input><label><xsl:value-of select="lang/html/admin/wsptrace/s-miscell"/>		</label></td>
+                        </tr>
+                        <tr>
+                            <td colspan="1"><input type="checkbox" class="sess-checkers" id="wsptrace-s-others">	    </input><label><xsl:value-of select="lang/html/admin/wsptrace/other-types"/></label></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </form>
+    <div class="buttons">
+            <table>
+                <input type="hidden"  id="wsptrace-all-sessions">
+                    <xsl:if test="wspadmin/wsptrace/trace-all-sessions"><xsl:attribute name="checked">checked</xsl:attribute><xsl:attribute name="value">1</xsl:attribute></xsl:if>
+                    <xsl:if test="not(wspadmin/wsptrace/trace-all-sessions)"><xsl:attribute name="value">0</xsl:attribute></xsl:if>
+                </input>
+                <tr>
+                    <td rowspan="2" width="120"><xsl:value-of select="lang/html/admin/wsptrace/all-sessions-header"/></td>
+                    <td colspan="2" ><input type="radio" class="ineta-controls" name="wsptrace-all-sessions" onclick="m_change_traceinetas(1)">
+                        <xsl:if test="wspadmin/wsptrace/trace-all-sessions"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        <xsl:value-of select="lang/html/admin/wsptrace/apply-all-sessions"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="280"><input type="radio" class="ineta-controls" name="wsptrace-all-sessions" onclick="m_change_traceinetas(0)">
+                        <xsl:if test="not(wspadmin/wsptrace/trace-all-sessions)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        <xsl:value-of select="lang/html/admin/wsptrace/apply-selected-ineta"/> 
+                    </td>
+                    <td>
+                        <input type="text" class="ineta-controls" id="wspt-trace-singleineta-text" style="font-size:11px" size="45" maxlength="45" style="float: right;"> 
+                            <xsl:attribute name="name"><xsl:value-of select="wspadmin/query/trace-ineta"/></xsl:attribute>
+                        </input>
+                    </td>
+                </tr>
+            </table>
+    </div>
+
+    <table>
+        <tr>
+            <td>
+                <form name="wsptraceconf" method="POST" accept-charset="UTF-8">
+                    <input type="hidden" id="wsptr-handle"      name="wspt-handle"      value=""></input>
+                    <input type="hidden" id="wsptr-allsess"     name ="wspt-allsess"    value=""></input>
+                    <input type="hidden" id="wsptr-sess"        name="wspt-sess"        value=""></input>
+                    <input type="hidden" id="wsptr-man-ineta"   name="wspt-ineta"       value=""></input>
+                    <input class="wsptrace-updateconf" type="submit" id="wsptrace-update-sess" onclick="m_update_sess_conf()" style="float: right;"><xsl:attribute name="value"><xsl:value-of select="lang/html/admin/wsptrace/update-sess-values"/></xsl:attribute></input>
+                </form>
+                <form method="POST" accept-charset="UTF-8">
+                    <input type="hidden" name="wspt-handle" value="-1"></input>
+                    <input type="hidden" value="true"><xsl:attribute name="name"><xsl:value-of select="wspadmin/query/erase-inetas"/></xsl:attribute></input>
+                    <input type="submit" class="wsptrace-updateconf" id="wspt-trace-eraseinetas" width="260" style="float: right;" >
+                        <xsl:if test="wspadmin/wsptrace/no-single-ineta == 0">
+                                <xsl:attribute name="disabled">disabled</xsl:attribute>
+                                <xsl:attribute name="value"><xsl:value-of select="lang/html/admin/wsptrace/btn-erase-all"/></xsl:attribute>
+                        </xsl:if>
+                        <xsl:if test="wspadmin/wsptrace/no-single-ineta == 1">
+                            <xsl:attribute name="value"><xsl:value-of select="lang/html/admin/wsptrace/btn-erase-one"/></xsl:attribute>
+                        </xsl:if>
+                        <xsl:if test="wspadmin/wsptrace/no-single-ineta &gt; 1">
+                            <xsl:attribute name="value"><xsl:value-of select="lang/html/admin/wsptrace/btn-erase-all"/> [<xsl:value-of select="wspadmin/wsptrace/no-single-ineta"/>]</xsl:attribute>
+                        </xsl:if>
+                    </input>
+                </form>
+            </td>
+        </tr>
+    </table>
+    
+    <!-- fill form with values from url -->
+    <script>
+    function m_update_core_conf(){
+        document.getElementById('wsptr-core-handle').value = str_handle;
+        var dsl_wsptr_core = document.getElementById('wsptr-core');
+        var iml_core_conf_mod = dsl_core_damount.value;
+        if (dsl_core_console.checked)   {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-console"/>;}
+        if (dsl_core_cluster.checked)   {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-cluster"/>;}
+        if (dsl_core_udp.checked)       {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-udp"/>;}
+        if (dsl_core_dod.checked)       {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-dod"/>;}
+        if (dsl_core_radius.checked)    {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-radius"/>;}
+        if (dsl_core_virusch.checked)   {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-virus-ch"/>;}
+        if (dsl_core_hobtun.checked)    {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-hob-tun"/>;}
+        if (dsl_core_ldap.checked)      {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-ldap"/>;}
+        if (dsl_core_krb5.checked)      {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-krb5"/>;}
+        if (dsl_core_msrpc.checked)     {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-ms-rpc"/>;}
+        if (dsl_core_admin.checked)     {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-admin"/>;}
+        if (dsl_core_ligw.checked)      {iml_core_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-core-ligw"/>;}
+        if (dsl_core_others.checked){
+                iml_core_conf_mod |= 0xC000;
+        } else {
+                iml_core_conf_mod &= 0x3FFF;
+        }
+        dsl_wsptr_core.value = iml_core_conf_mod;
+    }
+    // To update the trace settings for the sessions
+    function m_update_sess_conf(){
+        // Read (new) configuration settings for session
+        var bol_wsptr_allsess_new 	= document.getElementById('wsptr-allsess');
+        var bol_wsptr_allsess 		= document.getElementById('wsptrace-all-sessions');
+        var dsl_cluster = document.getElementById('wsptr-handle');
+        var dsl_manual_ineta = document.getElementById('wspt-trace-singleineta-text');
+        var dsl_inetas_post = document.getElementById('wsptr-man-ineta');
+        if(bol_wsptr_allsess.value > 0){
+            bol_wsptr_allsess_new.value = 1;
+            dsl_cluster.value = str_handle;
+            dsl_inetas_post.value = "";
+        } else {
+            bol_wsptr_allsess_new.value = 0;
+            dsl_cluster.value = "-1";
+                dsl_inetas_post.value = dsl_manual_ineta.value;
+            }
+        
+        var dsl_wsptr_sess = document.getElementById('wsptr-sess');
+        var iml_sess_conf_mod = dsl_sess_damount.value;
+
+        if (dsl_sess_network.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-netw"/>;}
+        if (dsl_sess_sslext.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-ssl-ext"/>;}
+        if (dsl_sess_sslint.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-ssl-int"/>;}
+        if (dsl_sess_sslocsp.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-ssl-ocsp"/>;}
+        if (dsl_sess_wspat3e.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-wspat3-ext"/>;}
+        if (dsl_sess_wspat3i.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-wspat3-int"/>;}
+        if (dsl_sess_sdhext.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-sdh-ext"/>;}
+        if (dsl_sess_sdhint.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-sdh-int"/>;}
+        if (dsl_sess_auxcall.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-aux"/>;}
+        if (dsl_sess_miscell.checked) 	{iml_sess_conf_mod |= <xsl:value-of select="wspadmin/wsptrace/flag-sess-misc"/>;}
+        if (dsl_sess_others.checked){
+            iml_sess_conf_mod |= 0xF000;
+        } else {
+            iml_sess_conf_mod &= 0x0FFF;
+        }
+        // Write the value to the hidden field of the form
+        dsl_wsptr_sess.value 		= iml_sess_conf_mod;
+    }
+    // To update the general settings
+    function m_update_wsptrace_conf() {
+        // Activate or deactivate WSP Trace
+        var dsl_wsptr_ena  = document.getElementById('wsptrace-enabled');
+        document.getElementById('wsptr-out-handle').value = str_handle;
+                
+        // Read values for output destination and file (if possible)
+        var dsl_wsptr_outd 		= document.getElementById('wsptrace-output');
+        var dsl_wsptr_outd_new 	= document.getElementById('wsptr-outd');
+        var dsl_wsptr_outf 		= document.getElementById('wsptrace-outputfilenametb');
+        var dsl_wsptr_outf_new 	= document.getElementById('wsptr-outf');
+        
+        dsl_wsptr_outd_new.value = dsl_wsptr_outd.value;
+        dsl_wsptr_outf_new.value = "";
+        if(dsl_wsptr_outd.value == 2 || dsl_wsptr_outd.value == 3){
+            if (dsl_wsptr_outf.value != ""){
+                dsl_wsptr_outf_new.value = dsl_wsptr_outf.value.replace(/[^\w\s\\.]/gi, '');
+            } else {
+                dsl_wsptr_outf_new.value = "WSP-Trace-PID-<xsl:value-of select="wspadmin/cluster/process-id"/>";
+            }
+        } else {
+            dsl_wsptr_outf_new.value = "";
+        }
+        
+    }
+
+
+    function m_toggle_all(dsp_source){
+        dsl_checkboxes = document.getElementsByClassName(dsp_source.className);
+        for (var i=0, n=dsl_checkboxes.length; i<n; i++){
+            dsl_checkboxes[i].checked = dsp_source.checked;
+        }
+    }
+
+    function m_change_traceinetas(bop_trace_all){
+        document.getElementById('wspt-trace-singleineta-text').disabled = bop_trace_all;
+        document.getElementById('wsptrace-all-sessions').checked = bop_trace_all;
+        document.getElementById('wsptrace-all-sessions').value = bop_trace_all;
+    }
+
+    function m_change_outputfilenametb_state(iml_alloutputlist_value){
+        var dsl_outfilenametb = document.getElementById('wsptrace-outputfilenametb');
+        if (iml_alloutputlist_value == 2  || iml_alloutputlist_value == 3 ){
+            dsl_outfilenametb.disabled = false;
+        } else {
+            dsl_outfilenametb.disabled = true;
+        }
+    }
+
+
+    function m_replace_badchars(){
+        var dsl_wsptr_outf 		= document.getElementById('wsptrace-outputfilenametb');
+        dsl_wsptr_outf.value = dsl_wsptr_outf.value.replace(/[^\w\s\\.\-]/gi, '');
+    }
+
+    </script>
+    <script>
+        dsg_query.m_fill( document.forms["list-controls"] );
+
+
+        var iml_trace_output = <xsl:value-of select="wspadmin/wsptrace/trace-output"/>;
+        var dsl_trace_output = document.getElementById('wsptrace-output');
+        dsl_trace_output.selectedIndex = iml_trace_output;
+        
+        var iml_sess_conf = 	<xsl:value-of select="wspadmin/wsptrace/session-allsettings"/>;
+        var dsl_sess_damount 	= document.getElementById('wsptrace-s-data-amount');
+        var dsl_sess_network 	= document.getElementById('wsptrace-s-network');
+        var dsl_sess_sslext 	= document.getElementById('wsptrace-s-sslext');
+        var dsl_sess_sslint 	= document.getElementById('wsptrace-s-sslint');
+        var dsl_sess_sslocsp 	= document.getElementById('wsptrace-s-sslocsp');
+        var dsl_sess_wspat3e 	= document.getElementById('wsptrace-s-wspat3ext');
+        var dsl_sess_wspat3i 	= document.getElementById('wsptrace-s-wspat3int');
+        var dsl_sess_sdhext     = document.getElementById('wsptrace-s-sdhext');
+        var dsl_sess_sdhint     = document.getElementById('wsptrace-s-sdhint');
+        var dsl_sess_auxcall	= document.getElementById('wsptrace-s-auxcall');
+        var dsl_sess_miscell	= document.getElementById('wsptrace-s-miscell');
+        var dsl_sess_others     = document.getElementById('wsptrace-s-others');
+        
+        var dsl_wsptrace_all_sessions 		= document.getElementById('wsptrace-all-sessions');
+        //dsl_wsptrace_all_sessions.value = <xsl:value-of select="wspadmin/wsptrace/"/>
+        
+        dsl_sess_damount.selectedIndex 	= iml_sess_conf & 3;
+        dsl_sess_network.checked 		= iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-netw"/>;
+        dsl_sess_sslext.checked 		= iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-ssl-ext"/>;
+        dsl_sess_sslint.checked 		= iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-ssl-int"/>;
+        dsl_sess_sslocsp.checked        = iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-ssl-ocsp"/>;
+        dsl_sess_wspat3e.checked 		= iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-wspat3-ext"/>;
+        dsl_sess_wspat3i.checked 		= iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-wspat3-int"/>;
+        dsl_sess_sdhext.checked 		= iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-sdh-ext"/>;
+        dsl_sess_sdhint.checked 		= iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-sdh-int"/>;
+        dsl_sess_auxcall.checked 		= iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-aux"/>;
+        dsl_sess_miscell.checked 		= iml_sess_conf & <xsl:value-of select="wspadmin/wsptrace/flag-sess-misc"/>;
+        if (iml_sess_conf > (<xsl:value-of select="wspadmin/wsptrace/flag-sess-misc"/> * 2 - 1)){
+            dsl_sess_others.checked = 1;
+        }
+        
+        var iml_core_conf = 	<xsl:value-of select="wspadmin/wsptrace/core-allsettings"/>;
+        var dsl_core_damount 	= document.getElementById('wsptrace-c-data-amount');
+        var dsl_core_console 	= document.getElementById('wsptrace-c-console');
+        var dsl_core_cluster 	= document.getElementById('wsptrace-c-cluster');
+        var dsl_core_udp 		= document.getElementById('wsptrace-c-udp');
+        var dsl_core_dod 		= document.getElementById('wsptrace-c-dod');
+        var dsl_core_radius 	= document.getElementById('wsptrace-c-radius');
+        var dsl_core_virusch 	= document.getElementById('wsptrace-c-virusch');
+        var dsl_core_hobtun 	= document.getElementById('wsptrace-c-hobtun');
+        var dsl_core_ldap	 	= document.getElementById('wsptrace-c-ldap');
+        var dsl_core_krb5	 	= document.getElementById('wsptrace-c-krb5');
+        var dsl_core_msrpc      = document.getElementById('wsptrace-c-msrpc');
+        var dsl_core_admin	 	= document.getElementById('wsptrace-c-admin');
+        var dsl_core_ligw	 	= document.getElementById('wsptrace-c-ligw');
+        var dsl_core_others     = document.getElementById('wsptrace-c-others');
+        
+        dsl_core_damount.selectedIndex	= iml_core_conf & 3;
+        dsl_core_console.checked 		= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-console"/>;
+        dsl_core_cluster.checked 		= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-cluster"/>;
+        dsl_core_udp.checked 			= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-udp"/>;
+        dsl_core_dod.checked 			= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-dod"/>;
+        dsl_core_radius.checked 		= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-radius"/>;
+        dsl_core_virusch.checked 		= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-virus-ch"/>;
+        dsl_core_hobtun.checked 		= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-hob-tun"/>;
+        dsl_core_ldap.checked 			= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-ldap"/>;
+        dsl_core_krb5.checked           = iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-krb5"/>;
+        dsl_core_msrpc.checked          = iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-ms-rpc"/>;
+        dsl_core_admin.checked 			= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-admin"/>;
+        dsl_core_ligw.checked 			= iml_core_conf & <xsl:value-of select="wspadmin/wsptrace/flag-core-ligw"/>;
+        if (iml_core_conf > (<xsl:value-of select="wspadmin/wsptrace/flag-core-ligw"/> * 2 - 1)){
+            dsl_core_others.checked = 1;
+        }
+    </script>
+    <script>
+        if (document.getElementById('wsptrace-enabled').value == 0 ) {
+            document.getElementById('wsptrace-update-conf').disabled = 1;
+            document.getElementById('wsptrace-dump-cma').disabled = 1;
+        }
+        var dsl_wsptrace_outd = document.getElementById('wsptrace-output');
+        var dsl_disable = 1;
+        if (dsl_wsptrace_outd.value != 0) {
+            dsl_disable = 0;
+        }
+        // Disable general controls:
+        document.getElementById('wsptrace-outputfilenametb').disabled = dsl_disable;
+        if ((dsl_trace_output.selectedIndex == 2) || (dsl_trace_output.selectedIndex == 3)){
+            document.getElementById('wsptrace-outputfilenametb').disabled = 0;
+        } else {
+            document.getElementById('wsptrace-outputfilenametb').disabled = 1;
+        }
+        // Disable core controls:
+        dsl_checkboxes = document.getElementsByClassName('core-checkers');
+        for (var i=0, n=dsl_checkboxes.length; i<n; i++){
+            dsl_checkboxes[i].disabled = dsl_disable;
+        }
+        document.getElementById('wsptrace-c-data-amount').disabled = dsl_disable;
+        document.getElementById('wsptrace-update-core').disabled = dsl_disable;
+        // Disable session controls:
+        dsl_checkboxes = document.getElementsByClassName('sess-checkers');
+        for (var i=0, n=dsl_checkboxes.length; i<n; i++){
+            dsl_checkboxes[i].disabled = dsl_disable;
+        }
+        document.getElementById('wsptrace-s-data-amount').disabled = dsl_disable;
+        document.getElementById('wsptrace-update-sess').disabled = dsl_disable;
+        // Radio buttons, textbox and checkboxes from session section
+        dsl_controls = document.getElementsByClassName('ineta-controls');
+        dsl_wsptrace_all_sessions = document.getElementById('wsptrace-all-sessions');
+        if (dsl_disable > 0) {
+            for(var i=0, n=dsl_controls.length;i<n;i++) {
+                dsl_controls[i].disabled = dsl_disable;
+            }
+        } else {
+            if (dsl_wsptrace_all_sessions.value != 0){
+                document.getElementById('wspt-trace-singleineta-text').disabled = 1;
+            } else {
+                document.getElementById('wspt-trace-singleineta-text').disabled = 0;
+            }
+        }
+        
+        var dsl_object;
+        var strl_class;
+        
+        dsl_object = document.getElementById(str_handle);
+        if ( dsl_object ) {
+            strl_class = dsl_object.getAttribute( "class" );
+            dsl_object.setAttribute( "class", strl_class + " selected" );
+        }
+    </script>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File HOB PPP Tunnel -->
+<jnlp spec="1.0+" codebase="https://<%=url_jnlp%>/public/lib">
+    <information>
+        <title>HOB PPP Tunnel</title>
+        <vendor>HOB</vendor>
+        <homepage href="http://www.hobsoft.com/"/>
+        <description>HOB PPP Tunnel</description>
+        <description kind="short">HOB PPP Tunnel</description>
+        <description kind="tooltip">HOB PPP Tunnel</description>
+        <description kind="on-line">HOB PPP Tunnel</description>
+        <icon href="images/ppptunnel_32.png"/>
+        <offline-allowed/>
+        <update check="always"/> 
+        <shortcut>
+            <desktop/>
+            <menu/>
+        </shortcut>
+    </information>
+    <information locale="de">
+        <homepage href="http://www.hob.de/"/>
+        <description>HOB PPP Tunnel</description>
+        <description kind="short">HOB PPP Tunnel</description>
+        <description kind="tooltip">HOB PPP Tunnel</description>
+        <description kind="on-line">HOB PPP Tunnel</description>
+        <update check="always"/>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <resources>
+        <j2se version="1.6+"/>
+        <property name="jnlp.packEnabled" value="true"/>
+        <jar href="ppp_tunnel_applet.jar" />
+        <jar href="HOBssl-J2.jar" download="lazy" />
+    </resources>
+    <application-desc main-class="hob.ppp_tunnel_applet.ppp_tunnel_applet" height="40" width="200" name="PPP_Tunnel" >
+		<argument>true</argument>
+		<argument>true</argument>
+		<argument>"ppptunnel_waitmsg"</argument>
+		<argument>/protected/portlets/ppptunnel/install/ppptunnel/install.htm</argument>
+		<argument><%=hsocks-user%></argument>
+		<argument><%=password%></argument>
+		<argument>https://<%=url_jnlp%></argument>
+		<argument><%=server-entry-name%></argument>
+    </application-desc>
+</jnlp>

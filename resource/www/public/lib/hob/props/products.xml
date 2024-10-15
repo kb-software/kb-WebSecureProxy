@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hob>
+<projects>
+
+<edition>blue</edition>
+
+<rdvpn>
+<name>HOB RD VPN 2.4</name>
+<type>1</type>
+<position>10</position>
+<id>10</id>
+<visible>Y</visible>
+</rdvpn>
+
+<sessions>
+<name>Sessions</name>
+<type>1</type>
+<position>20</position>
+<id>20</id>
+<visible>Y</visible>
+</sessions>
+
+<util>
+<name>Utilities</name>
+<name_de>Dienstprogramme</name_de>
+<type>1</type>
+<position>30</position>
+<id>30</id>
+<visible>Y</visible>
+</util>
+
+<rdvpnuser>
+<name>User Settings</name>
+<name_de>Benutzereinstellungen</name_de>
+<position>10</position>
+<id_context>10</id_context>
+<id>1010</id>
+<classname>hob.hlc.admin.rdvpn2.usersettings.sat_conf_rdvpn_v2</classname>
+<regfiles><hobrdvpnuser>Y</hobrdvpnuser></regfiles>
+</rdvpnuser>
+
+<hobphone>
+<name>HOBPhone</name>
+<name_de>HOBPhone</name_de>
+<position>11</position>
+<id_context>10</id_context>
+<id>1011</id>
+<classname>hob.hlc.admin.rdvpn2.hobphone.sat_hobphone_config</classname>
+<regfiles><hobphoneconfig>Y</hobphoneconfig><hobphonepbx>Y</hobphonepbx></regfiles>
+</hobphone>
+
+<rdvpnwsp>
+<name>WebSecureProxy</name>
+<position>20</position>
+<id_context>10</id_context>
+<id>1020</id>
+<classname>hob.wsp.WSPSat</classname>
+<visible>N</visible>
+<regfiles>
+<hobe>Configuration</hobe>
+<hobf>Known Host</hobf>
+</regfiles>
+</rdvpnwsp>
+
+<rdvpnwsp2>
+<name>WebSecureProxy</name>
+<position>20</position>
+<id_context>10</id_context>
+<id>1020</id>
+<classname>hob.rdvpn.configuration.WSPSat</classname>
+<visible>N</visible>
+</rdvpnwsp2>
+
+<rdvpnwsp_blue>
+<name>WebSecureProxy blue</name>
+<position>20</position>
+<id_context>10</id_context>
+<id>1020</id>
+<classname>hob.rdvpn.configuration.SatBlue</classname>
+<visible>Y</visible>
+</rdvpnwsp_blue>
+
+<rdvpnwsp_compact>
+<name>WebSecureProxy Compact</name>
+<position>22</position>
+<id_context>10</id_context>
+<id>1022</id>
+<classname>hob.wsp.Compact_sat</classname>
+<visible>N</visible>
+<regfiles>
+<hobe>Configuration</hobe>
+<hobf>Known Host</hobf>
+</regfiles>
+</rdvpnwsp_compact>
+
+<rdvpnwsp_privacy>
+<name>WebSecureProxy privacy-box</name>
+<position>24</position>
+<id_context>10</id_context>
+<id>1024</id>
+<classname>hob.wsp.Privacy_box_sat</classname>
+<visible>N</visible>
+<regfiles>
+<hobe>Configuration</hobe>
+<hobf>Known Host</hobf>
+</regfiles>
+</rdvpnwsp_privacy>
+
+<rdvpnwspuc>
+<name>WSP Universal Client</name>
+<position>30</position>
+<id_context>10</id_context>
+<id>1030</id>
+<visible>Y</visible>
+<classname>hob.proxy.conf_uc.SatConfUC</classname>
+<regfiles>
+<hobk>Y</hobk>
+</regfiles>
+</rdvpnwspuc>
+
+<hobjwtsa>
+<name>HOBLink JWT Webstart</name>
+<position>09</position>
+<id_context>20</id_context>
+<id>1012</id>
+<classname>hob.jwtclassic2.awt.JWTSASat</classname>
+<regfiles>
+<hobjwtsa>Y</hobjwtsa>
+</regfiles>
+</hobjwtsa>
+
+<hobjwt>
+<name>HOBLink J-Term/JWT</name>
+<position>10</position>
+<id_context>20</id_context>
+<id>2010</id>
+<classname>hob.jwt.conf.JWTSat</classname>
+<regfiles>
+<jwt.hxml>configuration file</jwt.hxml>
+</regfiles>
+</hobjwt>
+
+<hobjte>
+<name>HOBLink J-Term</name>
+<position>20</position>
+<id_context>20</id_context>
+<id>2020</id>
+<classname>hob.te.conf.TESat</classname>
+<regfiles>
+<hobte.hxml>configuration</hobte.hxml>
+</regfiles>
+</hobjte>
+
+<ftp>
+<name>HOBLink FTP</name>
+<position>30</position>
+<id_context>20</id_context>
+<id>2030</id>
+<classname>hob.ftpb.conf.FTPSat</classname>
+<regfiles>
+<hobh>Y</hobh>
+</regfiles>
+</ftp>
+
+<hobte>
+<name>HOBLink TE 3270&#x2f;5250&#x2f;VT</name>
+<position>40</position>
+<id_context>20</id_context>
+<id>2040</id>
+<classname>hob.te.TEWSat</classname>
+<visible>N</visible>
+<regfiles>
+<hobte.hxml>configuration</hobte.hxml>
+</regfiles>
+</hobte>
+
+<x11>
+<name>HOBLink TE X11</name>
+<position>50</position>
+<id_context>20</id_context>
+<id>2050</id>
+<classname>hob.te.X11Sat</classname>
+<visible>N</visible>
+<regfiles>
+<x11.hxml>configuration</x11.hxml>
+</regfiles>
+</x11>
+
+<ssh>
+<name>HOBLink SSH</name>
+<position>60</position>
+<id_context>20</id_context>
+<id>2060</id>
+<classname>hob.hlc.ssh.SatSSH</classname>
+<regfiles>
+<hobe>Configuration</hobe>
+<hobf>Known Host</hobf>
+</regfiles>
+</ssh>
+
+<jwtmig>
+<name>JWT Migration Tool</name>
+<name_de>JWT Migrations-Tool</name_de>
+<position>40</position>
+<id_context>30</id_context>
+<id>3040</id>
+<classname>hob.tools.jwtmigration.JWTMigration</classname>
+<visible>Y</visible>
+<regfiles></regfiles>
+</jwtmig>
+
+<trm>
+<name>Telnet Resource Manager</name>
+<position>50</position>
+<id_context>30</id_context>
+<id>3050</id>
+<classname>hob.hlc.trm.SatTrm</classname>
+<visible>N</visible>
+<regfiles>
+<hobr>Y</hobr>
+</regfiles>
+</trm>
+
+<impexp>
+<name>User Certificates</name>
+<name_de>Benutzerzertifikate</name_de>
+<position>60</position>
+<id_context>30</id_context>
+<id>3060</id>
+<classname>hob.hlc.attredit.SatImpExpCert</classname>
+<visible>Y</visible>
+<regfiles></regfiles>
+</impexp>
+
+<eifileconfig>
+<name>XML Configuration Export</name>
+<name_de>XML-Konfiguration Export</name_de>
+<position>70</position>
+<id_context>30</id_context>
+<id>3070</id>
+<classname>hob.tools.eifile.EifileSat</classname>
+<visible>N</visible>
+<regfiles></regfiles></eifileconfig>
+
+<proxyserver>
+<name>HOB Proxy Server</name>
+<position>80</position>
+<id_context>30</id_context>
+<id>3080</id>
+<classname>hob.proxy.conf.JProxySat</classname>
+<visible>N</visible>
+<regfiles>
+<proxy.hxml>configuration</proxy.hxml>
+</regfiles>
+</proxyserver>
+
+<attedit>
+<name>Attribute Editor</name>
+<name_de>Attribut-Editor</name_de>
+<position>90</position>
+<id_context>30</id_context>
+<id>3090</id>
+<classname>hob.hlc.attredit.SatAttrEdit</classname>
+<visible>N</visible>
+<regfiles>
+</regfiles>
+</attedit>
+
+<eastconfig>
+<name>EA Scripting Tool</name>
+<position>100</position>
+<id_context>30</id_context>
+<id>3100</id>
+<classname>hob.tools.scripttool.EastSat</classname>
+<visible>N</visible>
+<regfiles>
+</regfiles>
+</eastconfig>
+
+<exptree>
+<name>Export Database</name>
+<name_de>Datenbank exportieren</name_de>
+<position>110</position>
+<id_context>30</id_context>
+<id>3110</id>
+<classname>hob.hlc.exp.SatExpTree</classname>
+<visible>N</visible>
+<regfiles>
+</regfiles>
+</exptree>
+
+<hobcom>
+<name>HOBCOM</name>
+<position>120</position>
+<id_context>30</id_context>
+<id>3120</id>
+<classname>hob.hobcom.SatHobcom</classname>
+<visible>N</visible>
+<regfiles>
+</regfiles>
+</hobcom>
+
+<toxmlconfig>
+<name>EA XML Conversion Tool</name>
+<name_de>EA XML Konvertierungs-Tool</name_de>
+<position>130</position>
+<id_context>30</id_context>
+<id>3130</id>
+<classname>hob.tools.toxml.ToXMLSat</classname>
+<visible>$TOXML_VISIBLE$</visible>
+<regfiles>
+</regfiles>
+</toxmlconfig>
+
+
+</projects>
+</hob>

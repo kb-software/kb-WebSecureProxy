@@ -1,0 +1,284 @@
+﻿<sslgate-configuration>
+  <general>
+    <max-poss-work-thread>128</max-poss-work-thread>
+    <max-active-work-thread>64</max-active-work-thread>
+    <network-statistic-level>9</network-statistic-level>
+  </general>
+
+  <connection>
+    <name>SELECT</name>
+    <language>en</language>
+    <function>SELECT-SOCKS5-HTTP</function>
+    <max-session>1000</max-session>
+
+    <gateport>4015</gateport>
+
+    <SSL-config-file>D:\Bauer\WSP\svn\resource\sslsettings\hserver.cfg</SSL-config-file>
+    <SSL-certdb-file>D:\Bauer\WSP\svn\resource\sslsettings\hserver.cdb</SSL-certdb-file>
+    <SSL-password-file>D:\Bauer\WSP\svn\resource\sslsettings\hserver.pwd</SSL-password-file>
+
+    <select-server>
+	  <server-list-name>HOBWebServer</server-list-name>
+	  <server-list-name>EA-LDAP</server-list-name>
+      <server-list-name>SERVERLIST</server-list-name>
+    </select-server>
+    <authentication-library>
+      <library-file-name>plugins/web_server/xl-sdh-webserver-01.dll</library-file-name>
+	<configuration-section>
+        <!-- log -->
+        <log>
+          <enable>NO</enable>
+          <!--<level>WARN</level>-->
+        </log>
+
+        <allow-multiple-login>YES</allow-multiple-login>
+        <!--<allow-multiple-login>NO</allow-multiple-login>-->
+        <close-sessions-at-logout>YES</close-sessions-at-logout>
+
+       
+        <domains>
+          <!-- show domain list at login -->
+          <show-list>YES</show-list>
+
+
+          <domain>
+            <name>LRC01</name>
+            <type>ldap</type>
+            <display-name>hob.de - ldap</display-name>
+            <corresponding-LDAP-service>LRC01</corresponding-LDAP-service>
+           <!-- <auto-user-create>YES</auto-user-create>
+            <base>dc=hobc02p-ldap</base>
+            <admin-dn>cn=administrator,ou=users,dc=internal,dc=root</admin-dn>
+            <admin-password>adminpw</admin-password>
+            <admin-group-dn></admin-group-dn>-->
+          </domain>
+
+  
+        </domains>
+
+        <!-- check client ineta -->
+        <check-client-ineta>NO</check-client-ineta>
+
+        <!-- roles -->
+        <roles>
+         
+
+          <!-- user rule -->
+          <role>
+            <name>Normal User</name>
+            <priority>50</priority>
+
+            <portlets>
+              <portlet>
+                <name>settings</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wsg</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>ppptunnel</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>wfa</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>jterm</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>hobphone</name>
+              </portlet>
+            </portlets>
+
+            <allow-browser-caching>NO</allow-browser-caching>
+            <gui-skin>default</gui-skin>
+
+            <members>
+                            
+              <member>
+                <type>ou</type>
+                <dn>dc=hobsoft,dc=root</dn>
+              </member>
+            </members>
+
+            <!--<compliancecheck>user</compliancecheck>-->
+          </role>
+
+          <!-- admin role -->
+          <role>
+            <name>Administrator</name>
+            <priority>100</priority>
+
+            <portlets>
+              <portlet>
+                <name>admin</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>settings</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>wsg</name>
+                <open>YES</open>
+              </portlet>
+              <portlet>
+                <name>jterm</name>
+              </portlet>
+              <portlet>
+                <name>ppptunnel</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>wfa</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>wspuc</name>
+                <open>NO</open>
+              </portlet>
+              <portlet>
+                <name>hobphone</name>
+              </portlet>
+            </portlets>
+
+            
+
+            <allow-browser-caching>YES</allow-browser-caching>
+            <allow-configuration>
+              <wsg-bookmarks>YES</wsg-bookmarks>
+              <wfa-bookmarks>YES</wfa-bookmarks>
+              <session-bookmarks>YES</session-bookmarks>
+              <desktop-on-demand>YES</desktop-on-demand>
+              <others>YES</others>
+            </allow-configuration>
+            <!--<site-after-auth>/protected/portlets/admin/status.hsl</site-after-auth>-->
+            <!--<gui-skin>default</gui-skin>
+            <gui-skin>maroon</gui-skin>
+            <gui-skin>no-banner</gui-skin>
+            <gui-skin>Dark-Blue</gui-skin>
+            <gui-skin>olive</gui-skin>-->
+            <gui-skin>default</gui-skin>
+
+            <session-time-limits>
+              <maximal-period>28800</maximal-period>
+              <idle-period>360</idle-period>
+            </session-time-limits>
+
+            <members>
+              <member>
+                <type>group</type>
+                <dn>cn=domainAdministrators,ou=groups,dc=hobsoft,dc=root</dn>
+              </member>
+              <member>
+                <type>ou</type>
+                <dn>cn=Users,dc=hob-rc01,dc=local</dn>
+              </member>
+            </members>
+          </role>
+        </roles>
+      </configuration-section>
+      
+    </authentication-library>
+	<dynamic-LDAP>YES</dynamic-LDAP>
+  </connection>
+<LDAP-service>
+    <name>LRC01</name>
+    <LDAP-entry>
+      <name>LRC01 Server</name>
+      <comment>comment</comment>
+      <LDAP-template>Microsoft Active Directory</LDAP-template>
+      <serverineta>172.22.160.80</serverineta>
+      <serverport>389</serverport>
+      <wait-connect>20</wait-connect>
+      <timeout-search>20</timeout-search>
+      <search-result-buffer-size>2048</search-result-buffer-size>
+      <max-session>10</max-session>
+      <base-dn>dc=hob-rc01,dc=local</base-dn>
+      <dn>cn=Demo1,cn=Users,dc=hob-rc01,dc=local</dn>
+      <password>Hobtext99%</password>
+    </LDAP-entry>
+  </LDAP-service>
+  <LDAP-template>
+    <name>Microsoft Active Directory</name>
+    <user-attribute>person</user-attribute>
+    <group-attribute>group</group-attribute>
+    <member-attribute>member</member-attribute>
+    <membership-attribute>memberOf</membership-attribute>
+    <user-prefix>cn</user-prefix>
+    <search-default-attribute>sAMAccountName</search-default-attribute>
+  </LDAP-template>
+    <user-group>
+	<name>USERLIST</name>
+	<user>
+	  <name>a</name> 
+	  <password-plain>a</password-plain> 
+	</user>
+	<user>
+	  <name>prog01</name> 
+	  <password-plain>p123p123</password-plain> 
+	</user>
+  </user-group>
+
+    <!-- list of servers -->
+    <server-list>
+        <name>SERVERLIST</name>
+    
+        <!-- REAL VNC ENTERPRISE SERVERS -->
+        <server-entry>
+           <name>HOB Client Configuration Provider</name>
+            <function>DIRECT</function>
+            <protocol>HTTP-INTERN</protocol>
+            <server-data-hook>
+                <library-file-name>D:\Bauer\WSP\trunk\bin\debug\windows\x86\plugins\client-config\xl-sdh-client-config.dll</library-file-name>
+                <configuration-section>
+
+                </configuration-section>
+            </server-data-hook>
+        </server-entry>     
+   </server-list>
+<server-list>
+    <name>EA-LDAP</name>
+    <server-entry>
+      <name>EA-LDAP</name>
+      <protocol>HOBEA</protocol>
+      <option-connect-other-server>YES</option-connect-other-server>
+      <server-data-hook>
+        <library-file-name>plugins/ea_ldap/xl-sdh-ea-ldap-01.dll</library-file-name>
+        <configuration-section>
+            <reload-path>../management/plugins/wsp_admin_plugin.port</reload-path>
+        </configuration-section>
+      </server-data-hook>
+    </server-entry>
+  </server-list>
+ <server-list>
+    <name>HOBWebServer</name>
+    <server-entry>
+      <name>Integrated Web Server</name>
+      <protocol>HTTP</protocol>
+      <option-connect-other-server>YES</option-connect-other-server>
+      <server-data-hook>
+        <library-file-name>plugins/web_server/xl-sdh-webserver-01.dll</library-file-name>
+        <configuration-section>
+		<log>
+            <enable>NO</enable>
+          </log>
+          <root-dir>D:\Bauer\WSP\trunk\resource\www</root-dir>
+          <http-hostname>hobc02k.hob.de</http-hostname>
+		   <settings>0</settings>
+          <flags>0</flags>
+          <compression>NO</compression>
+          <site-after-auth>/protected/welcome.hsl</site-after-auth>
+          <show-site-after-auth-checkbox>NO</show-site-after-auth-checkbox>
+          <gui-skin>Default</gui-skin>        
+          </configuration-section>
+      </server-data-hook>
+    </server-entry>
+  </server-list>	
+ 
+
+</sslgate-configuration>

@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{6a7f8834-b2f2-441f-b9a7-6feb4eedb7f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{8cdd0575-45fb-4f34-b88b-854c58b7387a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{97491e6c-6f04-48bc-b341-9bde57f393d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\config">
+      <UniqueIdentifier>{65eb034e-8f1b-4c08-8118-f2fe06fbc6a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cookie">
+      <UniqueIdentifier>{cf8f02c2-d9ce-40c8-91c0-6467591016ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cookies">
+      <UniqueIdentifier>{d8e1f5a5-b932-4468-81aa-05204cd11802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{fa6cbc9e-0faf-4010-8391-461ce73301df}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ds_cookie_test.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sdh_cookie_test.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\xsltime1.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config\ds_config.cpp">
+      <Filter>src\config</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cookie\ds_cookie_hash_table.cpp">
+      <Filter>src\cookie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cookie\ds_cookie_manager.cpp">
+      <Filter>src\cookie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cookie\ds_cookie_memory.cpp">
+      <Filter>src\cookie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cookie\ds_cookie_mgmt_table.cpp">
+      <Filter>src\cookie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cookie\ds_cookie_table.cpp">
+      <Filter>src\cookie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cookie\ds_single_cookie.cpp">
+      <Filter>src\cookie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cookies\ds_ck_mgmt.cpp">
+      <Filter>src\cookies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cookies\ds_cookie.cpp">
+      <Filter>src\cookies</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ds_cookie_test.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdh_cookie_test.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\hob-xsltime1.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config\ds_config.h">
+      <Filter>src\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cookie\cookie_structures.h">
+      <Filter>src\cookie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cookie\ds_cookie_hash_table.h">
+      <Filter>src\cookie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cookie\ds_cookie_manager.h">
+      <Filter>src\cookie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cookie\ds_cookie_memory.h">
+      <Filter>src\cookie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cookie\ds_cookie_mgmt_table.h">
+      <Filter>src\cookie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cookie\ds_cookie_table.h">
+      <Filter>src\cookie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cookie\ds_single_cookie.h">
+      <Filter>src\cookie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cookies\ds_ck_mgmt.h">
+      <Filter>src\cookies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cookies\ds_cookie.h">
+      <Filter>src\cookies</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>

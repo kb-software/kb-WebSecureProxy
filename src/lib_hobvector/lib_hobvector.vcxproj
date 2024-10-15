@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Itanium">
+      <Configuration>Debug</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="insure|Itanium">
+      <Configuration>insure</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="insure|Win32">
+      <Configuration>insure</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="insure|x64">
+      <Configuration>insure</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Itanium">
+      <Configuration>Release</Configuration>
+      <Platform>Itanium</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{997DBE92-37CD-4CC4-A2ED-7CDB032AE0F3}</ProjectGuid>
+    <RootNamespace>lib_hobvector</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+    <IntermediateOutputPath>$(SolutionDir)obj\</IntermediateOutputPath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|Itanium'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='insure|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='insure|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='insure|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\RDVPN-2.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.61030.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)bin\debug\windows\x86\</OutDir>
+    <IntDir>$(SolutionDir)obj\debug\windows\x86\libs\hobvector\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86dbg VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86dbg rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86dbg clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;$(SolutionDir)/src/lib_wsphelper/include;$(SolutionDir)/src/lib_sdhstorage/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\debug\windows\em64t\</OutDir>
+    <IntDir>$(SolutionDir)obj\debug\windows\em64t\libs\hobvector\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64dbg VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64dbg rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64dbg clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;$(SolutionDir)/src/lib_wsphelper/include;$(SolutionDir)/src/lib_sdhstorage/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">
+    <OutDir>$(SolutionDir)bin\debug\windows\ipf\</OutDir>
+    <IntDir>$(SolutionDir)obj\debug\windows\ipf\libs\hobvector\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFdbg VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFdbg rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFdbg clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_IA64_;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;$(SolutionDir)/src/lib_wsphelper/include;$(SolutionDir)/src/lib_sdhstorage/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)bin\release\windows\x86\</OutDir>
+    <IntDir>$(SolutionDir)obj\release\windows\x86\libs\hobvector\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86 VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86 rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86 clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;$(SolutionDir)/src/lib_wsphelper/include;$(SolutionDir)/src/lib_sdhstorage/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\release\windows\em64t\</OutDir>
+    <IntDir>$(SolutionDir)obj\release\windows\em64t\libs\hobvector\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64 VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64 rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64 clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;$(SolutionDir)/src/lib_wsphelper/include;$(SolutionDir)/src/lib_sdhstorage/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">
+    <OutDir>$(SolutionDir)bin\release\windows\ipf\</OutDir>
+    <IntDir>$(SolutionDir)obj\release\windows\ipf\libs\hobvector\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPF VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPF rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPF clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_IA64_;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;$(SolutionDir)/src/lib_wsphelper/include;$(SolutionDir)/src/lib_sdhstorage/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|Win32'">
+    <OutDir>$(SolutionDir)bin\insure\windows\x86\</OutDir>
+    <IntDir>$(SolutionDir)obj\insure\windows\x86\libs\hobvector\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86ins VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86ins rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX86ins clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;$(SolutionDir)/src/lib_wsphelper/include;$(SolutionDir)/src/lib_sdhstorage/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|x64'">
+    <OutDir>$(SolutionDir)bin\insure\windows\em64t\</OutDir>
+    <IntDir>$(SolutionDir)obj\insure\windows\em64t\libs\hobvector\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64ins VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64ins rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinX64ins clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;$(SolutionDir)/src/lib_wsphelper/include;$(SolutionDir)/src/lib_sdhstorage/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='insure|Itanium'">
+    <OutDir>$(SolutionDir)bin\insure\windows\ipf\</OutDir>
+    <IntDir>$(SolutionDir)obj\insure\windows\ipf\libs\hobvector\</IntDir>
+    <NMakeBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFins VSINSTALLDIR="$(VSInstallDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFins rebuild VSINSTALLDIR="$(VSInstallDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>"$(SolutionDir)external\gmake-3.81\bin\windows\x86\gmake.exe" PLATFORM=WinIPFins clean VSINSTALLDIR="$(VSInstallDir)</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <NMakePreprocessorDefinitions>WIN64;_IA64_;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(SolutionDir)/src/include;$(SolutionDir)/src/lib_wsphelper/include;$(SolutionDir)/src/lib_sdhstorage/include;D:/Xerces/xerces-c-3.1.0/src;$(SolutionDir)/src/wsp;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ds_hvector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="codereview\codereview.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

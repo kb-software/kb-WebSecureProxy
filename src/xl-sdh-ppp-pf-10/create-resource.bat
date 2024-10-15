@@ -1,0 +1,1 @@
+..\..\external\precomp\bin\windows\x86\precomp.exe .\res\xl-sdh-ppp-pf-10.rc-pre .\res\xl-sdh-ppp-pf-10.rc

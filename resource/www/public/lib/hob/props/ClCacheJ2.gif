@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="description" content="HOBLink J-Term, Windows Terminal Server, Terminal Emulation, 3270, 5250, Unix" />
+<meta name="keywords" content="software, Windows, Terminal Server, /390, /370, host, 3270, 5250, VT525, Siemens, 97801, 9750, BS2000, HP700, Java, GDDM, emulation" />
+<title>HOBLink J-Term</title>
+<link rel="stylesheet" href="i/css/hobrdvpn.css" />
+<link rel="SHORTCUT ICON" href="favicon.ico" />
+
+<script src="i/js/write.js"></script>
+<script src="version.js"></script>
+<script src="versionSSL.js"></script>
+<script src="versionSSH.js"></script>
+<script>
+var msgHead="Session Manager";
+var msgEx="If you leave or close this page, the Session Manager will be closed. "+
+          "If you want to keep browsing the web without closing the session, open another browser window.";
+var msgCx="Right click is disabled. If you refresh or change the content of this window,"+
+          " the Session Manager will be closed.";
+
+function loadres_title()
+{
+   loadres();
+   if(lang.indexOf("de") != -1)
+   {
+   msgHead="Session Manager";
+   msgEx="Wenn Sie diese Seite schließen oder verlassen, wird Ihr Session Manager beendet. "+
+         "Um weiter im Web zu surfen, ohne den Session Manager zu beenden, "+
+         "öffnen Sie ein neues Browser-Fenster.";
+   msgCx="Der rechte Maus-Klick ist nicht verfügbar. Wenn Sie die Seite neu laden"+
+         " wird Ihr Session Manager beendet.";
+   }
+   else
+   if(lang.indexOf("fr") != -1)
+   {
+   msgHead="Gestionnaire de sessions";
+   msgEx="Si vous quittez ou fermez cette page, votre Gestionnaire de sessions vont être interrompues."+
+         " Si vous voulez naviguer dans le web, ouvrez une autre fenêtre de navigateur.";
+   msgCx="La touche droite de la souris est désactivée. Si vous quittez ou fermez cette page,"+
+         " votre Gestionnaire de sessions vont être interrompues.";
+   }
+   else
+   if(lang.indexOf("es") != -1)
+   {
+   msgHead="Administrador de Sesión";
+   msgEx="Si usted cierra o deja esta página, el Administrador de Sesión será cerrada."+
+         " Si usted desea navegar en la Web, abra otra ventana del navegador.";
+   msgCx="El clic derecho está deshabilitado. Si usted actualiza o cambia el contenido de esta"+
+         " ventana, el Administrador de Sesión será cerrada.";
+   }
+   else
+   if(lang.indexOf("zh") != -1)
+   {
+   msgHead="会话管理";
+   msgEx="如果您关闭此网页, 会话管理将随之关闭。"+
+         "如果您想继续浏览网站而不关闭会话, 请选 '取消' 然后打开另一个浏览器窗口。";
+   msgCx="右键不可鄙用。如果您重新载入或改变窗口内容,"+
+         "会话管理将自行关闭。";
+   }
+}
+window.onbeforeunload=confirmExit;
+function confirmExit(){
+return msgEx;
+}
+</script>
+</head>
+
+<body>
+<script>
+loadres_title();
+write_header();
+write_corner();
+write_title(msgHead);
+if(navigator.javaEnabled() == false){
+   document.write(applet_alt);
+}
+    document.write('  <applet');
+    document.write('    code="hob.lau.JLaunch.class"');
+    document.write('    codebase="lib"');
+    document.write('    width="<%=P_WIDTH%>"');
+    document.write('    height="<%=P_HEIGHT%>"');
+
+    document.write('    <param name="cache_option"  value="Plugin">');
+    document.write('    <param name="cache_archive" value="JLaunch-J2.jar,LocalVarsEdit-J2.jar,tool-J2.jar,hlset-J2.jar,JTerm-J2.jar,JWT-J2.jar,JTermconf-J2.jar,JWTconf-J2.jar,comma-J2.jar,commb-J2.jar,FTPB-J2.jar,FTPBconf-J2.jar,trc-J2.jar,symantec-J2.jar,Ohio-J2.jar,activation.jar,mail.jar,HOBssl-J2.jar,HOBssh-J2.jar">');
+    document.write('    <param name="cache_version" value="');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(versionMaj + '.' + versionMin + '.' + versionRel + '.' + versionBld + ',');
+    document.write(verSSLMaj  + '.' + verSSLMin  + '.' + verSSLRel  + '.' + verSSLBld  + ',');
+    document.write(verSSHMaj  + '.' + verSSHMin  + '.' + verSSHRel  + '.' + verSSHBld);
+    document.writeln('">');
+
+    document.write('    <param name="<%=P_XXSTARTUP%>" value="<%=P_STARTUP%>">');
+    document.write('    <param name="<%=P_XXWEBPROFILE%>" value="Y">');
+    document.write('    <param name="<%=P_XXUSERHOME%>" value="<%=P_USERHOME%>">');
+    document.write('    <param name="<%=P_XXMULTIHOME%>" value="Y">');
+    document.write('    <param name="xxhidebtn" value="Y">');
+
+    document.write('    <param name="image" value="images/splashHOB.gif">');
+    document.write('    <param name="progressbar" value="true">');
+    document.write('    <param name="boxmessage" value="Loading...">');
+    document.write('    <param name="draggable"     value="true">');
+    document.write('    <param name="java_arguments" value="-Dsun.java2d.noddraw=true">');
+	document.write('    <param name="java_arguments" value="-Xmx128M">');
+
+    document.write(applet_alt);
+
+    document.write('  </applet>');
+    </script>
+<script>
+write_footer();
+</script>
+<noscript>
+Your browser is not capable of running HOB Software. You must have a JavaScript-enabled web browser.<br>
+HOB Software kann nicht ausgeführt werden, da Ihr Browser kein JavaScript unterstützt.<br>
+HOB Software ne peut pas être exécuté car votre Browser ne supporte pas JavaScript.<br>
+Su Navegador de Internet no es capaz de ejecutar el Software de HOB. Usted debe de tener habilitado el soporte de JavaScript en el navegador.<br>
+您的客户端平台不能运行HOB软件。您需要一个支持Java的网页浏览器。<br>
+</noscript>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    <!-- status display -->
+    <link rel="stylesheet" href="/public/css/slide.css"/>
+    <script src="/public/js/slide.js"></script>
+    
+    <script>
+        status_visible = false;
+	    window.onbeforeunload = confirmExit;
+	    window.onunload = shutdown_hobphone;
+	    function confirmExit(){
+		    if (document.hobphone.is_terminated()) {
+			    return;
+		    }
+		    if (document.hobphone.is_active()) {
+				return "<xsl:value-of select='lang/html/hobphone/warning-active-call' />";
+		    }
+		    else {
+			    return "<xsl:value-of select='lang/html/hobphone/warning-not-reachable' />";
+		    }
+	    }
+	    function shutdown_hobphone() {
+            show_status("<xsl:value-of select="lang/html/welcome/hobphone/text1"/>", "<xsl:value-of select='lang/html/hobphone/shutting-down' />");
+		    document.hobphone.shutdown();
+	    }
+		function close_silently() {
+			return;
+			window.close();
+		}
+        function show_status(title, text) {
+			return;
+			if ( navigator.javaEnabled() == false ) {
+				document.getElementById("nojava").style.visibility="visible";
+				document.getElementById("applet-area").style.visibility="hidden";
+			} else {
+				if(!status_visible) {
+					document.getElementById("nojava").style.visibility="hidden";
+					document.getElementById("applet-area").style.visibility="hidden";
+					m_progress_start(title, text);
+					status_visible = true;
+				}
+				else {
+					set_status(text);
+				}
+            }
+        }
+        function set_status(text) {
+			return;
+            if(status_visible) {
+                m_set_text(text);
+            }
+            else {
+                m_progress_start("<xsl:value-of select="lang/html/welcome/hobphone/text1"/>", text);
+            }
+        }
+        function hide_status() {
+			return;
+            m_progress_stop();
+            document.getElementById("applet-area").style.visibility="visible";
+            status_visible = false;
+        }
+        
+    </script>
+</head>
+<body>
+    <div id="page-outer" class="wide-page logo-right">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <a id="logo"> 
+                <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+            </a>
+            <div id="page-inner">
+                <object type="application/x-java-applet" 
+                      id = "hobphone"
+                      width="100%" height="400">
+                      <!-- <PARAM NAME="cache_archive" VALUE = "hobphone-J2.jar, tool-J2.jar, HOBssl-J2.jar, hlset-J2.jar, JWT-J2.jar, hobphone_native.jar, hobwrtc.jar "/>
+                      <PARAM NAME="cache_version" VALUE="2.1.6135.1460, 2.1.5908.1, 2.1.5908.1, 2.1.5908.1, 2.1.5908.1, 2.1.5908.1, 2.1.5908.1">								 
+                      <param name="cache_option" value="plugin"> -->
+                    <param name="codebase" value="/public/lib" />
+                    <param name="code" value="hob.phone.core.c_applet.class" />
+                    <param name="archive" value="hobphone-J2.jar" />
+                    <param name="startup"       value="startup-hobphone.xml">
+                    <param name="xxwebprofile"  value="Y">
+                    <param name="xxuserhome"    value="C:\Program Files\myHomeDir">
+                    <param name="xxmultihome"   value="Y">
+                    <param name="xxhidebtn"     value="Y">
+                    <!--<param name="devel"         value="devel">-->
+                    <param name="image"         value="images/splashHOB.gif">
+                    <param name="progressbar"   value="true">
+                    <param name="boxmessage"    value="Loading...">
+                    <param name="draggable"     value="true">
+                    <param name="java_arguments" value="-Dsun.java2d.noddraw=false -Djnlp.packEnabled=true">
+                    <param name="locale"><xsl:attribute name="value"><xsl:value-of select="user/language"/></xsl:attribute></param>
+                    <param name="username"><xsl:attribute name="value"><xsl:value-of select="user/hsocks-id"/></xsl:attribute></param>
+                    <param name="hpw"><xsl:attribute name="value"><xsl:value-of select="user/hsocks-sticket"/></xsl:attribute></param>
+                    <param name="cookie"><xsl:attribute name="value">HOBWSP_SID=<xsl:value-of select="user/httpcookie"/></xsl:attribute></param>
+                    <param name="rd_vpn"   value="Y">
+                    <param name="mode" value="WSP">
+                    <param name="codebase_lookup" value="false">
+                    <br>
+                    <a href="/protected/portlets/hobphone/HOBPHONE.jnlp">
+                    <!-- <xsl:value-of select="lang/html/welcome/hobphone/jnlp"/> -->
+                    Start HOBPhone (Java Web Start)
+                    </a>
+                    <!-- <xsl:value-of select="lang/html/all/need-java"/> -->
+                    <br>
+                </object>
+            </div>
+		</div>
+        <div id="footer">
+        </div>
+    </div>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

@@ -1,0 +1,293 @@
+#menu {
+    line-height:      1.5em;
+    margin:           0px;
+    padding:          0px;
+    list-style-type:  none;
+}
+li {
+    margin:           0px;
+    padding:          0px;
+}
+li.server-name {
+    font-style:       italic;
+    margin:           1em 0px 0px 0px;
+}
+li.indented {
+    padding-left:  1em !important;
+}
+div.menu 
+{
+	width:            14%;
+    float:            left;
+    padding-top:      8px;
+    overflow-x:       auto;
+}
+div.clear-menu {
+    clear:            both;
+}
+
+#admin {
+	float:            right;
+	width:            85%;
+    font-size:        11px !important;
+}
+
+body#admin-frame {
+    font-size: 11px !important;
+    border-left: solid 1px #eee;
+    background-color: transparent;
+    background-image: none; 
+    height: unset;
+    overflow-y: auto;
+    display: block;
+}
+
+div.buttons input {
+    font-size:        11px !important;
+}
+
+div.buttons input[type="text"] {
+    border: 1px solid darkgray;
+}
+
+#content {
+    padding:          10px 20px;
+}
+
+/* contains EA-Admin, RDVPNUpdater */
+.tools {
+    padding-bottom:   10px;
+}
+
+#timer-btn {
+    width:            115px;
+}
+
+#readable-time {
+    width:            100px;
+}
+    
+.extensions-iframe {
+    width:            100%;
+    height:           100%;
+    border:           none;
+    margin-bottom:    -5px;
+    min-height:       100%;
+}
+
+div.space {
+    margin-top:       5px ! important;
+}
+.warn {
+    color:               red ! important;
+    background-image:    url(/public/img/warning.png);
+    background-position: 0% 0%;
+    background-repeat:   no-repeat;
+    padding-left:        20px;
+}
+#log tbody {
+    font-family:      monospace;
+    vertical-align:   top;
+}
+div.admin-content {
+    padding-bottom:   5px;
+    padding-top:      5px;
+    margin-left:      10px;
+    height:           100%;
+}
+div.wsptrace-admin {
+    padding:		  2px 10px 2px 10px;
+    margin:           5px 0px 5px 10px;
+    border:           solid 1px #eee;
+    height:           100%;
+}
+div.wsptrace-serverconf {
+	margin-left: 10px;
+	padding: 2px 10px 2px 10px;
+}
+
+select.wsptrace-lists 
+{
+	font-size:			   11px !important;
+	padding:               2px 4px 2px 4px;
+	background-color:      #f6f6f6;
+	border:                1px outset #dcdcdc;
+	text-align:            center;
+	cursor:                pointer;
+	z-index:               1;
+    border-radius:         2px;                                 /* CSS 3             */
+    -moz-border-radius:    2px;                                 /* CSS 2 - mozilla   */
+    -webkit-border-radius: 2px;                                 /* CSS 2 - webkit    */
+    -khtml-border-radius:  2px;                                 /* CSS 2 - konqueror */
+}
+
+div.admin-content-btn {
+    overflow:         auto;
+    padding-bottom:   5px;
+    padding-top:      5px;
+}
+div.buttons {
+    background-color: #eee;
+    margin-left:      10px;
+    padding:          2px 10px 2px 10px;
+}
+tr.context-menu {
+    cursor:           default;
+}
+/* context menu stuff */
+div.context-menu {
+    border:           solid 1px black;
+    background-color: #eee;
+    display:          none;
+    position:         absolute;
+    z-index:          100;
+    min-width:        200px;
+    padding:          5px;
+    font-style:       normal;
+}
+div.context-header {
+    border-bottom:    solid 1px white;
+    padding-left:     30px;
+    padding-bottom:   5px;
+}
+div.context-spacer {
+    border-bottom:    solid 1px white;
+}
+div.context-line {
+    cursor:           default;
+}
+div.context-line:hover {
+    background-color: #e0e0e0;
+}
+div.context-icon {
+    float:            left;
+}
+div.context-content {
+    margin-left:      25px;
+    border-left:      solid 1px white;
+    padding-left:     5px;
+    line-height:      20px;
+}
+
+/* left click menu stuff */
+div.left-menu {
+    border:           solid 1px black;
+    background-color: #eee;
+    display:          none;
+    position:         absolute;
+    z-index:          100;
+    padding:          5px;
+    text-align:       center;
+}
+div.left-header {
+    border-bottom:    solid 1px white;
+    padding-left:     5px;
+    padding-bottom:   5px;
+}
+div.left-line {
+    cursor:           default;
+}
+div.left-content {
+    border-left:      solid 1px white;
+    padding-left:     5px;
+    line-height:      20px;
+}
+
+table.rotated{
+    width:            100%;
+    border-collapse:  collapse;
+    border:           solid 1px #eee;
+}
+
+table.rotated td{
+    padding:            2px;
+    border:           solid 1px #eee;
+    text-align: center;
+    /*vertical-align: bottom; /* center checkbox vertically */
+    
+}
+table.rotated td.checkers{
+    max-width:          20px;
+    max-height:         20px;
+    text-align: center; /* center checkbox horizontally */
+    vertical-align: middle; /* center checkbox vertically */
+}
+table.rotated td.coltitle{
+
+    height:           100px;
+    width:            20px;
+    max-height: 140px;
+    max-width:   20px;
+    
+    vertical-align: bottom; /* center checkbox vertically */
+    position: relative;
+    right: 0px;
+    bottom: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.rotated .rotatedtext{
+
+    display: block;
+    -webkit-transform:rotate(270deg);
+    -moz-transform:rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform:rotate(270deg);
+    transform: rotate(270deg);
+    position: relative;
+    right: 0px;
+    bottom: 10px;
+}
+
+table {
+    width:            100%;
+    border-collapse:  collapse;
+}
+td {
+    padding:          2px;
+}
+
+.selected {
+    font-weight:      bold;
+}
+.border td {
+    border:           solid 1px #eee;
+    padding:          0px 2px 0px 2px;
+}
+.thead, thead {
+    border:           solid 1px #eee;
+    background-color: #eee;
+    padding:          5px 2px 5px 2px;
+    cursor:           default;
+}
+th {
+    padding:          5px 0px 5px 2px;
+    text-align:       left;
+}
+.statistics td {
+    border:           none 0px;
+}
+
+ul.extensions-list {
+    line-height:      1.5em;
+    font-size:        14px;
+    padding:          1em 0px 0px 2em;
+    list-style-type:  none;
+}
+
+.cell-left {
+    float: left;
+}
+
+.cell-left span {
+    padding-right: 10px;
+}
+
+.cell-right {
+    float: right;
+}
+
+.forceScrollbarY {
+    overflow-y: scroll;
+}

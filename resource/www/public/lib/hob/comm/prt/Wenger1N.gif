@@ -1,0 +1,45 @@
+///////////////////////////////////
+// changed: 20.03.2003
+//
+//////////////////////////////////
+//--------------------------
+// Description= Wenger FB240 Normaldruck KfZ-Schein
+// --------------------------------------------------
+// Besonderheiten zum Orginal Wenger1F.pdf:
+// CPI: nicht variabel, sondern fixed auf 10 cpi eingestellt
+// LPI: nicht variabel, sondern fixed auf 6  lpi eingestellt
+//
+//-----------------------------
+
+CR = 0d
+LF = 0a
+FF = 0c
+NL = 0d 0a
+ESC = 1B
+MOVERIGHT =
+CPI= [ESC] \"A\" 7
+CPI10withHMI = [ESC] \"(s10H\" [ESC] \"&k11.689H\"
+LPI= [ESC] \"3\" 24
+
+BOLD_ON = [ESC] 45
+BOLD_OFF = [ESC] 46
+LINE_DENSITY = [ESC] \"&l\" Text (LineDensity) \"C\"
+INIT = 1B 34 0A
+CP437 = [ESC] \"(10U\"
+CP819 = [ESC] 36
+CP850 = [ESC] \"(12U\"
+PORTRAIT = [ESC] 26 6c 30 4f [ESC] 26 61 30 50
+LANDSCAPE = [ESC] 26 6c 31 4f
+ORIENT90 = [ESC] 26 6c 32 4f
+ORIENT270 = [ESC] 26 6c 30 4f [ESC] 26 61 32 37 30 50 [ESC] 26 61 30 52
+
+COURIER = [ESC]28733354
+UL_ON = [ESC] 26 64 30 44
+UL_OFF = [ESC] 26 64 40
+EINSEITIG = [ESC] 26 6C 30 53
+ZWEISEITIG = [ESC] 26 6C 31 53
+TOPMARGIN = [ESC] \"&l\" Text (TopMargin) \"E\"
+LEFTMARGIN = [ESC] \"&a\" Text (LeftMargin)  \"L\"
+MOVEVERT720 = [ESC] \"&a\" Text (MoveVert720) \"V\"
+MOVEROWUP = [ESC] \"&a-60V\"
+MOVEROWDOWN = [ESC] \"&a+60V\"

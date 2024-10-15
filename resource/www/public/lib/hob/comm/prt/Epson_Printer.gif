@@ -1,0 +1,45 @@
+///////////////////////////////////
+// changed: 16.09.2003
+// changed: 20.03.2003
+//
+//////////////////////////////////
+
+TOP_EDGE = 0.33
+LEFT_EDGE = 0.11
+
+CR = 0d
+LF = 0a [MOVERIGHT]
+FF = 0c
+ESC = 1B
+//Moveright unit ist 1/720
+MOVERIGHT =  [ESC] \"\\\" ByteDez (MoveRight/4) ByteDez (MoveRight/4/256)
+CPI-10 = [ESC] \"P\"
+CPI-12 = [ESC] \"M\"
+CPI-15 = [ESC] \"g\"
+CPI-17 = [ESC] \"g\"
+LPI = [ESC] \"+\" ByteDez (360 / LPI + 0.5)
+LPI-6 = [ESC] \"0\"
+LPI-8 = [ESC] \"2\"
+//Linedensity: intern wird mit n/48 gerechnet, hier umrechnung auf n/360 notwendig
+LINEDENSITY = [ESC] \"+\" ByteDez ((LINEDENSITY * 30) / 4)
+BOLD_ON = [ESC] 48
+BOLD_OFF = [ESC] 47
+INIT = [ESC] 40  [CPI] [LINEDENSITY] [TOPMARGIN] [LEFTMARGIN] [CP819]
+CP437 = [ESC] \"(t\" 03 00 00 01 00 [ESC] \"t\" 00
+CP819 = [ESC] \"(t\" 03 00 00 7F 01 [ESC] \"t\" 00
+CP850 = [ESC] \"(t\" 03 00 00 03 00 [ESC] \"t\" 00
+PORTRAIT =
+LANDSCAPE =
+ORIENT90 =
+ORIENT270 =
+//PAGELENGTH = [ESC] \"C\" ByteDez (PageLength)
+COURIER = [ESC] 6C 02
+UL_ON = [ESC] 2D 01
+UL_OFF = [ESC] 2D 00
+TOPMARGIN = [ESC] \"(V\" 02 00 ByteDez (TopMargin1440/4) ByteDez (TopMargin1440/4/256)
+LEFTMARGIN = [ESC] \"l\" ByteDez (LeftMargin)
+
+NEWPAGE = [ESC] \"J\" ByteDez (TopMargin1440/7)
+MOVEVERT720 = [ESC] \"J\" ByteDez (TopMargin1440/7)
+MOVEROWUP =
+MOVEROWDOWN =

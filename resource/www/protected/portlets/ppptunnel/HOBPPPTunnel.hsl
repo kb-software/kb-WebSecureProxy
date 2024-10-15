@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <xsl:call-template name="html-header"/>
+    <script src="/public/js/getinfo.js"></script>
+</head>
+<body>
+    <div id="page-outer" class="wide-page logo-right">
+        <xsl:call-template name="header"/>
+		<div id="page-area">
+			<!-- page content -->
+            <a id="logo"> 
+                <xsl:attribute name="href"><xsl:value-of select="user/welcomesite"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="lang/html/all/btn-home"/></xsl:attribute>
+            </a>
+            <div id="page-inner">
+                <object type="application/x-java-applet" height="40" width="100%">
+                    <param name="codebase" value="/public/lib" />
+                    <param name="code" value="hob.ppp_tunnel_applet.ppp_tunnel_applet.class" />
+                    <param name="archive" value="ppp_tunnel_applet.jar" />
+                    <param name="progressbar"   value="true">
+                    <param name="boxmessage"    value="+ ppptunnel_waitmsg+">
+                    <param name="install_html"  value="/protected/portlets/ppptunnel/install/ppptunnel/install.htm">
+                    <param name="server-entry-name"><xsl:attribute name="value"><xsl:value-of select="ppptunnel/server-entry-name"/></xsl:attribute></param>
+                    <param name="cookie"><xsl:attribute name="value"><xsl:value-of select="user/httpcookie"/></xsl:attribute></param>
+                    
+                    <a href="" id="ppp-link" >
+                    <!-- <xsl:value-of select="lang/html/welcome/ppptunnel/jnlp"/> -->
+                    Start HOB PPP Tunnel (Java Web Start)</a>
+                    <!-- <br><xsl:value-of select="lang/html/all/need-java"/> -->
+                </object>
+            </div>
+		</div>
+        <div id="footer">
+        </div>
+    </div>
+    <script>
+        var link = document.getElementById( "ppp-link" );
+        var url = window.location.href;
+        var query = url.split( "?" )[1];
+        if( query )
+            link.href = "/protected/portlets/ppptunnel/launchppp.jnlp?" + query;
+
+    </script>
+</body>
+</html>
+
+<xsl:include href="/public/template_header.hsl" />

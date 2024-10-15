@@ -1,0 +1,378 @@
+%IF DEF UNIX$GCC;
+%DISP:precompiling islock03-32.pre for Unix GCC
+        .intel_syntax noprefix
+
+.text
+%DEFT COMMENT:#
+%DEFT METH$NAME1:.globl
+%MACRO:METH$START(mtext:name);
+%TEXT:name;:
+%MEND;
+%MACRO:METH$END(mtext:name);
+%MEND;
+%DEFT METH$NAME3:
+%MACRO:SET$EQU(mtext:label,mint:value);
+        .equ %TEXT:label;,%INT:value;
+%MEND;
+%TEXT:COMMENT;use: xbprecomp01 islock03-32.pre islock03-32-gcc.s "xxSET UNIX$GCC=1;"
+%TEXT:COMMENT;     xx = double-percent
+%CEND;
+%IF DEF WIN$VC;
+%DISP:precompiling islock03-32.pre for Windows Visual Studio
+%DEFT COMMENT:;
+%DEFT METH$NAME1:public
+%MACRO:METH$START(mtext:name);
+_%TEXT:name; proc near
+%MEND;
+%MACRO:METH$END(mtext:name);
+_%TEXT:name; endp
+%MEND;
+%DEFT METH$NAME3:_
+%MACRO:SET$EQU(mtext:label,mint:value);
+%TEXT:label; equ %INT:value;
+%MEND;
+%TEXT:COMMENT;use: xbprecomp01 islock03-32.pre islock03-32-win.asm "xxSET WIN$VC=1;"
+%TEXT:COMMENT;     xx = double-percent
+%TEXT:COMMENT;     cmasm32 islock03-32-win
+        .586p
+%CEND;
+%IF DEF UNIX$NASM;
+%DISP:precompiling islock03-32.pre for Unix NASM
+section .text
+%DEFT COMMENT:;
+%DEFT METH$NAME1:global_function
+%MACRO:METH$START(mtext:name);
+%TEXT:name;:
+_%TEXT:name;:
+%MEND;
+%MACRO:METH$END(mtext:name);
+%MEND;
+%DEFT METH$NAME3:
+%MACRO:SET$EQU(mtext:label,mint:value);
+%TEXT:label; equ %INT:value;
+%MEND;
+%TEXT:COMMENT;use: xbprecomp01 islock03-32.pre islock03-32-nasm.s "xxSET UNIX$NASM=1;"
+%TEXT:COMMENT;     xx = double-percent
+%CEND;
+%TEXT:COMMENT;        islock03-32.asm
+%TEXT:COMMENT;        copyright (c) HOB electronic D-90556 Cadolzburg, Germany
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2012
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2013
+%TEXT:COMMENT;        Copyright (C) HOB Germany 2016
+%TEXT:COMMENT;        derived from ISLOCK01.asm written 27.11.01 KB
+%TEXT:COMMENT;        27.08.12 KB
+%TEXT:COMMENT;
+%IF DEF UNIX$NASM;
+
+; This macro will generate the right symbols for the external functions, depending on output format
+%%ifidn __OUTPUT_FORMAT__,macho32
+%%macro global_function 1
+global %%1
+global _%%1
+%%endmacro
+%%else
+%%macro global_function 1
+global %%1:function
+global _%%1:function
+%%endmacro
+%%endif
+
+; This define removes the PTR parts of the code, that NASM can't use
+%%define PTR
+
+; This define deals with an issue of NASM with cmpxchg8b. It doesn't process length correctly, but MASM need length. QWORD is only used with cmpxchg8b
+%%define QWORD
+%CEND;
+
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_inc_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_dec_1
+%IF DEF XYZ1;
+        %TEXT:METH$NAME1; _m_hl_lock_inc_2
+        %TEXT:METH$NAME1; _m_hl_lock_dec_2
+%CEND;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_dec_b
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_set_true_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_set_null_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_lock_set_var_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_cas_var_1
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_cas_var_2
+%SET INCLCHAIN=1;
+%IF DEF INCLCHAIN;
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_get_chain
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_put_chain
+        %TEXT:METH$NAME1; %TEXT:METH$NAME3;m_hl_check_chain
+%CEND;
+
+%IF DEF WIN$VC;
+_TEXT   segment dword public use32 'CODE'
+_TEXT   ends
+_DATA   segment dword public use32 'DATA'
+_DATA   ends
+_BSS    segment dword public use32 'BSS'
+_BSS    ends
+_TEXT   segment dword public use32 'CODE'
+        assume cs:_TEXT
+%CEND;
+%TEXT:COMMENT;       extern "C" void m_hl_lock_inc_1( int * )%TEXT:COMMENT;
+%METH$START(m_hl_lock_inc_1);
+        mov  eax,DWORD PTR[ esp + 4 ];      %TEXT:COMMENT;get argument
+        lock inc DWORD PTR[ eax ];          %TEXT:COMMENT;increment int
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_inc_1);
+%TEXT:COMMENT;       extern "C" void m_hl_lock_dec_1( int * );
+%METH$START(m_hl_lock_dec_1);
+        mov  eax,DWORD PTR[ esp + 4 ]       %TEXT:COMMENT;get argument
+        lock dec DWORD PTR[ eax ]
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_dec_1);
+%IF DEF XYZ1;
+%TEXT:COMMENT;       extern "C" int m_hl_lock_inc_2( int * );
+%TEXT:COMMENT;       is routine correct? 28.11.01 KB
+_m_hl_lock_inc_2 proc near
+        push esi
+        push edx
+        push ecx
+        push ebx
+        mov  esi,DWORD PTR[ esp + 20 ]      %TEXT:COMMENT;get argument
+        mov  edx,1                          %TEXT:COMMENT;value to adjust
+        mov  ebx,DWORD PTR[ esi ]           %TEXT:COMMENT;get old number
+pinc2_20:                                   %TEXT:COMMENT;loop to adjust value
+        mov  ecx,ebx                        %TEXT:COMMENT;save value
+        add  ecx,edx                        %TEXT:COMMENT;add value to adjust
+        mov  eax,ecx                        %TEXT:COMMENT;set return value
+        xchg ecx,DWORD PTR[ esi ]           %TEXT:COMMENT;exchange operands
+        cmp  ecx,ebx                        %TEXT:COMMENT;is as expected?
+        jne  pinc2_40
+        pop  ebx
+        pop  ecx
+        pop  edx
+        pop  esi
+        ret                                 %TEXT:COMMENT;return to calling program
+pinc2_40:
+        mov  ebx,eax                        %TEXT:COMMENT;save value in storage
+        add  edx,ecx                        %TEXT:COMMENT;get value in storage
+        sub  edx,eax                        %TEXT:COMMENT;so much is different
+        jmp  pinc2_20                       %TEXT:COMMENT;try again
+%METH$END(m_hl_lock_inc_2);
+%TEXT:COMMENT;       extern "C" int m_hl_lock_dec_2( int * );
+%TEXT:COMMENT;       routine is not yet implemented 28.11.01 KB
+_m_hl_lock_dec_2 proc near
+        mov  eax,DWORD PTR[ esp + 4 ]       %TEXT:COMMENT;get argument
+        lock inc DWORD PTR[ eax ]
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_dec_2);
+%CEND;
+%TEXT:COMMENT;       extern "C" BOOL m_hl_lock_dec_b( int * )%TEXT:COMMENT;
+%TEXT:COMMENT;       return TRUE if value less than zero
+%METH$START(m_hl_lock_dec_b);
+%IF DEF XYZ1;
+        push edx
+        mov  edx,DWORD PTR[ esp + 8 ]       %TEXT:COMMENT;get argument
+%CEND;
+        mov  edx,DWORD PTR[ esp + 4 ]       %TEXT:COMMENT;get argument
+        xor  eax,eax                        %TEXT:COMMENT;clear return code
+        lock dec DWORD PTR[ edx ]           %TEXT:COMMENT;decrement int
+        jns  pdecb_40
+        inc  eax
+pdecb_40:
+%IF DEF XYZ1;
+        pop  edx
+%CEND;
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_dec_b);
+%TEXT:COMMENT;       extern "C" void m_hl_lock_set_true_1( int * );
+%METH$START(m_hl_lock_set_true_1);
+        mov  eax,DWORD PTR[ esp + 4 ]       %TEXT:COMMENT;get argument
+        xor  edx,edx                        %TEXT:COMMENT;clear register
+        inc  edx                            %TEXT:COMMENT;set to one / TRUE
+%IF DEF B170727;
+        lock xchg edx,DWORD PTR[ eax ]      %TEXT:COMMENT;exchange operands
+%CEND;
+        xchg  edx,DWORD PTR[ eax ]          %TEXT:COMMENT;exchange operands
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_set_true_1);
+%TEXT:COMMENT;       extern "C" void m_hl_lock_set_null_1( void * );
+%METH$START(m_hl_lock_set_null_1);
+        mov  eax,DWORD PTR[ esp + 4 ]       %TEXT:COMMENT;get argument
+        xor  edx,edx                        %TEXT:COMMENT;clear register
+%IF DEF B170727;
+        lock xchg edx,DWORD PTR[ eax ]      %TEXT:COMMENT;exchange operands
+%CEND;
+        xchg edx,DWORD PTR[ eax ]      %TEXT:COMMENT;exchange operands
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_set_null_1);
+%SET$EQU(DVOIDSI,4);
+%TEXT:COMMENT;       extern "C" void m_hl_lock_set_var_1( void **, void * );
+%METH$START(m_hl_lock_set_var_1);
+        mov  eax,DWORD PTR[ esp + (1 * DVOIDSI) ]  %TEXT:COMMENT;get first argument
+        mov  edx,DWORD PTR[ esp + (2 * DVOIDSI) ]  %TEXT:COMMENT;get second argument
+%IF DEF B170727;
+        lock xchg edx,DWORD PTR[ eax ]      %TEXT:COMMENT;exchange operands
+%CEND;
+        xchg edx,DWORD PTR[ eax ]           %TEXT:COMMENT;exchange operands
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_lock_set_var_1);
+%TEXT:COMMENT;       extern "C" BOOL m_hl_cas_var_1( void **, void **, void * );
+%METH$START(m_hl_cas_var_1);
+        push ebx;                           %TEXT:COMMENT;save register
+        mov  edx,DWORD PTR[ esp + (2 * DVOIDSI) ];  %TEXT:COMMENT;get first argument
+        mov  ecx,DWORD PTR[ esp + (3 * DVOIDSI) ];  %TEXT:COMMENT;get second argument
+        mov  ebx,DWORD PTR[ esp + (4 * DVOIDSI) ];  %TEXT:COMMENT;get third argument
+        mov  eax,DWORD PTR[ ecx ];          %TEXT:COMMENT;get old content
+        lock cmpxchg DWORD PTR[ edx ],ebx;  %TEXT:COMMENT;exchange operands
+        jz   pcasv1_20;                     %TEXT:COMMENT;  did succeed
+                                            %TEXT:COMMENT;did not succeed
+        mov  DWORD PTR[ ecx ],eax;          %TEXT:COMMENT;set old content - return
+        xor  eax,eax;                       %TEXT:COMMENT;clear register - return value FALSE
+        pop  ebx;                           %TEXT:COMMENT;restore register
+        ret;                                %TEXT:COMMENT;return to calling program
+pcasv1_20:                                  %TEXT:COMMENT;did succeed
+        xor  eax,eax;                       %TEXT:COMMENT;clear register - return value
+        inc  eax;                           %TEXT:COMMENT;set register to one - return value TRUE
+        pop  ebx;                           %TEXT:COMMENT;restore register
+        ret;                                %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_cas_var_1);
+%TEXT:COMMENT;       extern "C" BOOL m_hl_cas_var_2( void **, void **, void ** );
+%METH$START(m_hl_cas_var_2);
+        push ebx;                           %TEXT:COMMENT;save register
+        push esi;                           %TEXT:COMMENT;save register
+        push edi;                           %TEXT:COMMENT;save register
+        mov  esi,DWORD PTR[ esp + (4 * DVOIDSI) ]  %TEXT:COMMENT;get address first parameter
+        mov  edi,DWORD PTR[ esp + (5 * DVOIDSI) ]  %TEXT:COMMENT;get address second parameter
+        mov  eax,DWORD PTR[ edi ];          %TEXT:COMMENT;get old content part one
+        mov  edx,DWORD PTR[ edi + DVOIDSI ] %TEXT:COMMENT;get old content part two
+        mov  ecx,DWORD PTR[ esp + (6 * DVOIDSI) ]  %TEXT:COMMENT;get address third parameter
+        mov  ebx,DWORD PTR[ ecx ];          %TEXT:COMMENT;get new content part one
+        mov  ecx,DWORD PTR[ ecx + DVOIDSI ] %TEXT:COMMENT;get new content part two
+        lock cmpxchg8b QWORD PTR[ esi ]     %TEXT:COMMENT;exchange operands
+        jz   pcasv2_20;                     %TEXT:COMMENT;  did succeed
+                                            %TEXT:COMMENT;did not succeed
+        mov  DWORD PTR[ edi ],eax;          %TEXT:COMMENT;set old content part one - return
+        mov  DWORD PTR[ edi + DVOIDSI ],edx %TEXT:COMMENT;set old content part two - return
+        xor  eax,eax;                       %TEXT:COMMENT;clear register - return value FALSE
+        pop  edi;                           %TEXT:COMMENT;restore register
+        pop  esi;                           %TEXT:COMMENT;restore register
+        pop  ebx;                           %TEXT:COMMENT;restore register
+        ret;                                %TEXT:COMMENT;return to calling program
+pcasv2_20:                                  %TEXT:COMMENT;did succeed
+        xor  eax,eax;                       %TEXT:COMMENT;clear register - return value
+        inc  eax;                           %TEXT:COMMENT;set register to one - return value TRUE
+        pop  edi;                           %TEXT:COMMENT;restore register
+        pop  esi;                           %TEXT:COMMENT;restore register
+        pop  ebx;                           %TEXT:COMMENT;restore register
+        ret;                                %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_cas_var_2);
+%SET NO_TRACE=1;
+%TEXT:COMMENT;       extern "C" void * m_hl_get_chain( void ** );
+%METH$START(m_hl_get_chain);
+        push esi
+        mov  esi,DWORD PTR[ esp + (2 * DVOIDSI) ]  %TEXT:COMMENT;get argument
+        mov  eax,DWORD PTR[ esi ]           %TEXT:COMMENT;get first element in chain
+        test eax,eax                        %TEXT:COMMENT;is the cache empty?
+        jne  pgetc_40                       %TEXT:COMMENT;  no, get buffer from chain
+        pop  esi
+        ret                                 %TEXT:COMMENT;return to calling program
+pgetc_40:
+        push edx
+        push ecx
+%TEXT:COMMENT;--- 21.07.16 KB - only ebx needs to get saved
+        push ebx
+%IF NDF TRY$160320;
+        mov  eax,DWORD PTR[ esi ]           %TEXT:COMMENT;get first element in chain
+        test eax,eax                        %TEXT:COMMENT;is the cache empty?
+        jz   pgetc_80                       %TEXT:COMMENT;  yes, no buffer in chain
+        mov  edx,DWORD PTR[ esi + DVOIDSI ] %TEXT:COMMENT;get count
+%CEND;
+pgetc_60:
+%IF DEF TRY$160320;
+        mov  edx,DWORD PTR[ esi + DVOIDSI ] %TEXT:COMMENT;get count
+        mov  eax,DWORD PTR[ esi ]           %TEXT:COMMENT;get first element in chain
+        test eax,eax                        %TEXT:COMMENT;is the cache empty?
+        jz   pgetc_80                       %TEXT:COMMENT;  yes, no buffer in chain
+%CEND;
+%IF NDF NO_TRACE;
+        lock inc DWORD PTR (2*DVOIDSI)[ esi ]
+%CEND;
+        mov  ebx,DWORD PTR[ eax ]           %TEXT:COMMENT;get second element in chain
+        mov  ecx,edx                        %TEXT:COMMENT;get count
+        inc  ecx                            %TEXT:COMMENT;increase count
+        lock cmpxchg8b QWORD PTR[ esi ]     %TEXT:COMMENT;exchange operands
+        jz   pgetc_80                       %TEXT:COMMENT;  succeeded
+        test eax,eax                        %TEXT:COMMENT;is the cache empty?
+        jne  pgetc_60                       %TEXT:COMMENT;  no, try again
+pgetc_80:
+        pop  ebx
+%TEXT:COMMENT;--- 21.07.16 KB - only ebx needs to get saved
+        pop  ecx
+        pop  edx
+        pop  esi
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_get_chain);
+%TEXT:COMMENT;       extern "C" void m_hl_put_chain( void **, void * );
+%METH$START(m_hl_put_chain);
+        push esi
+        push edx
+%TEXT:COMMENT;--- 21.07.16 KB - only ebx needs to get saved
+        mov  esi,DWORD PTR[ esp + (3 * DVOIDSI) ]  %TEXT:COMMENT;get first argument
+        mov  edx,DWORD PTR[ esp + (4 * DVOIDSI) ]  %TEXT:COMMENT;get second argument
+        mov  eax,DWORD PTR[ esi ]           %TEXT:COMMENT;get first element in chain
+pputc_20:
+%IF NDF NO_TRACE;
+        lock inc DWORD PTR (3*DVOIDSI)[ esi ]
+%CEND;
+        mov  DWORD PTR[ edx ],eax           %TEXT:COMMENT;anchor of chain gets next buffer
+        lock cmpxchg DWORD PTR[ esi ],edx   %TEXT:COMMENT;exchange operands
+        jnz  pputc_20                       %TEXT:COMMENT;  did not succeed
+%IF NDF NO_TRACE;
+        lock dec DWORD PTR (3*DVOIDSI)[ esi ]
+%CEND;
+%TEXT:COMMENT;--- 21.07.16 KB - only ebx needs to get saved
+        pop  edx
+        pop  esi
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_put_chain);
+%TEXT:COMMENT;       extern "C" void * m_hl_check_chain( void ** );
+%METH$START(m_hl_check_chain);
+        push esi
+        mov  esi,DWORD PTR[ esp + (2 * DVOIDSI) ]  %TEXT:COMMENT;get argument
+        mov  eax,DWORD PTR[ esi ]           %TEXT:COMMENT;get first element in chain
+        pop  esi
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_check_chain);
+%IF DEF NOT$YET$1607;
+%TEXT:COMMENT;       extern "C" void m_hl_add_int_64( long long int *, long long int * );
+%TEXT:COMMENT;       first parameter needs to be 8 byte aligned
+%METH$START(m_hl_add_int_64);
+        push edx
+        mov  edx,DWORD PTR[ esp + 8 ]       %TEXT:COMMENT;get argument
+        xor  eax,eax                        %TEXT:COMMENT;clear return code
+        lock dec DWORD PTR[ edx ]%TEXT:COMMENT;
+        jns  pdecb_40
+        inc  eax
+%TEXT:COMMENT;pdecb_40:
+        pop  edx
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_add_int_64);
+%TEXT:COMMENT;       extern "C" void m_hl_unique_int_64( long long int *, long long int * );
+%TEXT:COMMENT;       first parameter needs to be 8 byte aligned
+%TEXT:COMMENT;         and contains the number which is increased
+%TEXT:COMMENT;       second parameter receives the returned unique 64-bit int
+%METH$START(m_hl_unique_int_64);
+        push edx
+        mov  edx,DWORD PTR[ esp + 8 ]       %TEXT:COMMENT;get argument
+        xor  eax,eax                        %TEXT:COMMENT;clear return code
+        lock dec DWORD PTR[ edx ]%TEXT:COMMENT;
+        jns  pdecb_40
+        inc  eax
+%TEXT:COMMENT;pdecb_40:
+        pop  edx
+        ret                                 %TEXT:COMMENT;return to calling program
+%METH$END(m_hl_unique_int_64);
+%CEND;
+%IF DEF WIN$VC;
+_TEXT   ends
+        end
+%CEND;
+%IF DEF UNIX$GCC;
+        .end
+%CEND;
